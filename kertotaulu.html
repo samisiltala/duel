@@ -219,6 +219,10 @@ box-shadow:0 0 8px #00ffff;
 
 <!-- RIGHT -->
 <div class="right">
+<div style="margin-bottom:15px;">
+    <div id="classBest">🏆 Luokan ennätys: -</div>
+    <div id="personalBest">🔥 Oma ennätys: -</div>
+</div>
 <h3>🏆 TOP-3</h3>
 <div id="top3"></div>
 <h3>📊 TOP-10</h3>
@@ -239,6 +243,7 @@ let WEB_APP_URL="https://script.google.com/macros/s/AKfycbx0iS5gOubgLfnn6PW8L876
 
 let tables=[1,2,3,4,5,10];
 let level=1;
+let previousBest = 0;
 let a,b,correctAnswer;
 let score=0,lives=3,timeLeft=60;
 let streak = 0;
@@ -418,11 +423,26 @@ setTimeout(changeTheme, 500);
 }
 
 function loadScores(){
+
  fetch(WEB_APP_URL + "?level=" + level)
  .then(r=>r.json())
  .then(data=>{
+   let name=document.getElementById("name").value.trim();
+   let found=data.find(r=>r[0]===name);
+   previousBest = found ? found[1] : 0;
+
+   document.getElementById("personalBest").innerText =
+   "🔥 Oma ennätys: " + previousBest;
+});
    let sorted=data.sort((a,b)=>b[1]-a[1]);
 
+   // LUOKAN ENNÄTYS
+   if(sorted.length > 0){
+       document.getElementById("classBest").innerText =
+       "🏆 Luokan ennätys: " + sorted[0][0] + " (" + sorted[0][1] + ")";
+   }
+
+   // TOP-3
    let medals=["🥇","🥈","🥉"];
    let top3="";
    for(let i=0;i<3 && i<sorted.length;i++){
@@ -432,12 +452,18 @@ function loadScores(){
 
    let html=sorted.map((row,i)=> (i+1)+". "+row[0]+": "+row[1]).join("<br>");
    document.getElementById("leaderboard").innerHTML=html;
+
  });
 }
 
 document.getElementById("themeSelect").addEventListener("change",changeTheme);
 document.getElementById("levelSelect").addEventListener("change",loadScores);
 
+if(score > previousBest){
+    document.getElementById("personalBest").innerText =
+    "🔥 Oma ennätys: " + score + " (UUSI!)";
+}
+    
 changeTheme();
 loadScores();
 
@@ -445,6 +471,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
