@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>2B:n Kertotaulukisa</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-
+<audio id="bgMusic" src="tausta.wav" loop></audio>
 <style>
 
 body {
@@ -205,7 +205,7 @@ box-shadow:0 0 8px #00ffff;
 <audio id="wrongSound" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"></audio>
 
 <script>
-
+let bgMusic = document.getElementById("bgMusic");
 let WEB_APP_URL="https://script.google.com/macros/s/AKfycbx0iS5gOubgLfnn6PW8L876u8H6GuZUabl-Gccgj2TivLPcTvqXSSqNivg_wTxhBx6P/exec";
 
 let tables=[1,2,3,4,5,10];
@@ -278,6 +278,9 @@ function choose(i){
 }
 
 function startGame(){
+ bgMusic.volume = 0.3;   // 30% voimakkuus
+ bgMusic.currentTime = 0;
+ bgMusic.play().catch(()=>{});
  let name=document.getElementById("name").value.trim();
  if(!name){ alert("Kirjoita nimi 🙂"); return; }
 
@@ -307,6 +310,7 @@ function endGame(){
  clearInterval(timerInterval);
  document.getElementById("question").innerText="🏁 PELI OHI!";
  loadScores();
+ bgMusic.pause();
 }
 
 function loadScores(){
@@ -337,5 +341,6 @@ loadScores();
 
 </body>
 </html>
+
 
 
