@@ -15,16 +15,18 @@ body {
 
 h1 {
     text-align: center;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 /* ===== GRID LAYOUT ===== */
 
 .container {
     display: grid;
-    grid-template-columns: 240px 1fr 300px;
-    gap: 30px;
-    padding: 20px 40px;
+    grid-template-columns: 200px minmax(400px, 1fr) 240px;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
 /* ===== LEFT PANEL ===== */
@@ -39,7 +41,11 @@ h1 {
 .settings {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+}
+
+.settings label {
+    margin-top: 10px;
 }
 
 /* ===== CENTER GAME ===== */
@@ -48,6 +54,8 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    margin-top: 0;
 }
 
 .scoreboard {
@@ -67,7 +75,7 @@ h1 {
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
     border-radius: 25px;
     padding: 40px;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 #statusMessage {
@@ -139,37 +147,31 @@ box-shadow:0 0 10px #00ffff;
 <div class="container">
 
     <!-- LEFT -->
-    <div class="leftPanel">
-        <div class="settings">
+ <div class="leftPanel">
 
-            <div>
-                Taso:<br>
-                <select id="levelSelect">
-                    <option value="1">🟢 Helppo</option>
-                    <option value="2">🔵 Normaali</option>
-                    <option value="3">🔴 Super</option>
-                </select>
-            </div>
+    <div class="settings">
+        <label>Taso:</label>
+        <select id="levelSelect">
+            <option value="1">🟢 Helppo</option>
+            <option value="2">🔵 Normaali</option>
+            <option value="3">🔴 Super</option>
+        </select>
 
-            <div>
-                Teema:<br>
-                <select id="themeSelect">
-                    <option value="panda">🐼 Panda</option>
-                    <option value="frog">🐸 Sammakko</option>
-                    <option value="space">🚀 Avaruus</option>
-                    <option value="ice">🧊 Jää</option>
-                </select>
-            </div>
+        <label>Teema:</label>
+        <select id="themeSelect">
+            <option value="panda">🐼 Panda</option>
+            <option value="frog">🐸 Sammakko</option>
+            <option value="space">🚀 Avaruus</option>
+            <option value="ice">🧊 Jää</option>
+        </select>
 
-            <div>
-                Nimi:<br>
-                <input id="name">
-            </div>
+        <label>Nimi:</label>
+        <input id="name">
 
-            <button onclick="startGame()">Aloita</button>
-
-        </div>
+        <button onclick="startGame()">Aloita</button>
     </div>
+
+</div>
 
     <!-- CENTER -->
     <div class="centerGame">
@@ -286,3 +288,4 @@ changeTheme();
 
 </body>
 </html>
+
