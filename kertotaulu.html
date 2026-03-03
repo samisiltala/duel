@@ -240,6 +240,7 @@ let tables=[1,2,3,4,5,10];
 let level=1;
 let a,b,correctAnswer;
 let score=0,lives=3,timeLeft=60;
+let streak = 0;
 let timerInterval;
 
 function toggleMusic() {
@@ -304,14 +305,26 @@ function choose(i){
  let value=Number(btn.dataset.value);
 
  if(value===correctAnswer){
-  btn.classList.add("correct");
-  play("correctSound");
-  score++;
- } else {
-  btn.classList.add("wrong");
-  play("wrongSound");
-  lives--;
- }
+
+    btn.classList.add("correct");
+    play("correctSound");
+    score++;
+    streak++;
+
+    showPlusOne();
+
+    if(streak === 3){
+        showStreak();
+    }
+
+} else {
+
+    btn.classList.add("wrong");
+    play("wrongSound");
+    lives--;
+    streak = 0;
+
+}
 
  document.getElementById("score").innerText="Pisteet: "+score;
  document.getElementById("lives").innerText="❤️".repeat(lives);
@@ -350,6 +363,48 @@ if (musicOn) {
 
  newQuestion();
 }
+function showStreak(){
+    let el = document.createElement("div");
+    el.innerText = "🔥 STREAK!";
+    el.style.position = "absolute";
+    el.style.top = "30%";
+    el.style.left = "50%";
+    el.style.transform = "translateX(-50%)";
+    el.style.fontSize = "40px";
+    el.style.color = "#ff00ff";
+    el.style.textShadow = "0 0 15px #ff00ff";
+    el.style.zIndex = "999";
+    document.body.appendChild(el);
+
+    setTimeout(()=>{
+        el.remove();
+    },1000);
+}
+
+function showPlusOne(){
+    let el = document.createElement("div");
+    el.innerText = "+1";
+    el.style.position = "absolute";
+    el.style.top = "45%";
+    el.style.left = "50%";
+    el.style.transform = "translateX(-50%)";
+    el.style.fontSize = "30px";
+    el.style.color = "#00ff00";
+    el.style.fontWeight = "bold";
+    el.style.zIndex = "999";
+    el.style.transition = "all 0.8s ease-out";
+
+    document.body.appendChild(el);
+
+    setTimeout(()=>{
+        el.style.top = "35%";
+        el.style.opacity = "0";
+    },50);
+
+    setTimeout(()=>{
+        el.remove();
+    },800);
+}
 
 function endGame(){
  clearInterval(timerInterval);
@@ -386,6 +441,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
