@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>2B:n Kertotaulukisa</title>
+
+<style>
+
+body {
+    font-family: Arial;
+    background: linear-gradient(to bottom,#87CEEB,#ffffff);
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 20px;
+}
+
+.left {
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right {
+    width: 320px;
+    background: rgba(255,255,255,0.8);
+    padding: 20px;
+    border-radius: 20px;
+    height: fit-content;
+}
+
+.scoreboard {
+    display: flex;
+    gap: 50px;
+    font-size: 36px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+#lives {
+    font-size: 28px;
+}
+
+#question {
+    font-size: 60px;
+    margin: 25px;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    width: 300px;
+    text-align: center;
+}
+
+#statusMessage {
+    font-size: 26px;
+    font-weight: bold;
+    min-height: 40px;
+    margin-bottom: 10px;
+}
+
+#mascot {
+    transition: transform 0.3s;
+}
+
+.happy {
+    transform: scale(1.4) rotate(10deg);
+}
+
+.sad {
+    transform: scale(0.8) rotate(-10deg);
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+button {
+    font-size: 24px;
+    padding: 12px 20px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    background-color: #ffcc00;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.correct { background-color: #4CAF50 !important; }
+.wrong { background-color: #f44336 !important; }
+
+/* ============================= */
+/* 📱 PUHELINNÄKYMÄ (RESPONSIVE) */
+/* ============================= */
+
+@media (max-width: 800px) {
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .left, .right {
+        width: 95%;
+    }
+
+    .scoreboard {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 28px;
+        align-items: center;
+    }
+
+    #question {
+        width: 90%;
+        font-size: 42px;
+        padding: 20px;
+    }
+
+    button {
+        width: 100%;
+        font-size: 24px;
+        padding: 16px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>⭐ 2B:n kertotaulukisa ⭐</h1>
+
+<div class="container">
+
+<div class="left">
+
+<div>
+Taso:
+<select id="levelSelect">
+  <option value="1">🟢 Helppo</option>
+  <option value="2">🔵 Normaali</option>
+  <option value="3">🔴 Super</option>
+</select>
+
+Teema:
+<select id="themeSelect">
+  <option value="panda">🐼 Panda</option>
+  <option value="frog">🐸 Sammakko</option>
+  <option value="space">🚀 Avaruus</option>
+  <option value="ice">🧊 Jää</option>
+</select>
+
+&nbsp;&nbsp;&nbsp;
+
+Nimi:
+<input id="name">
+<button onclick="startGame()">Aloita</button>
+</div>
+
+<div id="mascot" style="font-size:70px; margin-bottom:10px;">🐼</div>
+
+<div class="scoreboard">
+  <div id="timer">Aika: 60</div>
+  <div id="score">Pisteet: 0</div>
+</div>
+
+<div id="lives">❤️❤️❤️</div>
+
+<div id="question"></div>
+<div id="statusMessage"></div>
+
+<div class="buttonContainer">
+<button id="btn0" onclick="choose(0)"></button>
+<button id="btn1" onclick="choose(1)"></button>
+<button id="btn2" onclick="choose(2)"></button>
+</div>
+
+</div>
+
+<div class="right">
+<h2>🏆 TOP-3</h2>
+<div id="top3"></div>
+
+<h3>📊 TOP-10</h3>
+<div id="leaderboard"></div>
+</div>
+
+</div>
+
+<audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="wrongSound" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"></audio>
+
+<script>
+
+let WEB_APP_URL="https://script.google.com/macros/s/AKfycbx0iS5gOubgLfnn6PW8L876u8H6GuZUabl-Gccgj2TivLPcTvqXSSqNivg_wTxhBx6P/exec";
+
+let level = 1;
+let tables = [1,2,3,4,5,10];
+
+let a,b,correctAnswer;
+let score,lives,timeLeft;
+let timerInterval;
+let previousBest = 0;
+let streak = 0;
+
+function play(id){
+ let s=document.getElementById(id);
+ if(!s) return;
+ s.currentTime=0;
+ s.play();
+}
+
+function changeTheme(){
+ let theme=document.getElementById("themeSelect").value;
+ let body=document.body;
+ let mascot=document.getElementById("mascot");
+
+ if(theme==="panda"){
+   body.style.background="linear-gradient(to bottom,#87CEEB,#ffffff)";
+   body.style.color="black";
+   mascot.innerText="🐼";
+   document.getElementById("question").style.background="white";
+   document.getElementById("question").style.color="black";
+ }
+
+ if(theme==="frog"){
+   body.style.background="linear-gradient(to bottom,#6ecf68,#ffffff)";
+   body.style.color="black";
+   mascot.innerText="🐸";
+   document.getElementById("question").style.background="white";
+   document.getElementById("question").style.color="black";
+ }
+
+if(theme==="space"){
+   body.style.background="linear-gradient(to bottom,#000022,#222244)";
+   body.style.color="white";
+   mascot.innerText="🚀";
+
+   document.getElementById("question").style.background="#111133";
+   document.getElementById("question").style.color="white";
+}
+
+ if(theme==="ice"){
+   body.style.background="linear-gradient(to bottom,#aeefff,#ffffff)";
+   body.style.color="black";
+   mascot.innerText="🧊";
+   document.getElementById("question").style.background="white";
+   document.getElementById("question").style.color="black";
+ }
+}
+
+function updateLives(){
+ document.getElementById("lives").innerText="❤️".repeat(lives);
+}
+
+function newQuestion(){
+ a=tables[Math.floor(Math.random()*tables.length)];
+ b=Math.floor(Math.random()*10)+1;
+ correctAnswer=a*b;
+
+ document.getElementById("question").innerText=a+" × "+b;
+
+ let answers=[correctAnswer];
+ while(answers.length<3){
+   let wrong=correctAnswer+Math.floor(Math.random()*10)-5;
+   if(wrong>0 && !answers.includes(wrong)) answers.push(wrong);
+ }
+ answers.sort(()=>Math.random()-0.5);
+
+ for(let i=0;i<3;i++){
+   let btn=document.getElementById("btn"+i);
+   btn.className="";
+   btn.innerText=answers[i];
+   btn.dataset.value=answers[i];
+ }
+}
+
+function showPlusOne(){
+ let el=document.createElement("div");
+ el.innerText="+1";
+ el.style.position="absolute";
+ el.style.left="50%";
+ el.style.top="40%";
+ el.style.fontSize="28px";
+ el.style.color="green";
+ el.style.fontWeight="bold";
+ document.body.appendChild(el);
+ setTimeout(()=>el.remove(),400);
+}
+
+function checkStreak(){
+ if(streak===5){
+   document.getElementById("statusMessage").innerText="⚡ SUPERPUTKI!";
+   setTimeout(()=>document.getElementById("statusMessage").innerText="",1000);
+ }
+}
+
+function choose(index){
+ if(timeLeft<=0 || lives<=0) return;
+
+ let btn=document.getElementById("btn"+index);
+ let value=Number(btn.dataset.value);
+
+ if(value===correctAnswer){
+   btn.classList.add("correct");
+   play("correctSound");
+   score++;
+   streak++;
+   showPlusOne();
+   checkStreak();
+   document.getElementById("mascot").className="happy";
+ } else {
+   btn.classList.add("wrong");
+   play("wrongSound");
+   lives--;
+   streak=0;
+   updateLives();
+   document.getElementById("mascot").className="sad";
+ }
+
+ document.getElementById("score").innerText="Pisteet: "+score;
+
+ setTimeout(()=>{
+   document.getElementById("mascot").className="";
+ },300);
+
+ if(lives<=0) endGame();
+ else setTimeout(newQuestion,300);
+}
+
+function startGame(){
+ let name=document.getElementById("name").value.trim();
+ if(!name){alert("Kirjoita nimi 🙂");return;}
+
+ document.getElementById("statusMessage").innerText="";
+ document.getElementById("question").innerText="";
+
+ level=document.getElementById("levelSelect").value;
+
+ if(level==1) tables=[1,2,5,10];
+ if(level==2) tables=[1,2,3,4,5,10];
+ if(level==3) tables=[1,2,3,4,5,6,7,8,9,10];
+
+ score=0; lives=3; timeLeft=60; streak=0;
+
+ document.getElementById("score").innerText="Pisteet: 0";
+ document.getElementById("timer").innerText="Aika: 60";
+ updateLives();
+
+ fetch(WEB_APP_URL + "?level=" + level)
+ .then(r=>r.json())
+ .then(data=>{
+   let found=data.find(r=>r[0]===name);
+   previousBest = found ? found[1] : 0;
+ });
+
+ clearInterval(timerInterval);
+
+ timerInterval=setInterval(()=>{
+   timeLeft--;
+   document.getElementById("timer").innerText="Aika: "+timeLeft;
+   if(timeLeft<=0) endGame();
+ },1000);
+
+ newQuestion();
+}
+
+function endGame(){
+ clearInterval(timerInterval);
+ document.getElementById("question").innerText="🏁 PELI OHI!";
+ let name=document.getElementById("name").value.trim();
+ sendScore(name,score);
+ setTimeout(()=>checkResults(name),800);
+}
+
+function sendScore(name,score){
+ fetch(WEB_APP_URL,{
+   method:"POST",
+   body:JSON.stringify({name:name,score:score,level:level})
+ });
+}
+
+function checkResults(name){
+ fetch(WEB_APP_URL + "?level=" + level)
+ .then(r=>r.json())
+ .then(data=>{
+   let sorted=data.sort((a,b)=>b[1]-a[1]);
+   let position=sorted.findIndex(r=>r[0]===name)+1;
+
+   let text="";
+
+   if(score>previousBest){
+     text+="🔥 Oma uusi ennätys! ";
+   }
+
+   if(position===1){
+     text+="🏆 LUOKAN MESTARI!";
+     document.body.style.background="gold";
+     setTimeout(changeTheme,500);
+   }
+
+   document.getElementById("statusMessage").innerText=text;
+   loadScores();
+ });
+}
+
+function loadScores(){
+ fetch(WEB_APP_URL + "?level=" + level)
+ .then(r=>r.json())
+ .then(data=>{
+   let sorted=data.sort((a,b)=>b[1]-a[1]);
+
+   let medals=["🥇","🥈","🥉"];
+   let top3="";
+   for(let i=0;i<3 && i<sorted.length;i++){
+     top3+=medals[i]+" "+sorted[i][0]+" ("+sorted[i][1]+")<br>";
+   }
+   document.getElementById("top3").innerHTML=top3;
+
+   let html=sorted.map((row,i)=> (i+1)+". "+row[0]+": "+row[1]).join("<br>");
+   document.getElementById("leaderboard").innerHTML=html;
+ });
+}
+
+document.getElementById("levelSelect").addEventListener("change",function(){
+ level=this.value;
+ loadScores();
+});
+
+document.getElementById("themeSelect").addEventListener("change",changeTheme);
+
+loadScores();
+
+</script>
+</body>
+</html>
