@@ -54,13 +54,10 @@ h1 {
 }
 
 #question {
-    font-size: 60px;
-    margin: 25px;
-    padding: 30px;
-    background: white;
-    border-radius: 20px;
-    width: 300px;
-    text-align: center;
+    background: rgba(0, 255, 255, 0.08);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+    border-radius: 25px;
+    padding: 40px;
 }
 
 #statusMessage {
@@ -96,10 +93,15 @@ button {
     border: none;
     cursor: pointer;
     background-color: #ffcc00;
+    background: #ffd700;
+    box-shadow: 0 0 15px #ffd700;
+    transition: 0.2s;
 }
 
 button:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 30px #ffd700;
+    transform: scale(1.08);
 }
 
 .correct { background-color: #4CAF50 !important; }
@@ -469,6 +471,7 @@ loadScores();
 </body>
 
 </html>
+
 
 
 
