@@ -20,10 +20,25 @@ h1 {
 }
 
 .container {
+    display: grid;
+    grid-template-columns: 300px 1fr 350px;
+    gap: 40px;
+    padding: 20px 40px;
+    height: calc(100vh - 120px);
+}
+
+.leftPanel {
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 20px;
+}
+
+.centerGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 60px;
-    margin-top: 20px;
 }
 
 .left {
@@ -52,6 +67,7 @@ h1 {
 }
 
 #question {
+    font-size: clamp(60px, 8vw, 140px);
     background: rgba(0, 255, 255, 0.08);
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
     border-radius: 25px;
@@ -135,8 +151,8 @@ button:hover {
     }
 
     button {
-        width: 100%;
-        font-size: 24px;
+        width: 200px;
+        font-size: 40px;
         padding: 16px;
     }
 
@@ -169,7 +185,7 @@ box-shadow:0 0 10px #00ffff;
 
 <div class="container">
 
-<div class="left">
+<div class="leftPanel">
 
 <div>
 Taso:
@@ -194,6 +210,7 @@ Nimi:
 <button onclick="startGame()">Aloita</button>
 </div>
 
+<div class="centerGame">
 <div id="mascot" style="font-size:70px; margin-bottom:10px;">🐼</div>
 
 <div class="scoreboard">
@@ -210,6 +227,7 @@ Nimi:
 <button id="btn0" onclick="choose(0)"></button>
 <button id="btn1" onclick="choose(1)"></button>
 <button id="btn2" onclick="choose(2)"></button>
+</div>
 </div>
 
     
@@ -473,6 +491,7 @@ loadScores();
 </body>
 
 </html>
+
 
 
 
