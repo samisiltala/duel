@@ -159,6 +159,8 @@ z-index:998;
 <audio id="scoreSoundA" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
 <audio id="scoreSoundB" src="https://actions.google.com/sounds/v1/cartoon/metal_thud_and_clank.ogg"></audio>
 <audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg"></audio>
+<audio id="scoreSoundA" src="miekka1.wav"></audio>
+<audio id="scoreSoundB" src="miekka2.wav"></audio>
 
 <script>
 
@@ -290,6 +292,12 @@ function choose(player,value){
 
  if(value===correctAnswer){
 
+    if(player==="A"){
+    play("scoreSoundA");
+}
+else{
+    play("scoreSoundB");
+}
    if(player==="A"){
      scoreA++;
      if(scoreB>0) scoreB--;
@@ -353,6 +361,7 @@ winFanfare();
 
 </body>
 </html>
+
 
 
 
