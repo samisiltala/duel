@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kertotaulu DUEL</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    overflow: hidden;
+    background: #111;
+    color: white;
+}
+
+.arena {
+    display: flex;
+    height: 100vh;
+}
+
+.player {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.leftPlayer {
+    background: #1e3a8a;
+}
+
+.rightPlayer {
+    background: #7f1d1d;
+}
+
+.score {
+    font-size: 60px;
+    margin-bottom: 30px;
+}
+
+.centerQuestion {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 90px;
+    font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+button {
+    font-size: 50px;
+    padding: 30px 50px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.leftPlayer button {
+    background: #60a5fa;
+}
+
+.rightPlayer button {
+    background: #f87171;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+</style>
+</head>
+
+<body>
+
+<div class="centerQuestion" id="question"></div>
+
+<div id="overlay" style="
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:black;
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+font-size:70px;
+font-weight:bold;
+z-index:999;
+">
+
+<button onclick="startCountdown()" style="
+font-size:40px;
+padding:20px 50px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+">
+🎮 ALOITA PELI
+</button>
+
+</div>
+
+<div id="flash" style="
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+opacity:0;
+pointer-events:none;
+z-index:998;
+"></div>
+
+<div class="arena">
+
+    <div class="player leftPlayer">
+        <div class="score" id="scoreA">0</div>
+        <div class="buttons" id="buttonsA"></div>
+    </div>
+
+    <div class="player rightPlayer">
+        <div class="score" id="scoreB">0</div>
+        <div class="buttons" id="buttonsB"></div>
+    </div>
+
+</div>
+
+<audio id="startSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="scoreSoundA" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="scoreSoundB" src="https://actions.google.com/sounds/v1/cartoon/metal_thud_and_clank.ogg"></audio>
+<audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg"></audio>
+
+<script>
+
+let audioCtx = null;
+
+function initAudio(){
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function tone(freq, duration=0.15){
+  initAudio();
+  let osc = audioCtx.createOscillator();
+  let gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.value = freq;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+function winFanfare(){
+  tone(600,0.15);
+  setTimeout(()=>tone(800,0.15),150);
+  setTimeout(()=>tone(1000,0.25),300);
+}
+
+let tables = [1,2,3,4,5,6,7,8,9,10];
+
+let a,b,correctAnswer;
+let scoreA = 0;
+let scoreB = 0;
+let target = 10;
+let gameActive = false;
+
+function play(id){
+  let s = document.getElementById(id);
+  if(!s) return;
+
+  s.pause();
+  s.currentTime = 0;
+  s.play().catch(()=>{});
+}
+
+function startCountdown(){
+  initAudio();   // tärkeä!
+
+  console.log("Countdown started");
+  let overlay=document.getElementById("overlay");
+  let count=3;
+
+  overlay.innerHTML=count;
+
+  let interval=setInterval(()=>{
+    count--;
+
+    if(count>0){
+      overlay.innerHTML=count;
+    }
+    else if(count===0){
+      overlay.innerHTML="GO!";
+      tone(800,0.2);  // starttiääni
+    }
+    else{
+      clearInterval(interval);
+      overlay.style.display="none";
+      gameActive=true;
+      newQuestion();
+    }
+  },1000);
+}
+
+function newQuestion(){
+ if(!gameActive) return;
+
+ a = tables[Math.floor(Math.random()*tables.length)];
+ b = Math.floor(Math.random()*10)+1;
+ correctAnswer = a*b;
+
+ document.getElementById("question").innerText = a + " × " + b;
+
+ let answers=[correctAnswer];
+
+ while(answers.length<3){
+   let wrong=correctAnswer+Math.floor(Math.random()*10)-5;
+   if(wrong>0 && !answers.includes(wrong)){
+     answers.push(wrong);
+   }
+ }
+
+ answers.sort(()=>Math.random()-0.5);
+
+ createButtons("buttonsA",answers,"A");
+ createButtons("buttonsB",answers,"B");
+}
+
+function createButtons(containerId,answers,player){
+ let container=document.getElementById(containerId);
+ container.innerHTML="";
+
+ answers.forEach(answer=>{
+   let btn=document.createElement("button");
+   btn.innerText=answer;
+   btn.onclick=()=>choose(player,answer);
+   container.appendChild(btn);
+ });
+}
+
+function flash(color){
+ let flash=document.getElementById("flash");
+ flash.style.background=color;
+ flash.style.opacity="0.6";
+
+ setTimeout(()=>{
+   flash.style.opacity="0";
+ },150);
+}
+
+function choose(player,value){
+ if(!gameActive) return;
+
+ if(value===correctAnswer){
+
+   if(player==="A"){
+     scoreA++;
+     if(scoreB>0) scoreB--;
+     flash("#2563eb");
+     tone(900);
+   } else {
+     scoreB++;
+     if(scoreA>0) scoreA--;
+     flash("#dc2626");
+     tone(400);
+   }
+
+ } else {
+
+   if(player==="A"){
+     if(scoreA>0) scoreA--;
+     flash("#1e293b");
+   } else {
+     if(scoreB>0) scoreB--;
+     flash("#1e293b");
+   }
+
+ }
+
+ updateScores();
+
+ if(scoreA===target){
+   endGame("A");
+   return;
+ }
+
+ if(scoreB===target){
+   endGame("B");
+   return;
+ }
+
+ newQuestion();
+}
+
+function updateScores(){
+ document.getElementById("scoreA").innerText=scoreA;
+ document.getElementById("scoreB").innerText=scoreB;
+}
+
+function endGame(winner){
+ gameActive=false;
+
+ let overlay=document.getElementById("overlay");
+ overlay.style.display="flex";
+ overlay.style.background= winner==="A" ? "#1e3a8a" : "#7f1d1d";
+ overlay.innerHTML="🏆 PELI OHI<br>Pelaaja "+winner+" voitti!";
+
+winFanfare();
+
+ setTimeout(()=>{
+   location.reload();
+ },4000);
+}
+
+</script>
+
+</body>
+</html>
