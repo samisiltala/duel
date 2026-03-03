@@ -155,46 +155,13 @@ z-index:998;
 
 </div>
 
-<audio id="startSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-<audio id="scoreSoundA" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-<audio id="scoreSoundB" src="https://actions.google.com/sounds/v1/cartoon/metal_thud_and_clank.ogg"></audio>
 <audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg"></audio>
 <audio id="scoreSoundA" src="miekka1.wav"></audio>
 <audio id="scoreSoundB" src="miekka2.wav"></audio>
 
 <script>
 
-let audioCtx = null;
 
-function initAudio(){
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-}
-
-function tone(freq, duration=0.15){
-  initAudio();
-  let osc = audioCtx.createOscillator();
-  let gain = audioCtx.createGain();
-
-  osc.type = "sine";
-  osc.frequency.value = freq;
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + duration);
-}
-
-function winFanfare(){
-  tone(600,0.15);
-  setTimeout(()=>tone(800,0.15),150);
-  setTimeout(()=>tone(1000,0.25),300);
-}
 
 let tables = [1,2,3,4,5,6,7,8,9,10];
 
@@ -230,7 +197,7 @@ function startCountdown(){
     }
     else if(count===0){
       overlay.innerHTML="GO!";
-      tone(800,0.2);  // starttiääni
+      
     }
     else{
       clearInterval(interval);
@@ -292,22 +259,17 @@ function choose(player,value){
 
  if(value===correctAnswer){
 
-    if(player==="A"){
-    play("scoreSoundA");
-}
-else{
-    play("scoreSoundB");
-}
    if(player==="A"){
      scoreA++;
      if(scoreB>0) scoreB--;
      flash("#2563eb");
-     tone(900);
-   } else {
+     play("scoreSoundA");
+   }
+   else {
      scoreB++;
      if(scoreA>0) scoreA--;
      flash("#dc2626");
-     tone(400);
+     play("scoreSoundB");
    }
 
  } else {
@@ -350,7 +312,7 @@ function endGame(winner){
  overlay.style.background= winner==="A" ? "#1e3a8a" : "#7f1d1d";
  overlay.innerHTML="🏆 PELI OHI<br>Pelaaja "+winner+" voitti!";
 
-winFanfare();
+play("winSound");
 
  setTimeout(()=>{
    location.reload();
@@ -361,6 +323,7 @@ winFanfare();
 
 </body>
 </html>
+
 
 
 
