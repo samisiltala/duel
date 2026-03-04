@@ -445,9 +445,13 @@ function endGame(){
 
   if(score > previousBest){
       previousBest = score;
+
       document.getElementById("personalBest").innerText =
       "🔥 Oma ennätys: " + score + " (UUSI!)";
-      showNewRecord();
+
+      setTimeout(()=>{
+          showNewRecord();
+      },1000);
   }
 
   setTimeout(()=>{
@@ -518,6 +522,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
