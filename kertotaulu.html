@@ -425,7 +425,7 @@ function endGame(){
 
   setTimeout(()=>{
       loadScores();
-  },600);
+  },1200);
 
   bgMusic.pause();
 
@@ -476,17 +476,22 @@ function sendScore(name, score){
  });
 }
 document.getElementById("themeSelect").addEventListener("change",changeTheme);
-document.getElementById("levelSelect").addEventListener("change",loadScores);
+document.getElementById("levelSelect").addEventListener("change", function(){
+    level = Number(document.getElementById("levelSelect").value);
+    loadScores();
+});
 
 
     
 changeTheme();
+level = Number(document.getElementById("levelSelect").value);
 loadScores();
 
 </script>
 
 </body>
 </html>
+
 
 
 
