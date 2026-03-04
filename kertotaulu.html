@@ -244,6 +244,7 @@ box-shadow:0 0 8px #00ffff;
 <button id="btn0" onclick="choose(0)"></button>
 <button id="btn1" onclick="choose(1)"></button>
 <button id="btn2" onclick="choose(2)"></button>
+<button id="btn3" onclick="choose(3)"></button>
 </div>
 
 </div>
@@ -320,7 +321,7 @@ function newQuestion(){
  document.getElementById("question").innerText=a+" × "+b;
 
  let answers=[correctAnswer];
- while(answers.length<3){
+ while(answers.length<4){
   let wrong=correctAnswer+Math.floor(Math.random()*10)-5;
   if(wrong>0 && !answers.includes(wrong)) answers.push(wrong);
  }
@@ -598,6 +599,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
