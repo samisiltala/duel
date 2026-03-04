@@ -138,6 +138,40 @@ button:hover {
     text-shadow: 0 0 10px #00ffff;
 }
 
+@media (max-width: 800px) {
+
+.container{
+    grid-template-columns: 1fr;
+}
+
+.leftPanel{
+    order:1;
+}
+
+.centerGame{
+    order:2;
+}
+
+.right{
+    order:3;
+}
+
+#question{
+    font-size: clamp(40px, 10vw, 70px);
+    padding:20px;
+}
+
+.buttonContainer button{
+    font-size:28px;
+    padding:16px;
+}
+
+.scoreboard{
+    font-size:24px;
+}
+
+}
+
 </style>
 </head>
 
@@ -567,6 +601,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
