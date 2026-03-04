@@ -407,6 +407,41 @@ function showNewRecord(){
     },1500);
 }
 
+function starRain(){
+
+    for(let i=0;i<30;i++){
+
+        let star = document.createElement("div");
+
+        star.innerText = "⭐";
+
+        star.style.position = "fixed";
+        star.style.left = Math.random()*100 + "vw";
+        star.style.top = "-20px";
+
+        star.style.fontSize = (20 + Math.random()*30) + "px";
+
+        star.style.pointerEvents = "none";
+        star.style.zIndex = "999";
+
+        document.body.appendChild(star);
+
+        let fall = 2 + Math.random()*2;
+
+        star.animate([
+            { transform: "translateY(0)", opacity:1 },
+            { transform: "translateY(100vh)", opacity:0 }
+        ],{
+            duration: fall*1000,
+            easing: "linear"
+        });
+
+        setTimeout(()=>{
+            star.remove();
+        }, fall*1000);
+    }
+}
+
 function showPlusOne(){
     let el = document.createElement("div");
     el.innerText = "+1";
@@ -451,6 +486,7 @@ function endGame(){
 
       setTimeout(()=>{
           showNewRecord();
+          starRain();
       },1000);
   }
 
@@ -522,6 +558,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
