@@ -393,7 +393,7 @@ function showNewRecord(){
     el.innerText = "🔥 UUSI ENNÄTYS!";
 
     el.style.position = "fixed";
-    el.style.top = "90px";
+    el.style.top = "60px";
     el.style.right = "20px";
 
     el.style.fontSize = "26px";
@@ -516,13 +516,15 @@ function loadScores(){
        "🏆 Luokan ennätys: " + sorted[0][0] + " (" + sorted[0][1] + ")";
    }
 
-   // OMA ENNÄTYS
-   let name=document.getElementById("name").value.trim();
-   let found=sorted.find(r=>r[0]===name);
-   previousBest = found ? found[1] : 0;
+ // OMA ENNÄTYS
+let name=document.getElementById("name").value.trim();
+let found=sorted.find(r=>r[0]===name);
 
-   document.getElementById("personalBest").innerText =
-   "🔥 Oma ennätys: " + previousBest;
+if(found){
+    previousBest = found[1];
+    document.getElementById("personalBest").innerText =
+    "🔥 Oma ennätys: " + previousBest;
+}
 
    // TOP-3
    let medals=["🥇","🥈","🥉"];
@@ -547,6 +549,7 @@ function sendScore(name, score){
 document.getElementById("themeSelect").addEventListener("change",changeTheme);
 document.getElementById("levelSelect").addEventListener("change", function(){
     level = Number(document.getElementById("levelSelect").value);
+    previousBest = 0;
     loadScores();
 });
 
@@ -560,6 +563,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
