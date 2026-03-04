@@ -123,8 +123,20 @@ button:hover {
     margin-top: 10px;
     font-size: 18px;
 }
-.correct { background: #4CAF50 !important; }
-.wrong { background: #f44336 !important; }
+.correct {
+    background:#4CAF50 !important;
+    animation:correctPop 0.25s;
+}
+
+.wrong {
+    background:#f44336 !important;
+}
+
+@keyframes correctPop{
+    0%{ transform:scale(1); }
+    50%{ transform:scale(1.2); }
+    100%{ transform:scale(1); }
+}
 
 /* ===== RIGHT ===== */
 
@@ -361,6 +373,14 @@ function choose(i){
     play("wrongSound");
     lives--;
     streak = 0;
+
+    // näytetään oikea vastaus
+    for(let i=0;i<4;i++){
+        let b=document.getElementById("btn"+i);
+        if(Number(b.dataset.value)===correctAnswer){
+            b.classList.add("correct");
+        }
+    }
 
 }
 
@@ -599,6 +619,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
