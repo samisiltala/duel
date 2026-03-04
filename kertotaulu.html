@@ -421,7 +421,13 @@ function endGame(){
 
   let name=document.getElementById("name").value.trim();
 
-  sendScore(name, score);   // 🔥 TÄMÄ PUUTTUI
+  sendScore(name, score);
+
+  if(score > previousBest){
+      previousBest = score;
+      document.getElementById("personalBest").innerText =
+      "🔥 Oma ennätys: " + score + " (UUSI!)";
+  }
 
   setTimeout(()=>{
       loadScores();
@@ -491,6 +497,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
