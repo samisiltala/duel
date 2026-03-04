@@ -348,7 +348,7 @@ if (musicOn) {
  let name=document.getElementById("name").value.trim();
  if(!name){ alert("Kirjoita nimi 🙂"); return; }
 
- level=document.getElementById("levelSelect").value;
+level = Number(document.getElementById("levelSelect").value);
  if(level==1) tables=[1,2,5,10];
  if(level==2) tables=[1,2,3,4,5,10];
  if(level==3) tables=[1,2,3,4,5,6,7,8,9,10];
@@ -419,12 +419,14 @@ function endGame(){
 
   document.getElementById("question").innerText="🏁 PELI OHI!";
 
-  if(score > previousBest){
-      document.getElementById("personalBest").innerText =
-      "🔥 Oma ennätys: " + score + " (UUSI!)";
-  }
+  let name=document.getElementById("name").value.trim();
 
-  loadScores();
+  sendScore(name, score);   // 🔥 TÄMÄ PUUTTUI
+
+  setTimeout(()=>{
+      loadScores();
+  },600);
+
   bgMusic.pause();
 
   document.body.style.background = "gold";
@@ -466,7 +468,13 @@ function loadScores(){
 
  });
 }
-
+    
+function sendScore(name, score){
+ fetch(WEB_APP_URL,{
+   method:"POST",
+   body:JSON.stringify({name:name,score:score,level:level})
+ });
+}
 document.getElementById("themeSelect").addEventListener("change",changeTheme);
 document.getElementById("levelSelect").addEventListener("change",loadScores);
 
@@ -479,6 +487,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
