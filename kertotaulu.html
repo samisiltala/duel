@@ -413,13 +413,22 @@ function showPlusOne(){
 }
 
 function endGame(){
+
   play("winSound");
-document.body.style.background = "gold";
-setTimeout(changeTheme, 500);
- clearInterval(timerInterval);
- document.getElementById("question").innerText="🏁 PELI OHI!";
- loadScores();
- bgMusic.pause();
+  clearInterval(timerInterval);
+
+  document.getElementById("question").innerText="🏁 PELI OHI!";
+
+  if(score > previousBest){
+      document.getElementById("personalBest").innerText =
+      "🔥 Oma ennätys: " + score + " (UUSI!)";
+  }
+
+  loadScores();
+  bgMusic.pause();
+
+  document.body.style.background = "gold";
+  setTimeout(changeTheme, 500);
 }
 
 function loadScores(){
@@ -427,13 +436,7 @@ function loadScores(){
  fetch(WEB_APP_URL + "?level=" + level)
  .then(r=>r.json())
  .then(data=>{
-   let name=document.getElementById("name").value.trim();
-   let found=data.find(r=>r[0]===name);
-   previousBest = found ? found[1] : 0;
 
-   document.getElementById("personalBest").innerText =
-   "🔥 Oma ennätys: " + previousBest;
-});
    let sorted=data.sort((a,b)=>b[1]-a[1]);
 
    // LUOKAN ENNÄTYS
@@ -441,6 +444,14 @@ function loadScores(){
        document.getElementById("classBest").innerText =
        "🏆 Luokan ennätys: " + sorted[0][0] + " (" + sorted[0][1] + ")";
    }
+
+   // OMA ENNÄTYS
+   let name=document.getElementById("name").value.trim();
+   let found=sorted.find(r=>r[0]===name);
+   previousBest = found ? found[1] : 0;
+
+   document.getElementById("personalBest").innerText =
+   "🔥 Oma ennätys: " + previousBest;
 
    // TOP-3
    let medals=["🥇","🥈","🥉"];
@@ -459,10 +470,7 @@ function loadScores(){
 document.getElementById("themeSelect").addEventListener("change",changeTheme);
 document.getElementById("levelSelect").addEventListener("change",loadScores);
 
-if(score > previousBest){
-    document.getElementById("personalBest").innerText =
-    "🔥 Oma ennätys: " + score + " (UUSI!)";
-}
+
     
 changeTheme();
 loadScores();
@@ -471,6 +479,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
