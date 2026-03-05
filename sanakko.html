@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Oppiluola</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+
+<style>
+
+body{
+margin:0;
+font-family:'Orbitron', sans-serif;
+color:white;
+text-align:center;
+height:100vh;
+
+background-image:url("luola2.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+/* OTSIKKO */
+
+h1{
+font-size:60px;
+text-shadow:0 0 25px #00ffff;
+margin-bottom:60px;
+}
+
+/* PELINAPIT */
+
+.rooms{
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.room{
+
+width:220px;
+height:110px;
+
+background:rgba(0,0,0,0.6);
+
+border-radius:18px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:22px;
+
+color:white;
+text-decoration:none;
+
+box-shadow:0 0 20px #00ffff;
+
+transition:0.25s;
+
+padding:10px;
+}
+
+.room:hover{
+transform:scale(1.08);
+box-shadow:0 0 35px #00ffff;
+}
+
+.locked{
+opacity:0.35;
+}
+
+/* mobiili */
+
+@media(max-width:700px){
+
+h1{font-size:36px;}
+
+.room{
+width:160px;
+height:90px;
+font-size:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🕯️ Oppiluola</h1>
+
+<div class="rooms">
+
+<a href="kertotaulu.html" class="room">
+🧮 Kertotaululuola
+</a>
+
+<a href="duel.html" class="room">
+⚔️ Kaksintaistelu
+</a>
+
+<a href="sanapeli.html" class="room">
+🔤 Sanaluola
+</a>
+
+<div class="room locked">
+⭐ Tulossa
+</div>
+
+</div>
+
+<audio id="music" src="tausta.wav" loop></audio>
+
+<script>
+
+/* musiikki käynnistyy ensimmäisestä klikkauksesta */
+
+document.body.addEventListener("click",()=>{
+
+let music=document.getElementById("music")
+
+music.volume=0.35
+
+music.play().catch(()=>{})
+
+},{once:true})
+
+/* service worker */
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("/sw.js")
+}
+
+</script>
+
+</body>
+</html>
