@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Sanaluola</title>
-<a href="index.html" class="homeButton">🏠 Koti</a>
+
 <audio id="blip" src="blip.mp3"></audio>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -147,8 +147,7 @@ box-shadow:0 0 15px #00ffff;
 
 <body>
 
-<body>
-
+<a href="index.html" class="homeButton">🏠 Koti</a>
 <h1>🔤 Sanaluola</h1>
 
 <div class="container">
@@ -435,9 +434,9 @@ let w=currentWord.toLowerCase()
 if(dictionary.has(w) && !foundWords.has(w)){
 
 document.getElementById("blip").currentTime=0
-document.getElementById("blip").play()
+document.getElementById("blip").play().catch(()=>{})
 
-foundWords.add(w)add(w)
+foundWords.add(w)
 
 let pts=w.length-2
 
