@@ -212,30 +212,31 @@ box-shadow:0 0 20px #00ffff;
 <script>
 let canvas = document.getElementById("lineCanvas")
 let ctx = canvas.getContext("2d")
+let prefixes = new Set()
 
 let board=[]
 let tiles=[]
 let dice = [
 
-"AAEEGN",
-"ABBJOO",
-"ACHOPS",
-"AFFKPS",
+"AAEIOU",
+"AAEIOU",
+"AEIOUY",
+"AEIOUY",
 
-"AOOTTW",
-"CIMOTU",
-"DEILRX",
-"DELRVY",
+"ÄÄÖEEA",
+"ÄÖAEIO",
+"EEEAAA",
+"EEEIII",
 
-"DISTTY",
-"EEGHNW",
-"EEINSU",
-"EHRTVW",
+"IIIOOO",
+"IOOUUY",
+"NNNRST",
+"NNRSTL",
 
-"EIOSST",
-"ELRTTY",
-"HIMNQU",
-"HLNNRZ"
+"RSTLNA",
+"STLNRK",
+"KKRTLN",
+"HMPLVK"
 
 ]
 
@@ -273,7 +274,13 @@ let words=data.split("\n")
 .map(w=>w.trim().toLowerCase())
 .filter(w=>w.length>2)
 
-dictionary=new Set(words)
+dictionary = new Set(words)
+
+words.forEach(w=>{
+for(let i=1;i<=w.length;i++){
+prefixes.add(w.slice(0,i))
+}
+})
 
 console.log("Sanoja:",dictionary.size)
 
@@ -408,11 +415,11 @@ function dfs(x,y,word,visited){
 
 word+=board[y*4+x]
 
+if(!prefixes.has(word.toLowerCase())) return
+
 if(word.length>2 && dictionary.has(word.toLowerCase())){
 found++
 }
-
-if(word.length>7) return
 
 for(let dx=-1;dx<=1;dx++){
 for(let dy=-1;dy<=1;dy++){
