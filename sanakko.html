@@ -1,228 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Sanaluola</title>
-
-<audio id="blip" src="blip.mp3"></audio>
-<audio id="win" src="voitto.wav"></audio>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-
-  <style>
-.container{
-display:grid;
-grid-template-columns:200px 1fr 220px;
-gap:30px;
-max-width:1000px;
-margin:0 auto;
-margin-top:30px;
-}
-
-.leftPanel{
-font-size:22px;
-}
-
-.centerGame{
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.rightPanel{
-background:#222;
-padding:15px;
-border-radius:15px;
-max-height:400px;
-overflow:auto;
-}
-
-#found div{
-padding:4px 0;
-border-bottom:1px solid #444;
-}
-body{
-font-family:'Orbitron', sans-serif;
-background:#111;
-color:white;
-text-align:center;
-}
-
-h1{
-margin-top:20px;
-}
-
-#lineCanvas{
-position:absolute;
-left:0;
-top:0;
-pointer-events:none;
-}
-  
-#grid{
-position:relative;
-display:grid;
-grid-template-columns:repeat(4,80px);
-gap:10px;
-justify-content:center;
-margin-top:30px;
-}
-
-.tile{
-width:80px;
-height:80px;
-background:#222;
-border-radius:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:32px;
-cursor:pointer;
-user-select:none;
-}
-
-.tile.active{
-background:#00aaff;
-}
-
-#word{
-margin-top:20px;
-font-size:28px;
-}
-
-#score{
-margin-top:10px;
-font-size:20px;
-}
-
-#found{
-margin-top:20px;
-max-width:400px;
-margin-left:auto;
-margin-right:auto;
-text-align:left;
-}
-
-.homeButton{
-position:fixed;
-top:15px;
-left:15px;
-background:#00ffff;
-color:black;
-padding:8px 14px;
-border-radius:10px;
-text-decoration:none;
-font-size:14px;
-box-shadow:0 0 10px #00ffff;
-}
-
-.homeButton:hover{
-transform:scale(1.05);
-}
-
-.tile{
-width:80px;
-height:80px;
-background:#222;
-border-radius:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:32px;
-cursor:pointer;
-user-select:none;
-
-animation:pop 0.35s ease;
-}
-.tile:hover{
-box-shadow:0 0 15px #00ffff;
-}
-
-@keyframes pop{
-
-0%{transform:scale(0)}
-70%{transform:scale(1.2)}
-100%{transform:scale(1)}
-
-}
-
-#overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:20px;
-z-index:1000;
-}
-
-#overlay button{
-font-family:'Orbitron', sans-serif;
-font-size:28px;
-padding:20px 40px;
-border:none;
-border-radius:15px;
-background:#00ffff;
-cursor:pointer;
-box-shadow:0 0 20px #00ffff;
-}
-</style>
-</head>
-
-<body>
-
-<a href="index.html" class="homeButton">🏠 Koti</a>
-<div id="overlay">
-
-<h2>🔤 Sanaluola</h2>
-
-<button onclick="startGame()">🎮 Aloita peli</button>
-
-</div>
-
-<div class="container">
-
-<div class="leftPanel">
-<div id="timer">Aika: 120</div>
-<div id="score">Pisteet: 0</div>
-</div>
-
-<div class="centerGame">
-<div id="grid"></div>
-<canvas id="lineCanvas"></canvas>
-<div id="word"></div>
-</div>
-
-
-  
-<div class="rightPanel">
-<h3>Löydetyt sanat</h3>
-<div id="found"></div>
-</div>
-
-</div>
-
-<script>
 let canvas = document.getElementById("lineCanvas")
 let ctx = canvas.getContext("2d")
-let board = []
+
+let board=[]
 let tiles=[]
-let letters = "AAAAAAEEEEEEIIIIOOOUUYYÄÄÖTTTNNNSSLLKKRRMPVHJD"
+let letters="AAAAAAEEEEEEIIIIOOOUUYYÄÄÖTTTNNNSSLLKKRRMPVHJD"
 
-let grid = document.getElementById("grid")
+let grid=document.getElementById("grid")
 
-let dictionary = new Set()
+let dictionary=new Set()
 
-let currentWord = ""
-let score = 0
-let foundWords = new Set()
+let currentWord=""
+let score=0
+let foundWords=new Set()
 
-let selecting = false
-let usedTiles = []
+let selecting=false
+let usedTiles=[]
+
+let timer
+let time=120
+let streak=0
+let musicOn=true
+
+let bgMusic=new Audio("sanatausta.mp3")
+bgMusic.loop=true
+bgMusic.volume=0.3
+
+let blip=document.getElementById("blip")
+let win=document.getElementById("win")
+let longword=new Audio("longword.mp3")
 
 /* SANALISTA */
 
@@ -230,31 +35,34 @@ fetch("sanat.txt")
 .then(r=>r.text())
 .then(data=>{
 
-let words = data.split("\n")
+let words=data.split("\n")
 .map(w=>w.trim().toLowerCase())
 .filter(w=>w.length>2)
 
-dictionary = new Set(words)
+dictionary=new Set(words)
 
 console.log("Sanoja:",dictionary.size)
-generateGoodBoard()
+
 })
 
+/* CANVAS */
 
 function resizeCanvas(){
 
-let rect = grid.getBoundingClientRect()
+let rect=grid.getBoundingClientRect()
 
-canvas.width = rect.width
-canvas.height = rect.height
+canvas.width=rect.width
+canvas.height=rect.height
 
-canvas.style.left = rect.left + "px"
-canvas.style.top = rect.top + "px"
+canvas.style.left=rect.left+"px"
+canvas.style.top=rect.top+"px"
 
 }
 
 resizeCanvas()
 window.addEventListener("resize",resizeCanvas)
+
+/* PELIN ALOITUS */
 
 function startGame(){
 
@@ -262,18 +70,30 @@ document.getElementById("overlay").style.display="none"
 
 score=0
 time=120
+streak=0
+
 foundWords.clear()
 
 document.getElementById("score").textContent="Pisteet: 0"
 document.getElementById("found").innerHTML=""
+document.getElementById("timer").textContent="Aika: 120"
 
 generateGoodBoard()
+
+if(musicOn){
+bgMusic.currentTime=0
+bgMusic.play().catch(()=>{})
+}
 
 startTimer()
 
 }
 
+/* TIMER */
+
 function startTimer(){
+
+clearInterval(timer)
 
 timer=setInterval(()=>{
 
@@ -288,6 +108,7 @@ endGame()
 },1000)
 
 }
+
 /* RUUDUKKO */
 
 function randomLetter(){
@@ -310,8 +131,8 @@ let div=document.createElement("div")
 div.className="tile"
 div.textContent=letter
 
-div.dataset.x = i % 4
-div.dataset.y = Math.floor(i / 4)
+div.dataset.x=i%4
+div.dataset.y=Math.floor(i/4)
 
 grid.appendChild(div)
 tiles.push(div)
@@ -319,8 +140,9 @@ tiles.push(div)
 }
 
 }
-  
-/* GENEROI RUUDUKKO KUNNES SIINA SANOJA */
+
+/* ETSI SANOJA */
+
 function generateGoodBoard(){
 
 let attempts=0
@@ -331,10 +153,7 @@ generateBoard()
 
 let words=findWords()
 
-if(words>8){
-console.log("Hyvä ruudukko löytyi:",words,"sanaa")
-break
-}
+if(words>6) break
 
 attempts++
 
@@ -343,107 +162,7 @@ if(attempts>100) break
 }
 
 }
-  
-/* VIEREKKAISYYSTARKISTUS */
-function isNeighbor(tile){
 
-if(usedTiles.length===0) return true
-
-let last = usedTiles[usedTiles.length-1]
-
-let x1 = Number(last.dataset.x)
-let y1 = Number(last.dataset.y)
-
-let x2 = Number(tile.dataset.x)
-let y2 = Number(tile.dataset.y)
-
-return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1
-
-}
-
-/* PIIRRA VIIVA */
-function drawLine(){
-
-ctx.clearRect(0,0,canvas.width,canvas.height)
-
-if(usedTiles.length<2) return
-
-ctx.strokeStyle="#00ffff"
-ctx.lineWidth=6
-ctx.lineCap="round"
-
-ctx.beginPath()
-
-for(let i=0;i<usedTiles.length;i++){
-
-let rect=usedTiles[i].getBoundingClientRect()
-let gridRect=grid.getBoundingClientRect()
-
-let x=rect.left-gridRect.left+rect.width/2
-let y=rect.top-gridRect.top+rect.height/2
-
-if(i===0) ctx.moveTo(x,y)
-else ctx.lineTo(x,y)
-
-}
-
-ctx.stroke()
-
-}
-  
-  /* POINTER EVENTS */
-
-grid.addEventListener("pointerdown",e=>{
-
-if(!e.target.classList.contains("tile"))return
-
-selecting=true
-addTile(e.target)
-
-})
-
-grid.addEventListener("pointermove",e=>{
-
-if(!selecting)return
-
-let el=document.elementFromPoint(e.clientX,e.clientY)
-
-if(el && el.classList.contains("tile")){
-addTile(el)
-}
-
-})
-
-window.addEventListener("pointerup",()=>{
-
-if(!selecting)return
-
-selecting=false
-checkWord()
-
-clearSelection()
-
-})
-
-function addTile(tile){
-
-if(usedTiles.includes(tile))return
-if(!isNeighbor(tile)) return
-
-tile.classList.add("active")
-
-usedTiles.push(tile)
-
-currentWord+=tile.textContent
-
-document.getElementById("word").textContent=currentWord
-drawLine()
-
-}
-
-
-  
-/* ETSI SANAT RUUDUKOSTA */
 function findWords(){
 
 let found=0
@@ -493,7 +212,108 @@ dfs(x,y,"",visited)
 return found
 
 }
-/* TARKISTUS */
+
+/* VIEREKKÄISYYS */
+
+function isNeighbor(tile){
+
+if(usedTiles.length===0) return true
+
+let last=usedTiles[usedTiles.length-1]
+
+let x1=Number(last.dataset.x)
+let y1=Number(last.dataset.y)
+
+let x2=Number(tile.dataset.x)
+let y2=Number(tile.dataset.y)
+
+return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1
+
+}
+
+/* VIIVA */
+
+function drawLine(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+if(usedTiles.length<2) return
+
+ctx.strokeStyle="#00ffff"
+ctx.lineWidth=6
+ctx.lineCap="round"
+
+ctx.beginPath()
+
+for(let i=0;i<usedTiles.length;i++){
+
+let rect=usedTiles[i].getBoundingClientRect()
+let gridRect=grid.getBoundingClientRect()
+
+let x=rect.left-gridRect.left+rect.width/2
+let y=rect.top-gridRect.top+rect.height/2
+
+if(i===0) ctx.moveTo(x,y)
+else ctx.lineTo(x,y)
+
+}
+
+ctx.stroke()
+
+}
+
+/* POINTER */
+
+grid.addEventListener("pointerdown",e=>{
+
+if(!e.target.classList.contains("tile"))return
+
+selecting=true
+addTile(e.target)
+
+})
+
+grid.addEventListener("pointermove",e=>{
+
+if(!selecting)return
+
+let el=document.elementFromPoint(e.clientX,e.clientY)
+
+if(el && el.classList.contains("tile")){
+addTile(el)
+}
+
+})
+
+window.addEventListener("pointerup",()=>{
+
+if(!selecting)return
+
+selecting=false
+checkWord()
+
+clearSelection()
+
+})
+
+function addTile(tile){
+
+if(usedTiles.includes(tile)) return
+if(!isNeighbor(tile)) return
+
+tile.classList.add("active")
+
+usedTiles.push(tile)
+
+currentWord+=tile.textContent
+
+document.getElementById("word").textContent=currentWord
+
+drawLine()
+
+}
+
+/* SANA */
 
 function checkWord(){
 
@@ -501,21 +321,48 @@ let w=currentWord.toLowerCase()
 
 if(dictionary.has(w) && !foundWords.has(w)){
 
-document.getElementById("blip").currentTime=0
-document.getElementById("blip").play().catch(()=>{})
-
 foundWords.add(w)
 
 let pts=w.length-2
 
 score+=pts
+streak++
 
 document.getElementById("score").textContent="Pisteet: "+score
 
 let div=document.createElement("div")
 div.textContent=w
-
 document.getElementById("found").appendChild(div)
+
+/* VÄLÄHDYS */
+
+usedTiles.forEach(t=>{
+t.style.background="#00ff88"
+setTimeout(()=>t.style.background="#222",300)
+})
+
+/* ÄÄNET */
+
+if(w.length>=5){
+longword.currentTime=0
+longword.play().catch(()=>{})
+}
+else{
+blip.currentTime=0
+blip.play().catch(()=>{})
+}
+
+/* COMBO */
+
+if(streak>=3){
+longword.currentTime=0
+longword.play().catch(()=>{})
+streak=0
+}
+
+}else{
+
+streak=0
 
 }
 
@@ -531,50 +378,44 @@ usedTiles=[]
 currentWord=""
 
 document.getElementById("word").textContent=""
+
 ctx.clearRect(0,0,canvas.width,canvas.height)
 
 }
 
-/* PELIN LOPETUS*/
+/* LOPPU */
+
 function endGame(){
 
 clearInterval(timer)
 
-document.getElementById("win").play().catch(()=>{})
+bgMusic.pause()
+
+win.currentTime=0
+win.play().catch(()=>{})
 
 let overlay=document.getElementById("overlay")
 
 overlay.style.display="flex"
 
 overlay.innerHTML=
-
 "<h2>Peli ohi!</h2>"+
 "<h3>Pisteet: "+score+"</h3>"+
 "<button onclick='startGame()'>🔁 Uusi peli</button>"
 
 }
-  
-/* TIMER */
 
-let time=120
+/* MUSIIKKI NAPPI */
 
+function toggleMusic(){
 
+musicOn=!musicOn
 
-time--
-
-document.getElementById("timer").textContent="Aika: "+time
-
-if(time<=0){
-
-clearInterval(timer)
-
-alert("Peli ohi! Pisteet: "+score)
-
+if(musicOn){
+bgMusic.play().catch(()=>{})
+}
+else{
+bgMusic.pause()
 }
 
-},1000)
-
-</script>
-
-</body>
-</html>
+}
