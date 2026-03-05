@@ -4,13 +4,26 @@
 <meta charset="UTF-8">
 <title>Oppiluola</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"> 
 <link rel="manifest" href="manifest.json">
+
+<div class="cave">
+
+<a href="kertotaulu.html" class="room r1">🧮 Kertotaululuola</a>
+
+<a href="duel/index.html" class="room r2">⚔️ Kaksintaistelu</a>
+
+<a href="sanapeli.html" class="room r3">🔤 Sanaluola</a>
+
+<div class="room r4 locked">⭐ Tulossa</div>
+
+</div>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial;
+font-family:'Orbitron', sans-serif;
 color:white;
 text-align:center;
 overflow:hidden;
@@ -19,14 +32,18 @@ background:black;
 
 /* LUOLATAUSTA */
 
-.background{
-position:fixed;
-width:100%;
-height:100%;
+.cave{
+filter:drop-shadow(0 0 30px #6b3cff);
 background-image:url("luola.png");
-background-size:cover;
+background-size:contain;
+background-repeat:no-repeat;
 background-position:center;
-z-index:-3;
+
+width:900px;
+height:700px;
+
+margin:auto;
+position:relative;
 }
 
 /* SUMU */
@@ -93,23 +110,24 @@ gap:40px;
 
 .room{
 
+position:absolute;
+
 width:200px;
-height:140px;
+height:100px;
+
+background:rgba(0,0,0,0.6);
+border-radius:18px;
 
 display:flex;
-flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 
-background:rgba(0,0,0,0.55);
-border-radius:20px;
+font-size:22px;
 
-font-size:24px;
-
-text-decoration:none;
 color:white;
+text-decoration:none;
 
-box-shadow:0 0 20px rgba(0,255,255,0.6);
+box-shadow:0 0 20px #00ffff;
 
 transition:0.25s;
 }
@@ -117,6 +135,34 @@ transition:0.25s;
 .room:hover{
 transform:scale(1.1);
 box-shadow:0 0 35px #00ffff;
+}
+
+.r1{ left:120px; top:280px; }
+
+.r2{ left:350px; top:280px; }
+
+.r3{ left:580px; top:280px; }
+
+.r4{ left:810px; top:280px; opacity:0.4; }
+
+.flame{
+
+position:absolute;
+
+top:160px;
+left:450px;
+
+font-size:36px;
+
+animation:flicker 1.4s infinite alternate;
+
+}
+
+@keyframes flicker{
+
+from{transform:scale(1)}
+to{transform:scale(1.2)}
+
 }
 
 /* LUKITTU */
