@@ -226,6 +226,8 @@ let ctx = canvas.getContext("2d")
 let prefixes = new Set()
 let combo = 0
 let comboTimer
+let pointerX = 0
+let pointerY = 0
   
 let board=[]
 let tiles=[]
@@ -539,27 +541,36 @@ function drawLine(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height)
 
-if(usedTiles.length<2) return
+if(usedTiles.length === 0) return
 
 ctx.strokeStyle="#00ffff"
 ctx.lineWidth=8
-ctx.shadowBlur=10
+ctx.lineCap="round"
+ctx.shadowBlur=12
 ctx.shadowColor="#00ffff"
 
 ctx.beginPath()
 
+let gridRect = grid.getBoundingClientRect()
+
 for(let i=0;i<usedTiles.length;i++){
 
-let rect=usedTiles[i].getBoundingClientRect()
-let gridRect=grid.getBoundingClientRect()
+let rect = usedTiles[i].getBoundingClientRect()
 
-let x=rect.left-gridRect.left+rect.width/2
-let y=rect.top-gridRect.top+rect.height/2
+let x = rect.left - gridRect.left + rect.width/2
+let y = rect.top - gridRect.top + rect.height/2
 
 if(i===0) ctx.moveTo(x,y)
 else ctx.lineTo(x,y)
 
 }
+
+/* live pointer */
+
+let px = pointerX - gridRect.left
+let py = pointerY - gridRect.top
+
+ctx.lineTo(px,py)
 
 ctx.stroke()
 
@@ -580,6 +591,11 @@ addTile(e.target)
 grid.addEventListener("pointermove",e=>{
 
 if(!selecting) return
+
+pointerX = e.clientX
+pointerY = e.clientY
+
+drawLine()
 
 let closest=null
 let minDist=9999
