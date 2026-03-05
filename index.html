@@ -71,12 +71,23 @@ position:absolute;
 width:2px;
 height:2px;
 background:white;
-animation:twinkle 3s infinite alternate;
+animation:starMove linear infinite;
 }
 
 @keyframes twinkle{
 from{opacity:0.2;}
 to{opacity:1;}
+}
+
+@keyframes starMove{
+from{
+transform:translateY(0px);
+opacity:0.5;
+}
+to{
+transform:translateY(-200px);
+opacity:1;
+}
 }
 
 /* OTSIKKO */
@@ -239,7 +250,7 @@ star.className="star"
 star.style.left=Math.random()*100+"vw"
 star.style.top=Math.random()*100+"vh"
 
-star.style.animationDuration=(2+Math.random()*3)+"s"
+star.style.animationDuration=(20+Math.random()*40)+"s"
 
 document.body.appendChild(star)
 
