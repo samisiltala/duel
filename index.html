@@ -5,132 +5,209 @@
 <title>Oppiluola</title>
 
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
 
 <style>
-#stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-body {
+
+body{
     margin:0;
-    font-family:'Orbitron', sans-serif;
-    background:black;
-    color:#00ffff;
+    font-family:Arial;
+    color:white;
+    text-align:center;
+    overflow:hidden;
+
+    background:radial-gradient(circle at top,#0a0f2c,#000000);
+}
+
+/* tähdet */
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    animation:twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:0.2;}
+    to{opacity:1;}
+}
+
+/* otsikko */
+
+h1{
+    margin-top:40px;
+    font-size:52px;
+    text-shadow:0 0 25px #00ffff;
+}
+
+/* soihtu */
+
+.torch{
+    font-size:42px;
+    animation:flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker{
+    from{transform:scale(1);}
+    to{transform:scale(1.15);}
+}
+
+/* LUOLA */
+
+.cave{
+    width:700px;
+    height:420px;
+    margin:40px auto;
+
+    background:
+        radial-gradient(circle at 50% 10%,#333,#000 70%);
+
+    border-radius:50% 50% 40% 40%;
+
+    box-shadow:
+        inset 0 0 80px black,
+        0 0 60px rgba(0,0,0,0.8);
+
+    position:relative;
+}
+
+/* peliluolat */
+
+.room{
+    position:absolute;
+
+    width:160px;
+    height:120px;
+
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    text-align:center;
-}
 
-h1 {
-    font-size:70px;
-    margin-bottom:60px;
-    text-shadow:0 0 20px #00ffff;
-}
+    background:rgba(0,255,255,0.15);
+    border-radius:18px;
 
-.menu {
-    display:flex;
-    flex-direction:column;
-    gap:40px;
-}
-
-a {
-    font-size:40px;
-    padding:20px 70px;
-    border-radius:15px;
     text-decoration:none;
-    color:black;
-    background:#00ffff;
-    box-shadow:0 0 20px #00ffff;
-    transition:0.2s;
+    color:white;
+
+    font-size:22px;
+
+    box-shadow:0 0 20px rgba(0,255,255,0.5);
+
+    transition:0.25s;
 }
 
-a:hover {
+.room:hover{
     transform:scale(1.1);
-    box-shadow:0 0 40px #00ffff;
+    box-shadow:0 0 35px #00ffff;
 }
+
+/* huoneiden sijainnit */
+
+.room1{ left:60px; top:120px; }
+
+.room2{ right:60px; top:120px; }
+
+.room3{ left:200px; bottom:40px; }
+
+.room4{ right:200px; bottom:40px; }
+
+/* lukittu */
+
+.locked{
+    opacity:0.35;
+}
+
+/* mobiili */
+
+@media(max-width:750px){
+
+.cave{
+    width:95%;
+    height:360px;
+}
+
+.room{
+    width:130px;
+    height:100px;
+    font-size:18px;
+}
+
+}
+
 </style>
 </head>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
 <body>
-<canvas id="stars"></canvas>
-    
-<h1>🎮 2B Matematiikka Arcade</h1>
 
-<div class="menu">
-    <a href="duel.html">⚔ Kaksinpeli Duel</a>
-    <a href="kertotaulu.html">🧮 Yksinpeli</a>
+<h1>🕯️ Oppiluola</h1>
+<div class="torch">🔥</div>
+
+<div class="cave">
+
+<a href="kertotaulu.html" class="room room1">
+🧮
+Kertotaulu
+</a>
+
+<a href="duel/index.html" class="room room2">
+⚔️
+Math Duel
+</a>
+
+<div class="room room3 locked">
+🧠
+Tulossa
 </div>
-    
-<audio id="bgMusic" src="tausta.wav" loop></audio>
-    
+
+<div class="room room4 locked">
+⭐
+Tulossa
+</div>
+
+</div>
+
+<audio id="music" src="tausta.wav" loop></audio>
+
 <script>
-let musicStarted = false;
 
-function startMusic(){
-    if(!musicStarted){
-        let music = document.getElementById("bgMusic");
-        music.volume = 0.4;   // ei liian kovalle
-        music.play().catch(()=>{});
-        musicStarted = true;
-    }
+/* service worker */
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("/sw.js");
 }
 
-document.addEventListener("click", startMusic);
-// ---- TÄHTISATE ----
+/* musiikki */
 
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
+document.body.addEventListener("click",()=>{
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let music=document.getElementById("music");
 
-let stars = [];
+music.volume=0.35;
 
-for(let i=0;i<150;i++){
-    stars.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        size: Math.random()*2,
-        speed: Math.random()*0.5+0.2
-    });
+music.play().catch(()=>{});
+
+},{once:true});
+
+/* tähtitaivas */
+
+for(let i=0;i<120;i++){
+
+let star=document.createElement("div");
+
+star.className="star";
+
+star.style.left=Math.random()*100+"vw";
+star.style.top=Math.random()*100+"vh";
+
+star.style.animationDuration=(2+Math.random()*3)+"s";
+
+document.body.appendChild(star);
+
 }
-
-function drawStars(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    ctx.fillStyle = "white";
-
-    stars.forEach(star=>{
-        ctx.beginPath();
-        ctx.arc(star.x,star.y,star.size,0,Math.PI*2);
-        ctx.fill();
-
-        star.y += star.speed;
-
-        if(star.y > canvas.height){
-            star.y = 0;
-            star.x = Math.random()*canvas.width;
-        }
-    });
-
-    requestAnimationFrame(drawStars);
-}
-
-drawStars();
 
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
-}
-</script>
+
 </body>
 </html>
