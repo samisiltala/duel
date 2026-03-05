@@ -17,7 +17,15 @@ h1{
 margin-top:20px;
 }
 
+#lineCanvas{
+position:absolute;
+left:0;
+top:0;
+pointer-events:none;
+}
+  
 #grid{
+position:relative;
 display:grid;
 grid-template-columns:repeat(4,80px);
 gap:10px;
@@ -70,6 +78,7 @@ text-align:left;
 <div id="timer">Aika: 120</div>
 
 <div id="grid"></div>
+<canvas id="lineCanvas"></canvas>
 
 <div id="word"></div>
 
@@ -78,6 +87,8 @@ text-align:left;
 <div id="found"></div>
 
 <script>
+let canvas = document.getElementById("lineCanvas")
+let ctx = canvas.getContext("2d")
 let board = []
 let tiles=[]
 let letters = "AAAAAAEEEEEEIIIIOOOUUYYÄÄÖTTTNNNSSLLKKRRMPVHJD"
@@ -109,6 +120,22 @@ console.log("Sanoja:",dictionary.size)
 
 })
 generateGoodBoard()
+
+function resizeCanvas(){
+
+let rect = grid.getBoundingClientRect()
+
+canvas.width = rect.width
+canvas.height = rect.height
+
+canvas.style.left = rect.left + "px"
+canvas.style.top = rect.top + "px"
+
+}
+
+resizeCanvas()
+window.addEventListener("resize",resizeCanvas)
+
 /* RUUDUKKO */
 
 function randomLetter(){
@@ -140,6 +167,7 @@ tiles.push(div)
 }
 
 }
+  
 /* GENEROI RUUDUKKO KUNNES SIINA SANOJA */
 function generateGoodBoard(){
 
@@ -181,7 +209,37 @@ return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1
 
 }
 
-/* POINTER EVENTS */
+/* PIIRRA VIIVA */
+function drawLine(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+if(usedTiles.length<2) return
+
+ctx.strokeStyle="#00ffff"
+ctx.lineWidth=6
+ctx.lineCap="round"
+
+ctx.beginPath()
+
+for(let i=0;i<usedTiles.length;i++){
+
+let rect=usedTiles[i].getBoundingClientRect()
+let gridRect=grid.getBoundingClientRect()
+
+let x=rect.left-gridRect.left+rect.width/2
+let y=rect.top-gridRect.top+rect.height/2
+
+if(i===0) ctx.moveTo(x,y)
+else ctx.lineTo(x,y)
+
+}
+
+ctx.stroke()
+
+}
+  
+  /* POINTER EVENTS */
 
 grid.addEventListener("pointerdown",e=>{
 
@@ -227,8 +285,12 @@ usedTiles.push(tile)
 currentWord+=tile.textContent
 
 document.getElementById("word").textContent=currentWord
+drawLine()
 
 }
+
+
+  
 /* ETSI SANAT RUUDUKOSTA */
 function findWords(){
 
@@ -314,6 +376,7 @@ usedTiles=[]
 currentWord=""
 
 document.getElementById("word").textContent=""
+ctx.clearRect(0,0,canvas.width,canvas.height)
 
 }
 
