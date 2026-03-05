@@ -5,8 +5,10 @@
 <title>Sanaluola</title>
 
 <audio id="blip" src="blip.mp3"></audio>
+<audio id="win" src="voitto.wav"></audio>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-<style>
+
+  <style>
 .container{
 display:grid;
 grid-template-columns:200px 1fr 220px;
@@ -142,13 +144,45 @@ box-shadow:0 0 15px #00ffff;
 100%{transform:scale(1)}
 
 }
+
+#overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+z-index:1000;
+}
+
+#overlay button{
+font-family:'Orbitron', sans-serif;
+font-size:28px;
+padding:20px 40px;
+border:none;
+border-radius:15px;
+background:#00ffff;
+cursor:pointer;
+box-shadow:0 0 20px #00ffff;
+}
 </style>
 </head>
 
 <body>
 
 <a href="index.html" class="homeButton">🏠 Koti</a>
-<h1>🔤 Sanaluola</h1>
+<div id="overlay">
+
+<h2>🔤 Sanaluola</h2>
+
+<button onclick="startGame()">🎮 Aloita peli</button>
+
+</div>
 
 <div class="container">
 
@@ -163,6 +197,8 @@ box-shadow:0 0 15px #00ffff;
 <div id="word"></div>
 </div>
 
+
+  
 <div class="rightPanel">
 <h3>Löydetyt sanat</h3>
 <div id="found"></div>
@@ -220,6 +256,38 @@ canvas.style.top = rect.top + "px"
 resizeCanvas()
 window.addEventListener("resize",resizeCanvas)
 
+function startGame(){
+
+document.getElementById("overlay").style.display="none"
+
+score=0
+time=120
+foundWords.clear()
+
+document.getElementById("score").textContent="Pisteet: 0"
+document.getElementById("found").innerHTML=""
+
+generateGoodBoard()
+
+startTimer()
+
+}
+
+function startTimer(){
+
+timer=setInterval(()=>{
+
+time--
+
+document.getElementById("timer").textContent="Aika: "+time
+
+if(time<=0){
+endGame()
+}
+
+},1000)
+
+}
 /* RUUDUKKO */
 
 function randomLetter(){
@@ -467,11 +535,30 @@ ctx.clearRect(0,0,canvas.width,canvas.height)
 
 }
 
+/* PELIN LOPETUS*/
+function endGame(){
+
+clearInterval(timer)
+
+document.getElementById("win").play().catch(()=>{})
+
+let overlay=document.getElementById("overlay")
+
+overlay.style.display="flex"
+
+overlay.innerHTML=
+
+"<h2>Peli ohi!</h2>"+
+"<h3>Pisteet: "+score+"</h3>"+
+"<button onclick='startGame()'>🔁 Uusi peli</button>"
+
+}
+  
 /* TIMER */
 
 let time=120
 
-let timer=setInterval(()=>{
+
 
 time--
 
