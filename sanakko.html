@@ -79,8 +79,8 @@ text-align:left;
 
 <script>
 let board = []
-let letters =
-"AAAAAAEEEEEEIIIIOOOUUYYÄÄÖTTTNNNSSLLKKRRMPVHJD"
+let tiles=[]
+let letters = "AAAAAAEEEEEEIIIIOOOUUYYÄÄÖTTTNNNSSLLKKRRMPVHJD"
 
 let grid = document.getElementById("grid")
 
@@ -108,8 +108,12 @@ dictionary = new Set(words)
 console.log("Sanoja:",dictionary.size)
 
 })
-
+generateGoodBoard()
 /* RUUDUKKO */
+
+function randomLetter(){
+return letters[Math.floor(Math.random()*letters.length)]
+}
 
 function generateBoard(){
 
