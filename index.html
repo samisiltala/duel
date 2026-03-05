@@ -27,14 +27,27 @@ position:relative;
 width:900px;
 height:700px;
 
-margin:120px auto;
+margin:20px auto;
 
 background-image:url("luola.png");
 background-size:contain;
 background-repeat:no-repeat;
 background-position:center;
 }
+.cave::after{
+content:"";
+position:absolute;
+inset:0;
+background:radial-gradient(circle at 50% 60%, #8a2cff40, transparent 65%);
+pointer-events:none;
+animation:caveGlow 6s ease-in-out infinite alternate;
+}
 
+@keyframes caveGlow{
+from{opacity:0.6;}
+to{opacity:1;}
+}
+  
 /* SUMU */
 
 .fog{
@@ -126,13 +139,13 @@ transform:scale(1.1);
 box-shadow:0 0 35px #00ffff;
 }
 
-.r1{ left:110px; top:270px; }
+.r1{ left:110px; top:230px; }
 
-.r2{ left:330px; top:270px; }
+.r2{ left:330px; top:230px; }
 
-.r3{ left:550px; top:270px; }
+.r3{ left:550px; top:230px; }
 
-.r4{ left:770px; top:270px; opacity:0.4; }
+.r4{ left:770px; top:230px; opacity:0.4; }
 .flame{
 
 position:absolute;
@@ -183,10 +196,11 @@ font-size:18px;
 <div class="fog"></div>
 
 <h1>🕯️ Oppiluola</h1>
-<div class="torch">🔥</div>
 
 <div class="cave">
 
+<div class="flame">🔥</div>
+  
 <a href="kertotaulu.html" class="room r1">🧮 Kertotaululuola</a>
 
 <a href="duel.html" class="room r2">⚔️ Kaksintaistelu</a>
