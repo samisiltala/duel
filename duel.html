@@ -123,13 +123,17 @@ button:active {
 button:hover{
 transform:scale(1.05);
 }
-
+    
+.musicButton{
+left:120px;
+}
 </style>
 </head>
 
 <body>
 
 <a href="index.html" class="homeButton">KOTI</a>
+<a href="#" class="homeButton musicButton" onclick="toggleMusic()">MUSIIKKI ON/OFF</a>
 
 <!-- muu sisältö jatkuu tästä -->
 
@@ -197,7 +201,14 @@ z-index:998;
 
 <script>
 
+window.addEventListener("load", () => {
 
+  let music = document.getElementById("music");
+  music.volume = 0.25;
+
+  music.play().catch(()=>{});
+
+});
 
 let tables = [1,2,3,4,5,6,7,8,9,10];
 
@@ -207,6 +218,8 @@ let scoreB = 0;
 let target = 10;
 let gameActive = false;
 
+
+    
 function play(id){
   let s = document.getElementById(id);
   if(!s) return;
@@ -247,6 +260,18 @@ else if(count===0){
   },1000);
 }
 
+function toggleMusic(){
+
+  let music = document.getElementById("music");
+
+  if(music.paused){
+    music.play();
+  }else{
+    music.pause();
+  }
+
+}
+    
 function newQuestion(){
  if(!gameActive) return;
 
@@ -286,11 +311,11 @@ function createButtons(containerId,answers,player){
 function flash(color){
  let flash=document.getElementById("flash");
  flash.style.background=color;
- flash.style.opacity="0.6";
+ flash.style.opacity="0.9";
 
  setTimeout(()=>{
    flash.style.opacity="0";
- },150);
+ },120);
 }
 
 function choose(player,value){
@@ -301,13 +326,13 @@ function choose(player,value){
    if(player==="A"){
      scoreA++;
      if(scoreB>0) scoreB--;
-     flash("#2563eb");
+     flash("white");
      play("scoreSoundA");
    }
    else {
      scoreB++;
      if(scoreA>0) scoreA--;
-     flash("#dc2626");
+     flash("#e0001a");
      play("scoreSoundB");
    }
 
@@ -363,6 +388,7 @@ overlay.style.color="white";
 
 </body>
 </html>
+
 
 
 
