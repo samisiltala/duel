@@ -40,15 +40,14 @@ pointer-events:none;
 .fullscreenButton{
 
 position:absolute;
+left:30px;
 bottom:40px;
-left:50%;
-transform:translateX(-50%);
 
-font-size:20px;
-padding:10px 24px;
+font-size:16px;
+padding:8px 18px;
 
 border:2px solid white;
-border-radius:12px;
+border-radius:10px;
 
 background:black;
 color:white;
@@ -779,37 +778,31 @@ if(value === correctAnswer){
 
 answered = true
 
-if(player === "A"){
+if(player==="A"){
 scoreA++
-scoreDiff++       // valkoinen lisää
 play("scoreSoundA")
 }
 else{
 scoreB++
-scoreDiff--       // punainen lisää
 play("scoreSoundB")
 }
 
-}
-else{
+}else{
 
-if(player === "A"){
-scoreB++
-scoreDiff--       // punainen saa pisteen
+if(player==="A"){
+scoreA = Math.max(0, scoreA-1)
 play("ouchWhite")
 }
 
 else{
-scoreA++
-scoreDiff++
+scoreB = Math.max(0, scoreB-1)
 play("ouchBlack")
 }
 
 }
 
-updateScores()
-
 duelPosition=Math.max(0,Math.min(20,duelPosition))
+updateScores()
 updateBar()
 
 if(scoreA >= 10){
@@ -845,7 +838,7 @@ function updateBar(){
 let diff = scoreA - scoreB
 
 let center = 50
-let change = diff * 5   // 10 pisteen ero = 50%
+let change = diff * 5
 
 let white = center + change
 let red = center - change
@@ -931,6 +924,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
