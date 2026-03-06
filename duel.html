@@ -1,64 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="fi">
 <head>
+
 <meta charset="UTF-8">
 <title>Kertotaulu DUEL</title>
-    
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    
+
 <style>
-body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    overflow: hidden;
-    background: black;
-    color: white;
+
+body{
+margin:0;
+font-family:'Orbitron',sans-serif;
+overflow:hidden;
+background:black;
+color:white;
 }
 
-.arena {
-    display: flex;
-    height: 100vh;
+/* ARENA */
+
+.arena{
+display:flex;
+height:100vh;
 }
 
-.player {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.player{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 }
 
-.leftPlayer {
-    background: black;
-}
+.leftPlayer{background:black;}
+.rightPlayer{background:black;}
 
-.rightPlayer {
-    background: black;
-}
+/* PISTEET */
 
-.score {
-    font-size: 60px;
-    margin-bottom: 30px;
+.score{
+font-size:60px;
+margin-bottom:30px;
 }
 
 .playerName{
-font-size:36px;
+font-size:32px;
 margin-bottom:10px;
 letter-spacing:3px;
 }
-    
-#question {
-    font-family: 'Orbitron', sans-serif;
+
+/* KYSYMYS */
+
+.centerQuestion{
+position:absolute;
+top:15%;
+left:50%;
+transform:translateX(-50%);
+font-size:90px;
+font-weight:bold;
+z-index:2;
 }
-.centerQuestion {
-    position:absolute;
-    top:15%;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:90px;
-    font-weight:bold;
-    z-index:2;
-}
+
+/* SAMURAI ALOITUS */
 
 #overlay.startScreen{
 background:
@@ -71,6 +73,8 @@ animation:samuraiZoom 12s ease infinite alternate;
 user-select:none;
 }
 
+/* NINJA */
+
 #ninja{
 position:absolute;
 top:50%;
@@ -80,6 +84,8 @@ height:300px;
 opacity:0.7;
 pointer-events:none;
 }
+
+/* DUEL BAR */
 
 #duelBar{
 position:absolute;
@@ -95,6 +101,18 @@ overflow:hidden;
 z-index:3;
 display:flex;
 }
+
+#duelBar::after{
+content:"";
+position:absolute;
+left:50%;
+top:0;
+height:100%;
+width:2px;
+background:white;
+opacity:0.6;
+}
+
 #barWhite{
 background:white;
 width:50%;
@@ -107,34 +125,41 @@ width:50%;
 transition:0.3s;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+/* VASTAUSNAPIT */
+
+.buttons{
+display:flex;
+flex-direction:column;
+gap:20px;
 }
 
-button {
-    font-size: 50px;
-    font-family: 'Orbitron', sans-serif;
-    padding: 30px 50px;
-    border: 3px solid white;
-    border-radius: 20px;
-    cursor: pointer;
-    background: black;
-    color: white;
+button{
+font-size:50px;
+font-family:'Orbitron',sans-serif;
+padding:30px 50px;
+border:3px solid white;
+border-radius:20px;
+cursor:pointer;
+background:black;
+color:white;
+touch-action:manipulation;
 }
 
-.leftPlayer button {
-    background: white;
-    color: black;
-    border: 3px solid white;
+button:hover{transform:scale(1.05);}
+button:active{transform:scale(0.95);}
+
+.leftPlayer button{
+background:white;
+color:black;
 }
 
-.rightPlayer button {
-    background: #e0001a;
-    color: white;
-    border: 3px solid #e0001a;
+.rightPlayer button{
+background:#e0001a;
+color:white;
+border:3px solid #e0001a;
 }
+
+/* NIMISYÖTTÖ */
 
 .nameInput{
 font-family:'Orbitron',sans-serif;
@@ -149,6 +174,9 @@ text-align:center;
 width:260px;
 text-transform:uppercase;
 }
+
+/* KOTI */
+
 .homeButton{
 position:fixed;
 top:20px;
@@ -163,7 +191,7 @@ background:black;
 color:white;
 text-decoration:none;
 z-index:1000;
-transition:all 0.2s ease;
+transition:0.2s;
 }
 
 .homeButton:hover{
@@ -171,24 +199,11 @@ background:white;
 color:black;
 }
 
-button:active {
-    transform: scale(0.95);
-}
-
-button:hover{
-transform:scale(1.05);
-}
-    
 .musicButton{
 top:70px;
-left:20px;
 }
 
-.playerName{
-font-size:28px;
-margin-bottom:10px;
-letter-spacing:2px;
-}
+/* ANIMAATIOT */
 
 @keyframes screenShake{
 0%{transform:translate(0,0);}
@@ -198,15 +213,15 @@ letter-spacing:2px;
 80%{transform:translate(6px,-3px);}
 100%{transform:translate(0,0);}
 }
-    
+
 @keyframes samuraiZoom{
 0%{transform:scale(1);}
 100%{transform:scale(1.15);}
 }
 
 @keyframes textFade{
-0%{opacity:0; transform:translateY(40px);}
-100%{opacity:1; transform:translateY(0);}<
+0%{opacity:0;transform:translateY(40px);}
+100%{opacity:1;transform:translateY(0);}
 }
 
 .victoryText{
@@ -218,43 +233,42 @@ animation:textFade 1.2s ease forwards;
 animation-delay:1.2s;
 opacity:0;
 }
+
 </style>
 </head>
 
 <body>
 
 <a href="index.html" class="homeButton">KOTI</a>
-<a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">
-MUSIIKKI ON
-</a>
-
-<!-- muu sisältö jatkuu tästä -->
+<a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">MUSIIKKI ON</a>
 
 <div class="centerQuestion" id="question"></div>
 
 <img id="ninja" src="ninja.jpg">
+
 <div id="duelBar">
-  <div id="barWhite"></div>
-  <div id="barRed"></div>
+<div id="barWhite"></div>
+<div id="barRed"></div>
 </div>
 
 <div id="overlay" class="startScreen" style="
 position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-color:white;
+top:0;
+left:0;
+width:100%;
+height:100%;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+color:white;
 font-size:70px;
 font-weight:bold;
-font-family: 'Orbitron', sans-serif;
 z-index:999;
 ">
 
-<input id="nameInputA" class="nameInput" placeholder="Pelaaja1:">
-<input id="nameInputB" class="nameInput" placeholder="Pelaaja2:">
+<input id="nameInputA" class="nameInput" placeholder="PELAAJA 1">
+<input id="nameInputB" class="nameInput" placeholder="PELAAJA 2">
 
 <button onclick="startCountdown()" style="
 font-size:40px;
@@ -270,26 +284,28 @@ ALOITA PELI
 
 <div id="flash" style="
 position:fixed;
-top:0;left:0;
-width:100%;height:100%;
+top:0;
+left:0;
+width:100%;
+height:100%;
 opacity:0;
 pointer-events:none;
 z-index:998;
 "></div>
 
 <div class="arena">
-  
-    <div class="player leftPlayer">
-          <div class="playerName" id="nameA">Pelaaja 1</div>
-        <div class="score" id="scoreA">0</div>
-        <div class="buttons" id="buttonsA"></div>
-    </div>
-    
-    <div class="player rightPlayer">
-        <div class="playerName" id="nameB">Pelaaja 2</div>
-        <div class="score" id="scoreB">0</div>
-        <div class="buttons" id="buttonsB"></div>
-    </div>
+
+<div class="player leftPlayer">
+<div class="playerName" id="nameA">Pelaaja 1</div>
+<div class="score" id="scoreA">0</div>
+<div class="buttons" id="buttonsA"></div>
+</div>
+
+<div class="player rightPlayer">
+<div class="playerName" id="nameB">Pelaaja 2</div>
+<div class="score" id="scoreB">0</div>
+<div class="buttons" id="buttonsB"></div>
+</div>
 
 </div>
 
@@ -303,307 +319,322 @@ z-index:998;
 <audio id="ouchWhite" src="ouchvalk.mp3"></audio>
 
 <script>
-let answered = false;
-window.addEventListener("load", () => {
 
-  let music = document.getElementById("music");
-  music.volume = 0.25;
+let answered=false
+let scoreA=0
+let scoreB=0
+let duelPosition=10
+let gameActive=false
 
-  music.play().catch(()=>{});
+let tables=[1,2,3,4,5,6,7,8,9,10]
+let a,b,correctAnswer
 
-});
-
-let tables = [1,2,3,4,5,6,7,8,9,10];
-
-let a,b,correctAnswer;
-let scoreA = 0;
-let scoreB = 0;
-let target = 10;
-let gameActive = false;
-let duelPosition = 10;
-
-    
 function play(id){
-  let s = document.getElementById(id);
-  if(!s) return;
-
-  s.pause();
-  s.currentTime = 0;
-  s.play().catch(()=>{});
+let s=document.getElementById(id)
+if(!s)return
+s.pause()
+s.currentTime=0
+s.play().catch(()=>{})
 }
 
 function startCountdown(){
-document.getElementById("overlay").classList.remove("startScreen");
-document.getElementById("overlay").style.background="black";
-let nameA = document.getElementById("nameInputA").value.trim().toUpperCase();
-let nameB = document.getElementById("nameInputB").value.trim().toUpperCase();
 
-if(!nameA || !nameB){
-alert("Anna molempien pelaajien nimet");
-return;
+document.getElementById("overlay").classList.remove("startScreen")
+document.getElementById("overlay").style.background="black"
+
+let nameA=document.getElementById("nameInputA").value.trim().toUpperCase()
+let nameB=document.getElementById("nameInputB").value.trim().toUpperCase()
+
+if(!nameA||!nameB){
+alert("Anna molempien pelaajien nimet")
+return
 }
 
-document.getElementById("nameA").innerText=nameA;
-document.getElementById("nameB").innerText=nameB;
+document.getElementById("nameA").innerText=nameA
+document.getElementById("nameB").innerText=nameB
 
-  console.log("Countdown started");
-  let overlay=document.getElementById("overlay");
-  let count=3;
+let overlay=document.getElementById("overlay")
+let count=3
 
-  overlay.innerHTML=count;
-    play("bip");
+overlay.innerHTML=count
+play("bip")
 
-  let interval=setInterval(()=>{
-    count--;
+let interval=setInterval(()=>{
+
+count--
 
 if(count>0){
-  overlay.innerHTML=count;
-  play("bip");
+overlay.innerHTML=count
+play("bip")
 }
+
 else if(count===0){
-  overlay.innerHTML="GO!";
-  play("goSound");
-  document.getElementById("music").volume = 0.25;
-  document.getElementById("music").play();
+overlay.innerHTML="GO!"
+play("goSound")
 }
-    else{
-      clearInterval(interval);
-      overlay.style.display="none";
-      gameActive=true;
-      updateBar();
-      newQuestion();
-    }
-  },1000);
+
+else{
+
+clearInterval(interval)
+overlay.style.display="none"
+
+gameActive=true
+updateBar()
+newQuestion()
+
+}
+
+},1000)
+
 }
 
 function toggleMusic(){
 
- let music = document.getElementById("music");
- let btn = document.getElementById("musicBtn");
+let music=document.getElementById("music")
+let btn=document.getElementById("musicBtn")
 
- if(music.paused){
-   music.play();
-   btn.innerText = "MUSIIKKI ON";
- }else{
-   music.pause();
-   btn.innerText = "MUSIIKKI OFF";
- }
+if(music.paused){
+music.play()
+btn.innerText="MUSIIKKI ON"
+}else{
+music.pause()
+btn.innerText="MUSIIKKI OFF"
+}
 
 }
-    
+
 function newQuestion(){
-answered = false;
- if(!gameActive) return;
 
- a = tables[Math.floor(Math.random()*tables.length)];
- b = Math.floor(Math.random()*10)+1;
- correctAnswer = a*b;
+answered=false
+if(!gameActive)return
 
- document.getElementById("question").innerText = a + " × " + b;
+a=tables[Math.floor(Math.random()*tables.length)]
+b=Math.floor(Math.random()*10)+1
+correctAnswer=a*b
 
- let answers=[correctAnswer];
+document.getElementById("question").innerText=a+" × "+b
 
- while(answers.length<3){
-   let wrong=correctAnswer+Math.floor(Math.random()*10)-5;
-   if(wrong>0 && !answers.includes(wrong)){
-     answers.push(wrong);
-   }
- }
+let answers=[correctAnswer]
 
- answers.sort(()=>Math.random()-0.5);
+while(answers.length<3){
 
- createButtons("buttonsA",answers,"A");
- createButtons("buttonsB",answers,"B");
+let wrong=correctAnswer+Math.floor(Math.random()*10)-5
+
+if(wrong>0&&!answers.includes(wrong)){
+answers.push(wrong)
+}
+
+}
+
+answers.sort(()=>Math.random()-0.5)
+
+createButtons("buttonsA",answers,"A")
+createButtons("buttonsB",answers,"B")
+
 }
 
 function createButtons(containerId,answers,player){
- let container=document.getElementById(containerId);
- container.innerHTML="";
 
- answers.forEach(answer=>{
-   let btn=document.createElement("button");
-   btn.innerText=answer;
-   btn.onclick=()=>choose(player,answer);
-   container.appendChild(btn);
- });
+let container=document.getElementById(containerId)
+container.innerHTML=""
+
+answers.forEach(answer=>{
+
+let btn=document.createElement("button")
+btn.innerText=answer
+btn.onclick=()=>choose(player,answer)
+
+container.appendChild(btn)
+
+})
+
 }
 
 function flash(color){
 
- let flash=document.getElementById("flash");
+let flash=document.getElementById("flash")
 
- flash.style.background=color;
- flash.style.opacity="0.7";
+flash.style.background=color
+flash.style.opacity="0.7"
 
- setTimeout(()=>{
-   flash.style.opacity="0";
- },80);
+setTimeout(()=>{flash.style.opacity="0"},80)
 
 }
 
 function updateBar(){
 
- let whitePercent = (duelPosition/20)*100;
- let redPercent = 100 - whitePercent;
+let whitePercent=(duelPosition/20)*100
+let redPercent=100-whitePercent
 
- document.getElementById("barWhite").style.width = whitePercent + "%";
- document.getElementById("barRed").style.width = redPercent + "%";
+document.getElementById("barWhite").style.width=whitePercent+"%"
+document.getElementById("barRed").style.width=redPercent+"%"
 
 }
-    
-function choose(player,value){
- if(!gameActive) return;
- if(answered) return;
 
- if(value===correctAnswer){
-     answered = true;
+function choose(player,value){
+
+if(!gameActive)return
+if(answered)return
+
+if(value===correctAnswer){
+
+answered=true
 
 if(player==="A"){
-  scoreA++;
-  duelPosition++;
-  if(scoreB>0) scoreB--;
-  flash("white");
-  play("scoreSoundA");
-}
-else {
-  scoreB++;
-  duelPosition--;   // <-- LISÄÄ TÄMÄ
-  if(scoreA>0) scoreA--;
-  flash("#e0001a");
-  play("scoreSoundB");
+scoreA++
+duelPosition++
+if(scoreB>0)scoreB--
+flash("white")
+play("scoreSoundA")
 }
 
-} else {
-
-   if(player==="A"){
-     if(scoreA>0) scoreA--;
-     duelPosition--;
-     flash("black");
-     play("ouchWhite");
-   } 
-   else {
-     if(scoreB>0) scoreB--;
-     duelPosition++;
-     flash("black");
-     play("ouchBlack");
-   }
+else{
+scoreB++
+duelPosition--
+if(scoreA>0)scoreA--
+flash("#e0001a")
+play("scoreSoundB")
+}
 
 }
 
- updateScores();
-duelPosition = Math.max(0, Math.min(20, duelPosition));
- updateBar();
+else{
 
-/* if(scoreA===target){
-   endGame("A");
-   return;
- }
-
- if(scoreB===target){
-   endGame("B");
-   return;
- } */
-
- newQuestion();
-if(duelPosition <= 0){
- endGame("A");
- return;
+if(player==="A"){
+if(scoreA>0){
+scoreA--
+duelPosition--
+}
+flash("black")
+play("ouchWhite")
 }
 
-if(duelPosition >= 20){
- endGame("B");
- return;
+else{
+if(scoreB>0){
+scoreB--
+duelPosition++
 }
+flash("black")
+play("ouchBlack")
+}
+
+}
+
+updateScores()
+
+duelPosition=Math.max(0,Math.min(20,duelPosition))
+
+updateBar()
+
+if(duelPosition<=0){
+endGame("A")
+return
+}
+
+if(duelPosition>=20){
+endGame("B")
+return
+}
+
+newQuestion()
+
 }
 
 function updateScores(){
- document.getElementById("scoreA").innerText=scoreA;
- document.getElementById("scoreB").innerText=scoreB;
+
+document.getElementById("scoreA").innerText=scoreA
+document.getElementById("scoreB").innerText=scoreB
+
 }
 
 function endGame(winner){
 
- gameActive=false;
+gameActive=false
 
- let overlay=document.getElementById("overlay");
- overlay.style.display="flex";
- overlay.style.background="black";
-    overlay.style.backgroundImage="none";
+let overlay=document.getElementById("overlay")
 
- let winnerName = winner==="A"
-   ? document.getElementById("nameA")?.innerText || "PELAJA 1"
-   : document.getElementById("nameB")?.innerText || "PELAJA 2";
+overlay.style.display="flex"
+overlay.style.background="black"
+overlay.style.backgroundImage="none"
 
- overlay.innerHTML = `
- <div style="
-   position:absolute;
-   top:0;
-   left:0;
-   width:100%;
-   height:100%;
-   background:url('samurai.png') center/cover no-repeat;
-   animation:samuraiZoom 6s ease forwards;
-   filter:brightness(0.75);
- "></div>
+let winnerName=
+winner==="A"
+?document.getElementById("nameA").innerText
+:document.getElementById("nameB").innerText
 
- <div style="
-   position:relative;
-   z-index:2;
-   text-align:center;
-   color:white;
- ">
+overlay.innerHTML=`
 
- <div class="victoryText" style="
-   font-size:80px;
-   margin-bottom:40px;
-   letter-spacing:6px;
- ">
- TAISTELU OHI
- </div>
+<div style="
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url('samurai.png') center/cover no-repeat;
+animation:samuraiZoom 6s ease forwards;
+filter:brightness(0.75);
+"></div>
 
- <div class="victoryWinner" style="
-   font-size:70px;
-   letter-spacing:4px;
- ">
- ${winnerName} VOITTI!
- </div>
+<div style="
+position:relative;
+z-index:2;
+text-align:center;
+">
 
- </div>
- `;
-document.body.style.animation="screenShake 0.4s";
-setTimeout(()=>{document.body.style.animation="";},400);
-    
- play("winSound");
+<div class="victoryText" style="
+font-size:80px;
+margin-bottom:40px;
+letter-spacing:6px;
+">
+TAISTELU OHI
+</div>
 
-window.getSelection().removeAllRanges();
+<div class="victoryWinner" style="
+font-size:70px;
+letter-spacing:4px;
+">
+${winnerName} VOITTI!
+</div>
+
+</div>
+`
+
+document.body.style.animation="screenShake 0.4s"
+setTimeout(()=>{document.body.style.animation=""},400)
+
+play("winSound")
+
+window.getSelection().removeAllRanges()
+
 setTimeout(()=>{
-  flash("white");
-  play("scoreSoundA");
-},1200);
+flash("white")
+play("scoreSoundA")
+},1200)
 
- setTimeout(()=>{
-   resetGame();
- },7000);
+setTimeout(()=>{
+resetGame()
+},7000)
 
 }
 
 function resetGame(){
 
+scoreA=0
+scoreB=0
+duelPosition=10
 
-scoreA = 0;
-scoreB = 0;
-duelPosition = 10;
+updateScores()
+updateBar()
 
-updateScores();
-updateBar();
+let overlay=document.getElementById("overlay")
 
-let overlay=document.getElementById("overlay");
+overlay.className="startScreen"
+overlay.style.display="flex"
 
-overlay.className="startScreen";
-overlay.style.display="flex";
-document.getElementById("overlay").innerHTML=`
-<input id="nameInputA" class="nameInput" placeholder="Pelaaja 1 nimi" value="${document.getElementById("nameA").innerText}">
-<input id="nameInputB" class="nameInput" placeholder="Pelaaja 2 nimi" value="${document.getElementById("nameB").innerText}">
+overlay.innerHTML=`
+
+<input id="nameInputA" class="nameInput" placeholder="PELAAJA 1" value="${document.getElementById("nameA").innerText}">
+<input id="nameInputB" class="nameInput" placeholder="PELAAJA 2" value="${document.getElementById("nameB").innerText}">
 
 <button onclick="startCountdown()" style="
 font-size:40px;
@@ -614,7 +645,8 @@ cursor:pointer;
 ">
 ALOITA PELI
 </button>
-`;
+
+`
 
 }
 
@@ -622,35 +654,3 @@ ALOITA PELI
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
