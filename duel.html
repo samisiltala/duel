@@ -42,7 +42,7 @@ border-radius:10px;
 background:black;
 color:white;
 text-decoration:none;
-z-index:1000;
+z-index:2000;
 }
 
 .musicButton{
@@ -277,6 +277,27 @@ font-size:70px;
 margin-top:30px;
 }
 
+  /* MOBILE ROTATE */
+
+@media (orientation:portrait){
+
+body::before{
+content:"KÄÄNNÄ LAITE VAAKATILAAN";
+position:fixed;
+inset:0;
+background:black;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+text-align:center;
+z-index:5000;
+padding:40px;
+}
+
+}
+  
 </style>
 </head>
 
@@ -379,6 +400,18 @@ btn.innerText="MUSIIKKI OFF"
 
 let mode="*"
 let difficulty="hard"
+const modeText={
+"+":"YHTEENLASKU",
+"-":"VÄHENNYSLASKU",
+"*":"KERTOLASKU",
+"/":"JAKOLASKU"
+}
+
+const diffText={
+easy:"HELPPO",
+normal:"NORMAALI",
+hard:"VAIKEA"
+}
 
 let scoreA=0
 let scoreB=0
@@ -702,5 +735,6 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
 
 
