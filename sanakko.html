@@ -659,35 +659,60 @@ clearSelection()
 
 function getNearbyTile(x,y){
 
-let closest=null
-let minDist=9999
+let candidates = []
+
+if(usedTiles.length === 0){
+candidates = tiles
+}else{
+
+let last = usedTiles[usedTiles.length-1]
+
+let lx = Number(last.dataset.x)
+let ly = Number(last.dataset.y)
 
 tiles.forEach(tile=>{
 
-let rect=tile.getBoundingClientRect()
+let tx = Number(tile.dataset.x)
+let ty = Number(tile.dataset.y)
 
-let cx=rect.left+rect.width/2
-let cy=rect.top+rect.height/2
-
-let dx=cx-x
-let dy=cy-y
-
-let dist=Math.sqrt(dx*dx+dy*dy)
-
-if(dist<minDist){
-minDist=dist
-closest=tile
+if(Math.abs(tx-lx)<=1 && Math.abs(ty-ly)<=1){
+candidates.push(tile)
 }
 
 })
 
-if(minDist<180) return closest
+}
+
+let closest = null
+let minDist = 9999
+
+candidates.forEach(tile=>{
+
+let rect = tile.getBoundingClientRect()
+
+let cx = rect.left + rect.width/2
+let cy = rect.top + rect.height/2
+
+let dx = cx - x
+let dy = cy - y
+
+let dist = Math.sqrt(dx*dx + dy*dy)
+
+if(dist < minDist){
+minDist = dist
+closest = tile
+}
+
+})
+
+if(minDist < 180) return closest
 return null
 
 }
   
 function addTile(tile){
 
+tile.style.transform = "scale(1.2)"
 if(usedTiles.includes(tile)) return
 if(!isNeighbor(tile)) return
 
@@ -784,6 +809,7 @@ streak=0
 
 function clearSelection(){
 
+tiles.forEach(t=>t.style.transform="")
 usedTiles.forEach(t=>t.classList.remove("active"))
 
 usedTiles=[]
