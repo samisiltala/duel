@@ -67,17 +67,17 @@ pointer-events:none;
 
 #duelBar{
 position:absolute;
-top:72%;
+top:74%;
 left:50%;
-transform:translate(-50%,-50%);
-width:420px;
-height:18px;
+transform:translateX(-50%);
+width:320px;
+height:16px;
 background:black;
 border:2px solid white;
-border-radius:6px;
+border-radius:8px;
 overflow:hidden;
-display:flex;
 z-index:3;
+display:flex;
 }
 #barWhite{
 background:white;
@@ -348,13 +348,16 @@ function createButtons(containerId,answers,player){
 }
 
 function flash(color){
+
  let flash=document.getElementById("flash");
+
  flash.style.background=color;
- flash.style.opacity="0.9";
+ flash.style.opacity="0.7";
 
  setTimeout(()=>{
    flash.style.opacity="0";
- },120);
+ },80);
+
 }
 
 function updateBar(){
@@ -450,6 +453,7 @@ overlay.style.color="white";
 
 </body>
 </html>
+
 
 
 
