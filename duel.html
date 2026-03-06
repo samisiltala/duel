@@ -199,9 +199,11 @@ z-index:998;
 <audio id="bip" src="bip.mp3"></audio>
 <audio id="goSound" src="go.mp3"></audio>
 <audio id="music" src="duelmusa.mp3" loop></audio>
+<audio id="ouchBlack" src="ouchmusta.mp3"></audio>
+<audio id="ouchWhite" src="ouchvalk.mp3"></audio>
 
 <script>
-
+let answered = false;
 window.addEventListener("load", () => {
 
   let music = document.getElementById("music");
@@ -274,6 +276,7 @@ function toggleMusic(){
 }
     
 function newQuestion(){
+answered = false;
  if(!gameActive) return;
 
  a = tables[Math.floor(Math.random()*tables.length)];
@@ -321,8 +324,10 @@ function flash(color){
 
 function choose(player,value){
  if(!gameActive) return;
+ if(answered) return;
 
  if(value===correctAnswer){
+     answered = true;
 
    if(player==="A"){
      scoreA++;
@@ -337,17 +342,20 @@ function choose(player,value){
      play("scoreSoundB");
    }
 
- } else {
+} else {
 
    if(player==="A"){
      if(scoreA>0) scoreA--;
-     flash("#1e293b");
-   } else {
+     flash("black");
+     play("ouchWhite");
+   } 
+   else {
      if(scoreB>0) scoreB--;
-     flash("#1e293b");
+     flash("black");
+     play("ouchBlack");
    }
 
- }
+}
 
  updateScores();
 
@@ -389,6 +397,7 @@ overlay.style.color="white";
 
 </body>
 </html>
+
 
 
 
