@@ -62,7 +62,7 @@ top:20px;
 position:fixed;
 left:20px;
 top:240px;
-z-index:1000;
+z-index:6000;
 text-align:center;
 }
 
@@ -347,10 +347,11 @@ padding:40px;
 
 <a href="#" class="homeButton restartButton" onclick="backToMenu()">
 ALKUUN
-<div class="levelButton" id="levelLabel">
+</a>
+  <div class="levelButton" id="levelLabel">
 
 KERTOLASKU<br>VAIKEA
-<div class="keyPanel">
+<div class="keyPanel" id="keyPanel">
 
 <div class="keyTitle">NÄPPÄIMET</div>
 
@@ -363,8 +364,9 @@ J K L
 </div>
 
 </div>
+
 </div>
-</a>
+
 
 
 <div class="centerQuestion" id="question"></div>
@@ -542,6 +544,7 @@ document.getElementById("nameB").innerText=nameB
 
 document.getElementById("levelLabel").innerHTML =
 modeText[mode] + "<br>" + diffText[difficulty]
+document.getElementById("keyPanel").style.display="block"
 
 let overlay=document.getElementById("overlay")
 
@@ -597,6 +600,7 @@ return Math.floor(Math.random()*(max-min+1))+min
 function backToMenu(){
 
 document.getElementById("levelLabel").style.display="none"
+document.getElementById("keyPanel").style.display="none"
 
 let nameA=document.getElementById("nameA").innerText
 let nameB=document.getElementById("nameB").innerText
@@ -888,6 +892,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
