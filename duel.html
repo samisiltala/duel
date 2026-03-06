@@ -26,6 +26,8 @@ top:120px;
 .levelButton{
 top:170px;
 cursor:default;
+line-height:1.3;
+text-align:center;
 }
 
 .musicButton{
@@ -42,7 +44,7 @@ border-radius:10px;
 background:black;
 color:white;
 text-decoration:none;
-z-index:3000;
+z-index:5000;
 }
 
 .musicButton{
@@ -120,12 +122,13 @@ z-index:5;
 
 #levelLabel{
 position:absolute;
-top:90px;
+top:20px;
 left:50%;
 transform:translateX(-50%);
-font-size:22px;
-opacity:0.7;
-z-index:5;
+font-size:20px;
+color:white;
+letter-spacing:3px;
+z-index:10;
 }
 
 /* NINJA */
@@ -305,12 +308,14 @@ padding:40px;
 
 <a href="index.html" class="homeButton">KOTI</a>
 <a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">MUSIIKKI ON</a>
+
 <a href="#" class="homeButton restartButton" onclick="backToMenu()">
 ALKUUN
-</a>
 <div class="homeButton levelButton" id="levelLabel">
-KERTOLASKU • VAIKEA
+KERTOLASKU<br>VAIKEA
 </div>
+</a>
+
 
 <div class="centerQuestion" id="question"></div>
 
@@ -422,11 +427,15 @@ let answered=false
 let a,b,correctAnswer
 
 function setMode(btn,m){
+
 mode=m
+
 document.querySelectorAll(".menuLeft button").forEach(b=>{
-if(["+","-","×","÷"].includes(b.innerText)) b.classList.remove("selected")
+if(["+","−","×","÷"].includes(b.innerText)) b.classList.remove("selected")
 })
+
 btn.classList.add("selected")
+
 }
 
 function setDifficulty(btn,d){
@@ -456,8 +465,8 @@ return
 document.getElementById("nameA").innerText=nameA
 document.getElementById("nameB").innerText=nameB
 
-document.getElementById("levelLabel").innerText =
-modeText[mode] + " • " + diffText[difficulty]
+document.getElementById("levelLabel").innerHTML =
+modeText[mode] + "<br>" + diffText[difficulty]
 
 let overlay=document.getElementById("overlay")
 
@@ -745,6 +754,7 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
 
 
 
