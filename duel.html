@@ -89,7 +89,7 @@ transition:0.3s;
 background:#e0001a;
 width:50%;
 transition:0.3s;
-}<
+}
 
 .buttons {
     display: flex;
@@ -290,6 +290,7 @@ else if(count===0){
       clearInterval(interval);
       overlay.style.display="none";
       gameActive=true;
+      updateBar();
       newQuestion();
     }
   },1000);
@@ -368,13 +369,6 @@ function updateBar(){
  document.getElementById("barWhite").style.width = whitePercent + "%";
  document.getElementById("barRed").style.width = redPercent + "%";
 
-}
-
- let whitePercent = (scoreA/target)*100;
- let redPercent = (scoreB/target)*100;
-
- document.getElementById("barWhite").style.width = whitePercent + "%";
- document.getElementById("barRed").style.width = redPercent + "%";
 }
     
 function choose(player,value){
@@ -464,6 +458,7 @@ overlay.style.color="white";
 
 </body>
 </html>
+
 
 
 
