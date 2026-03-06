@@ -60,7 +60,11 @@ linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
 url("samurai.png") center/cover no-repeat;
 animation:samuraiZoom 12s ease infinite alternate;
 }
-    
+
+#overlay{
+user-select:none;
+}
+
 #ninja{
 position:absolute;
 top:50%;
@@ -562,6 +566,8 @@ document.body.style.animation="screenShake 0.4s";
 setTimeout(()=>{document.body.style.animation="";},400);
     
  play("winSound");
+
+window.getSelection().removeAllRanges();
 setTimeout(()=>{
   flash("white");
   play("scoreSoundA");
@@ -607,6 +613,7 @@ ALOITA PELI
 
 </body>
 </html>
+
 
 
 
