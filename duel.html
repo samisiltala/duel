@@ -494,6 +494,7 @@ overlay.style.display="none"
 gameActive=true
 
 document.getElementById("levelLabel").style.display="block"
+
   
 updateBar()
 newQuestion()
@@ -663,15 +664,17 @@ play("scoreSoundB")
 
 }else{
 
-if(player==="A"&&scoreA>0){
-scoreA--
-duelPosition--
+// väärä vastaus antaa pisteen vastustajalle
+
+if(player === "A"){
+scoreB++
+duelPosition--     // B saa pisteen → palkki vasemmalle
 play("ouchWhite")
 }
 
-if(player==="B"&&scoreB>0){
-scoreB--
-duelPosition++
+else{
+scoreA++
+duelPosition++     // A saa pisteen → palkki oikealle
 play("ouchBlack")
 }
 
@@ -755,6 +758,7 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
 
 
 
