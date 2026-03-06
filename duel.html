@@ -653,13 +653,11 @@ answered=true
 
 if(player==="A"){
 scoreA++
-duelPosition--
-play("scoreSoundA")
-}
-
-else{
-scoreB++
 duelPosition++
+play("scoreSoundA")
+}else{
+scoreB++
+duelPosition--
 play("scoreSoundB")
 }
 
@@ -684,12 +682,12 @@ updateScores()
 duelPosition=Math.max(0,Math.min(20,duelPosition))
 updateBar()
 
-if(duelPosition<=0){
+if(duelPosition>=20){
 endGame("A")
 return
 }
 
-if(duelPosition>=20){
+if(duelPosition<=0){
 endGame("B")
 return
 }
@@ -757,6 +755,7 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
 
 
 
