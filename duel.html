@@ -134,7 +134,9 @@ left:20px;
 <body>
 
 <a href="index.html" class="homeButton">KOTI</a>
-<a href="#" class="homeButton musicButton" onclick="toggleMusic()">MUSIIKKI ON/OFF</a>
+<a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">
+MUSIIKKI ON
+</a>
 
 <!-- muu sisältö jatkuu tästä -->
 
@@ -265,13 +267,16 @@ else if(count===0){
 
 function toggleMusic(){
 
-  let music = document.getElementById("music");
+ let music = document.getElementById("music");
+ let btn = document.getElementById("musicBtn");
 
-  if(music.paused){
-    music.play();
-  }else{
-    music.pause();
-  }
+ if(music.paused){
+   music.play();
+   btn.innerText = "MUSIIKKI ON";
+ }else{
+   music.pause();
+   btn.innerText = "MUSIIKKI OFF";
+ }
 
 }
     
@@ -397,6 +402,7 @@ overlay.style.color="white";
 
 </body>
 </html>
+
 
 
 
