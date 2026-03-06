@@ -584,6 +584,9 @@ btn.classList.add("selected")
 }
 
 function startCountdown(){
+document.querySelector(".menuLeft").style.display="none"
+document.querySelector(".centerMenu").style.display="none"
+document.querySelector(".gameGuide").style.display="none"
 if(!document.fullscreenElement){
 document.documentElement.requestFullscreen().catch(()=>{})
 }
@@ -967,6 +970,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
