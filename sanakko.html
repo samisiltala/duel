@@ -192,7 +192,9 @@ let timer
 
 let selecting=false
 let usedTiles=[]
+let foundWords = new Set()
 
+  
 let playerName=""
 
 let dictionary=new Set()
@@ -225,6 +227,7 @@ document.getElementById("overlay").style.display="none"
 
 score=0
 time=120
+foundWords.clear()
 
 document.getElementById("score").textContent="Pisteet: 0"
 document.getElementById("found").innerHTML=""
@@ -408,7 +411,8 @@ function checkWord(){
 
 let w=currentWord.toLowerCase()
 
-if(dictionary.has(w)){
+if(dictionary.has(w) && !foundWords.has(w)){
+foundWords.add(w)
 
 let pts=w.length-2
 
