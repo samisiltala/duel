@@ -252,7 +252,7 @@ let scoreA = 0;
 let scoreB = 0;
 let target = 10;
 let gameActive = false;
-
+let duelPosition = 10;
 
     
 function play(id){
@@ -362,13 +362,13 @@ function flash(color){
 
 function updateBar(){
 
- let total = scoreA + scoreB;
+ let whitePercent = (duelPosition/20)*100;
+ let redPercent = 100 - whitePercent;
 
- if(total === 0){
-   document.getElementById("barWhite").style.width="50%";
-   document.getElementById("barRed").style.width="50%";
-   return;
- }
+ document.getElementById("barWhite").style.width = whitePercent + "%";
+ document.getElementById("barRed").style.width = redPercent + "%";
+
+}
 
  let whitePercent = (scoreA/target)*100;
  let redPercent = (scoreB/target)*100;
@@ -384,18 +384,20 @@ function choose(player,value){
  if(value===correctAnswer){
      answered = true;
 
-   if(player==="A"){
-     scoreA++;
-     if(scoreB>0) scoreB--;
-     flash("white");
-     play("scoreSoundA");
-   }
-   else {
-     scoreB++;
-     if(scoreA>0) scoreA--;
-     flash("#e0001a");
-     play("scoreSoundB");
-   }
+if(player==="A"){
+  scoreA++;
+  duelPosition--;
+  if(scoreB>0) scoreB--;
+  flash("white");
+  play("scoreSoundA");
+}
+else {
+  scoreB++;
+  duelPosition++;   // <-- LISÄÄ TÄMÄ
+  if(scoreA>0) scoreA--;
+  flash("#e0001a");
+  play("scoreSoundB");
+}
 
 } else {
 
@@ -415,7 +417,7 @@ function choose(player,value){
  updateScores();
  updateBar();
 
- if(scoreA===target){
+/* if(scoreA===target){
    endGame("A");
    return;
  }
@@ -423,9 +425,18 @@ function choose(player,value){
  if(scoreB===target){
    endGame("B");
    return;
- }
+ } */
 
  newQuestion();
+if(duelPosition <= 0){
+ endGame("A");
+ return;
+}
+
+if(duelPosition >= 20){
+ endGame("B");
+ return;
+}
 }
 
 function updateScores(){
@@ -453,6 +464,7 @@ overlay.style.color="white";
 
 </body>
 </html>
+
 
 
 
