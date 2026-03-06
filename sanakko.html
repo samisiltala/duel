@@ -394,17 +394,16 @@ clearSelection()
 
 function addTile(tile){
 
-if(usedTiles.includes(tile)) return
-if(!isNeighbor(tile)) return
+if(usedTiles.length>1 && tile===usedTiles[usedTiles.length-2]){
 
-tile.classList.add("active")
+let last=usedTiles.pop()
+last.classList.remove("active")
 
-usedTiles.push(tile)
-
-currentWord+=tile.textContent
+currentWord=currentWord.slice(0,-1)
 
 document.getElementById("word").textContent=currentWord
 
+return
 }
 
 function checkWord(){
