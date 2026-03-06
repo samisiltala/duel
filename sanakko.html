@@ -608,15 +608,15 @@ if(!selecting) return
 pointerX = e.clientX
 pointerY = e.clientY
 
-let el = document.elementFromPoint(e.clientX, e.clientY)
+let tile = getNearbyTile(e.clientX,e.clientY)
 
-if(el && el.classList.contains("tile")){
-addTile(el)
+if(tile){
+addTile(tile)
 }
 
 drawLine()
 
-
+})
 
 window.addEventListener("pointerup",(e)=>{
 
@@ -630,6 +630,35 @@ clearSelection()
 
 })
 
+function getNearbyTile(x,y){
+
+let closest=null
+let minDist=9999
+
+tiles.forEach(tile=>{
+
+let rect=tile.getBoundingClientRect()
+
+let cx=rect.left+rect.width/2
+let cy=rect.top+rect.height/2
+
+let dx=cx-x
+let dy=cy-y
+
+let dist=Math.sqrt(dx*dx+dy*dy)
+
+if(dist<minDist){
+minDist=dist
+closest=tile
+}
+
+})
+
+if(minDist<70) return closest
+return null
+
+}
+  
 function addTile(tile){
 
 if(usedTiles.includes(tile)) return
