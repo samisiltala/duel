@@ -41,6 +41,12 @@ body {
     margin-bottom: 30px;
 }
 
+.playerName{
+font-size:36px;
+margin-bottom:10px;
+letter-spacing:3px;
+}
+    
 #question {
     font-family: 'Orbitron', sans-serif;
 }
@@ -141,6 +147,7 @@ border:2px solid white;
 border-radius:10px;
 text-align:center;
 width:260px;
+text-transform:uppercase;
 }
 .homeButton{
 position:fixed;
@@ -327,8 +334,9 @@ function play(id){
 
 function startCountdown(){
 document.getElementById("overlay").classList.remove("startScreen");
-let nameA = document.getElementById("nameInputA").value.trim();
-let nameB = document.getElementById("nameInputB").value.trim();
+document.getElementById("overlay").style.background="black";
+let nameA = document.getElementById("nameInputA").value.trim().toUpperCase();
+let nameB = document.getElementById("nameInputB").value.trim().toUpperCase();
 
 if(!nameA || !nameB){
 alert("Anna molempien pelaajien nimet");
@@ -581,6 +589,7 @@ setTimeout(()=>{
 
 function resetGame(){
 
+
 scoreA = 0;
 scoreB = 0;
 duelPosition = 10;
@@ -613,6 +622,7 @@ ALOITA PELI
 
 </body>
 </html>
+
 
 
 
