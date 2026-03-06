@@ -305,6 +305,14 @@ animation:victoryZoom 1.2s ease-out forwards;
 animation:victoryZoom 1.2s ease-out forwards;
 animation-delay:0.8s;
 opacity:0;
+
+color:#ff2b2b;
+text-shadow:
+0 0 10px #ff0000,
+0 0 20px #ff0000,
+0 0 40px #ff0000;
+
+letter-spacing:4px;
 }
 
 @keyframes screenShake{
@@ -515,7 +523,7 @@ KOKO NÄYTTÖ ON
 
 </div>
 
-<audio id="winSound" src="voitto.wav"></audio>
+<audio id="winSound" src="arigatowin.mp3"></audio>
 <audio id="scoreSoundA" src="miekka1.wav"></audio>
 <audio id="scoreSoundB" src="miekka2.wav"></audio>
 <audio id="bip" src="bip.mp3"></audio>
@@ -917,9 +925,6 @@ overlay.style.display="flex"
 
 overlay.innerHTML=`
 
-document.body.style.animation="screenShake 0.4s";
-setTimeout(()=>{document.body.style.animation=""},400);
-
 <div style="
 position:absolute;
 inset:0;
@@ -927,7 +932,15 @@ background:url('samurai.png') center/cover no-repeat;
 animation:samuraiZoom 6s ease forwards;
 "></div>
 
-<div style="position:relative;text-align:center">
+<div style="
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+z-index:5;
+width:100%;
+">
 
 <div class="victoryText">
 TAISTELU OHI
@@ -939,12 +952,13 @@ ${name} VOITTI!
 
 </div>
 `
+`
 
 play("winSound")
 
 setTimeout(()=>{
 backToMenu()
-},6000)
+},8000)
 
 }
 document.addEventListener("keydown", function(e){
@@ -979,6 +993,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
