@@ -19,6 +19,52 @@ overflow:hidden;
 
 /* HOME */
 
+.restartButton{
+top:120px;
+}
+
+.levelButton{
+top:180px;
+left:20px;
+font-size:18px;
+padding:10px 20px;
+border:2px solid white;
+border-radius:10px;
+background:black;
+color:white;
+position:fixed;
+z-index:1000;
+pointer-events:none;
+}
+
+.fullscreenButton{
+
+position:absolute;
+left:190px;
+bottom:40px;
+
+font-size:16px;
+padding:8px 18px;
+
+border:2px solid white;
+border-radius:10px;
+
+background:black;
+color:white;
+
+font-family:'Orbitron';
+
+z-index:2000;
+
+}
+
+.fullscreenButton:hover{
+background:white;
+color:black;
+}
+.musicButton{
+top:70px;
+}
 .homeButton{
 position:fixed;
 left:20px;
@@ -32,29 +78,11 @@ text-decoration:none;
 z-index:5000;
 }
 
-.homeButton:first-of-type{top:20px;}
-.musicButton{top:70px;}
-.restartButton{top:120px;}
-
-.levelButton{
-top:180px;
-left:20px;
-font-size:16px;
-padding:10px 20px;
-border:2px solid white;
-border-radius:10px;
-background:black;
-color:white;
-position:fixed;
-z-index:1000;
-pointer-events:none;
-display:none;
-text-align:center;
-line-height:1.3;
+.homeButton:first-of-type{
+top:20px;
 }
 
-/* KEY PANEL */
-
+/* ARENA */
 .keyPanel{
 position:fixed;
 left:20px;
@@ -76,12 +104,16 @@ border:2px solid white;
 border-radius:10px;
 margin-bottom:8px;
 background:black;
+font-family:'Orbitron';
 }
 
-.whiteKeys{color:white;}
-.redKeys{color:#e0001a;}
+.whiteKeys{
+color:white;
+}
 
-/* ARENA */
+.redKeys{
+color:#e0001a;
+}
 
 .arena{
 display:flex;
@@ -106,11 +138,29 @@ font-size:60px;
 margin-bottom:30px;
 }
 
+.victoryText,
+.victoryWinner{
+
+text-shadow:
+0 0 10px black,
+0 0 20px black,
+0 0 40px #ff0000;
+
+letter-spacing:6px;
+
+}
 .buttons{
 display:flex;
 flex-direction:column;
 gap:20px;
 }
+
+button{
+font-family:'Orbitron';
+cursor:pointer;
+}
+
+/* ANSWER BUTTONS */
 
 .leftPlayer button{
 font-size:50px;
@@ -130,6 +180,8 @@ border:none;
 border-radius:20px;
 }
 
+/* QUESTION */
+
 .centerQuestion{
 position:absolute;
 top:15%;
@@ -138,6 +190,20 @@ transform:translateX(-50%);
 font-size:90px;
 z-index:5;
 }
+
+/* LEVEL LABEL */
+
+.levelButton{
+top:170px;
+font-size:16px;
+line-height:1.3;
+text-align:center;
+cursor:default;
+pointer-events:none;
+display:none;
+}
+
+/* NINJA */
 
 #ninja{
 position:absolute;
@@ -149,6 +215,18 @@ opacity:0.7;
 pointer-events:none;
 z-index:1;
 }
+
+#countdown{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:120px;
+z-index:2000;
+display:none;
+}
+  
+/* DUEL BAR */
 
 #duelBar{
 position:absolute;
@@ -164,8 +242,19 @@ display:flex;
 z-index:3;
 }
 
-#barWhite{background:white;width:50%;transition:0.3s;}
-#barRed{background:#e0001a;width:50%;transition:0.3s;}
+#barWhite{
+background:white;
+width:50%;
+transition:0.3s;
+}
+
+#barRed{
+background:#e0001a;
+width:50%;
+transition:0.3s;
+}
+
+/* OVERLAY */
 
 #overlay{
 position:fixed;
@@ -177,10 +266,20 @@ align-items:center;
 z-index:999;
 }
 
+/* SAMURAI */
+
 #samuraiBG{
 position:absolute;
-inset:0;
-background:url("samurai.png") center/cover no-repeat;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+background-image:url("samurai.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
 opacity:0.35;
 animation:samuraiZoom 14s ease infinite alternate;
 }
@@ -190,15 +289,53 @@ animation:samuraiZoom 14s ease infinite alternate;
 100%{transform:scale(1.15)}
 }
 
-#countdown{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:120px;
-z-index:2000;
-display:none;
+@keyframes victoryZoom{
+
+0%{
+opacity:0;
+transform:scale(0.6);
 }
+
+60%{
+opacity:1;
+transform:scale(1.15);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+
+.victoryText{
+animation:victoryZoom 1.2s ease-out forwards;
+}
+
+.victoryWinner{
+animation:victoryZoom 1.2s ease-out forwards;
+animation-delay:0.8s;
+opacity:0;
+
+color:#ff2b2b;
+text-shadow:
+0 0 10px #ff0000,
+0 0 20px #ff0000,
+0 0 40px #ff0000;
+
+letter-spacing:4px;
+}
+
+@keyframes screenShake{
+
+0%{transform:translate(0,0)}
+25%{transform:translate(-6px,4px)}
+50%{transform:translate(6px,-4px)}
+75%{transform:translate(-4px,3px)}
+100%{transform:translate(0,0)}
+
+}
+
+/* CENTER MENU */
 
 .centerMenu{
 position:relative;
@@ -218,6 +355,7 @@ color:white;
 border:2px solid white;
 border-radius:10px;
 text-transform:uppercase;
+font-family:'Orbitron',sans-serif;
 }
 
 .startButton{
@@ -228,6 +366,8 @@ color:white;
 border:2px solid white;
 border-radius:20px;
 }
+
+/* LEFT MENU */
 
 .menuLeft{
 position:absolute;
@@ -246,7 +386,6 @@ border:2px solid white;
 border-radius:10px;
 background:black;
 color:white;
-cursor:pointer;
 }
 
 .menuTitle{
@@ -260,45 +399,81 @@ background:white !important;
 color:black !important;
 }
 
+/* COUNTDOWN */
+
+.countdown{
+font-size:120px;
+}
+
+/* VICTORY */
+
 .victoryText{
 font-size:80px;
-animation:victoryZoom 1.2s ease-out forwards;
 }
 
 .victoryWinner{
 font-size:70px;
 margin-top:30px;
-animation:victoryZoom 1.2s ease-out forwards;
-animation-delay:0.8s;
-opacity:0;
-color:#ff2b2b;
-text-shadow:0 0 10px #ff0000,0 0 20px #ff0000;
 }
 
-@keyframes victoryZoom{
-0%{opacity:0;transform:scale(0.6)}
-60%{opacity:1;transform:scale(1.15)}
-100%{transform:scale(1)}
+  /* MOBILE ROTATE */
+
+@media (orientation:portrait){
+
+body::before{
+content:"KÄÄNNÄ LAITE VAAKATILAAN";
+position:fixed;
+inset:0;
+background:black;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+text-align:center;
+z-index:5000;
+padding:40px;
 }
 
+}
+  
 </style>
 </head>
 
 <body>
 
 <a href="index.html" class="homeButton">KOTI</a>
-<a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">MUSIIKKI ON</a>
-<a href="#" class="homeButton restartButton" onclick="backToMenu()">ALKUUN</a>
 
-<div class="levelButton" id="levelLabel"></div>
+<a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">
+MUSIIKKI ON
+</a>
 
-<div class="keyPanel" id="keyPanel" style="display:none;">
-<div class="keyTitle">NÄPPÄIMET</div>
-<div class="keyBox whiteKeys">A S D</div>
-<div class="keyBox redKeys">J K L</div>
+<a href="#" class="homeButton restartButton" onclick="backToMenu()">
+ALKUUN
+</a>
+
+<div class="levelButton" id="levelLabel">
+KERTOLASKU<br>VAIKEA
 </div>
 
+<div class="keyPanel" id="keyPanel" style="display:none;">
+
+<div class="keyTitle">NÄPPÄIMET</div>
+
+<div class="keyBox whiteKeys">
+A S D
+</div>
+
+<div class="keyBox redKeys">
+J K L
+</div>
+
+</div>
+
+
+
 <div class="centerQuestion" id="question"></div>
+
 <img id="ninja" src="ninja.jpg">
 
 <div id="duelBar">
@@ -311,16 +486,18 @@ text-shadow:0 0 10px #ff0000,0 0 20px #ff0000;
 <div id="samuraiBG"></div>
 
 <div id="countdown"></div>
-
+  
 <div class="menuLeft">
 
 <div class="menuTitle">LASKU</div>
+
 <button onclick="setMode(this,'+')">+</button>
 <button onclick="setMode(this,'-')">−</button>
 <button onclick="setMode(this,'*')">×</button>
 <button onclick="setMode(this,'/')">÷</button>
 
 <div class="menuTitle">TASO</div>
+
 <button onclick="setDifficulty(this,'easy')">HELPPO</button>
 <button onclick="setDifficulty(this,'normal')">NORMAALI</button>
 <button onclick="setDifficulty(this,'hard')">VAIKEA</button>
@@ -333,8 +510,12 @@ text-shadow:0 0 10px #ff0000,0 0 20px #ff0000;
 <input id="nameInputB" class="nameInput" placeholder="PELAAJA 2">
 
 <button onclick="startCountdown()" class="startButton">ALOITA</button>
-
 </div>
+<button onclick="toggleFullscreen()" class="fullscreenButton" id="fullscreenBtn">
+KOKO NÄYTTÖ ON
+</button>
+
+
 
 </div>
 
@@ -365,7 +546,25 @@ text-shadow:0 0 10px #ff0000,0 0 20px #ff0000;
 
 <script>
 
-/* GAME STATE */
+let scoreDiff = 0
+
+window.addEventListener("load",()=>{
+let music=document.getElementById("music")
+music.volume=0.25
+music.play().catch(()=>{})
+})
+
+function toggleMusic(){
+let music=document.getElementById("music")
+let btn=document.getElementById("musicBtn")
+if(music.paused){
+music.play()
+btn.innerText="MUSIIKKI ON"
+}else{
+music.pause()
+btn.innerText="MUSIIKKI OFF"
+}
+}
 
 let mode="*"
 let difficulty="hard"
@@ -390,48 +589,58 @@ let answered=false
 
 let a,b,correctAnswer
 
-/* MUSIC */
+function toggleFullscreen(){
 
-window.addEventListener("load",()=>{
-let music=document.getElementById("music")
-music.volume=0.25
-music.play().catch(()=>{})
-})
+let btn=document.getElementById("fullscreenBtn")
 
-function toggleMusic(){
-let music=document.getElementById("music")
-let btn=document.getElementById("musicBtn")
-if(music.paused){
-music.play()
-btn.innerText="MUSIIKKI ON"
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen()
+btn.innerText="POISTU KOKO NÄYTÖSTÄ"
+
 }else{
-music.pause()
-btn.innerText="MUSIIKKI OFF"
-}
+
+document.exitFullscreen()
+btn.innerText="KOKO NÄYTTÖ ON"
+
 }
 
-/* MENU */
+}
 
 function setMode(btn,m){
+
 mode=m
-document.querySelectorAll(".menuLeft button").forEach(b=>b.classList.remove("selected"))
+
+document.querySelectorAll(".menuLeft button").forEach(b=>{
+if(["+","−","×","÷"].includes(b.innerText)) b.classList.remove("selected")
+})
+
 btn.classList.add("selected")
+
 }
 
 function setDifficulty(btn,d){
-difficulty=d
-document.querySelectorAll(".menuLeft button").forEach(b=>b.classList.remove("selected"))
-btn.classList.add("selected")
-}
 
-/* START */
+difficulty=d
+
+document.querySelectorAll(".menuLeft button").forEach(b=>{
+if(["HELPPO","NORMAALI","VAIKEA"].includes(b.innerText)) b.classList.remove("selected")
+})
+
+btn.classList.add("selected")
+
+}
 
 function startCountdown(){
 
-scoreA=0
-scoreB=0
+scoreA = 0
+scoreB = 0
+
 updateScores()
 updateBar()
+
+gameActive=false
+answered=false
 
 let nameA=document.getElementById("nameInputA").value.trim().toUpperCase()
 let nameB=document.getElementById("nameInputB").value.trim().toUpperCase()
@@ -444,21 +653,18 @@ return
 document.getElementById("nameA").innerText=nameA
 document.getElementById("nameB").innerText=nameB
 
-document.getElementById("levelLabel").innerHTML=
-modeText[mode]+"<br>"+diffText[difficulty]
+document.getElementById("levelLabel").innerHTML =
+modeText[mode] + "<br>" + diffText[difficulty]
 
 document.getElementById("keyPanel").style.display="block"
-document.getElementById("levelLabel").style.display="block"
 
 let overlay=document.getElementById("overlay")
 let countdown=document.getElementById("countdown")
 
 let count=3
 
-overlay.style.display="flex"
 countdown.style.display="block"
 countdown.innerText="3"
-
 play("bip")
 
 let timer=setInterval(()=>{
@@ -479,10 +685,14 @@ else{
 
 clearInterval(timer)
 
-countdown.style.display="none"
 overlay.style.display="none"
+countdown.style.display="none"
 
 gameActive=true
+
+document.getElementById("levelLabel").style.display="block"
+
+updateBar()
 newQuestion()
 
 }
@@ -491,58 +701,119 @@ newQuestion()
 
 }
 
-/* UTIL */
-
 function play(id){
+
 let s=document.getElementById(id)
 if(!s)return
+
 s.pause()
 s.currentTime=0
 s.play().catch(()=>{})
+
 }
 
 function rand(min,max){
 return Math.floor(Math.random()*(max-min+1))+min
 }
 
-/* QUESTIONS */
+function backToMenu(){
+
+document.getElementById("levelLabel").style.display="none"
+document.getElementById("keyPanel").style.display="none"
+
+let nameA=document.getElementById("nameA").innerText
+let nameB=document.getElementById("nameB").innerText
+
+let overlay=document.getElementById("overlay")
+
+overlay.style.display="flex"
+
+overlay.innerHTML=`
+
+<div id="samuraiBG"></div>
+
+<div class="menuLeft">
+
+<div class="menuTitle">LASKU</div>
+
+<button onclick="setMode(this,'+')">+</button>
+<button onclick="setMode(this,'-')">−</button>
+<button onclick="setMode(this,'*')">×</button>
+<button onclick="setMode(this,'/')">÷</button>
+
+<div class="menuTitle">TASO</div>
+
+<button onclick="setDifficulty(this,'easy')">HELPPO</button>
+<button onclick="setDifficulty(this,'normal')">NORMAALI</button>
+<button onclick="setDifficulty(this,'hard')">VAIKEA</button>
+
+</div>
+
+<div class="centerMenu">
+
+<input id="nameInputA" class="nameInput" placeholder="PELAAJA 1" value="${nameA}">
+<input id="nameInputB" class="nameInput" placeholder="PELAAJA 2" value="${nameB}">
+
+<button onclick="startCountdown()" class="startButton">
+ALOITA
+</button>
+
+</div>
+
+<button onclick="toggleFullscreen()" class="fullscreenButton" id="fullscreenBtn">
+KOKO NÄYTTÖ ON
+</button>
+
+`
+
+gameActive=false
+answered=false
+
+}
 
 function generateQuestion(){
 
 if(mode==="*"){
+
 let tables
+
 if(difficulty==="easy") tables=[1,2,5,10]
 if(difficulty==="normal") tables=[1,2,3,4,5,10]
 if(difficulty==="hard") tables=[1,2,3,4,5,6,7,8,9,10]
 
-a=tables[rand(0,tables.length-1)]
-b=rand(1,10)
-correctAnswer=a*b
-}
+a = tables[rand(0, tables.length-1)]
+b = rand(1,10)
 
-if(mode==="/"){
-b=rand(1,10)
-correctAnswer=rand(1,10)
-a=b*correctAnswer
+correctAnswer = a*b
+
 }
 
 if(mode==="+"){
+
 let max=10
 if(difficulty==="normal") max=20
 if(difficulty==="hard") max=50
+
 a=rand(1,max)
 b=rand(1,max)
+
 correctAnswer=a+b
+
 }
 
 if(mode==="-" ){
+
 let max=10
 if(difficulty==="normal") max=20
 if(difficulty==="hard") max=50
+
 a=rand(1,max)
 b=rand(1,max)
+
 if(b>a)[a,b]=[b,a]
+
 correctAnswer=a-b
+
 }
 
 }
@@ -552,18 +823,24 @@ function newQuestion(){
 answered=false
 generateQuestion()
 
-let symbol=mode
-if(mode==="*") symbol="×"
-if(mode==="/") symbol=":"
-if(mode==="-") symbol="−"
+let symbol
+
+if(mode === "*") symbol = "×"
+else if(mode === "/") symbol = ":"
+else if(mode === "-") symbol = "−"
+else symbol = "+"
 
 document.getElementById("question").innerText=a+" "+symbol+" "+b
 
 let answers=[correctAnswer]
 
 while(answers.length<3){
+
 let wrong=correctAnswer+rand(-10,10)
-if(wrong>0&&!answers.includes(wrong)) answers.push(wrong)
+
+if(wrong>0&&!answers.includes(wrong))
+answers.push(wrong)
+
 }
 
 answers.sort(()=>Math.random()-0.5)
@@ -579,23 +856,24 @@ let container=document.getElementById(id)
 container.innerHTML=""
 
 answers.forEach(ans=>{
+
 let btn=document.createElement("button")
 btn.innerText=ans
 btn.onclick=()=>choose(player,ans)
+
 container.appendChild(btn)
+
 })
 
 }
-
-/* ANSWER */
 
 function choose(player,value){
 
 if(!gameActive||answered)return
 
-answered=true
+if(value === correctAnswer){
 
-if(value===correctAnswer){
+answered = true
 
 if(player==="A"){
 scoreA++
@@ -608,10 +886,12 @@ play("scoreSoundB")
 }else{
 
 if(player==="A"){
-scoreA=Math.max(0,scoreA-1)
+scoreA = Math.max(0, scoreA-1)
 play("ouchWhite")
-}else{
-scoreB=Math.max(0,scoreB-1)
+}
+
+else{
+scoreB = Math.max(0, scoreB-1)
 play("ouchBlack")
 }
 
@@ -620,14 +900,19 @@ play("ouchBlack")
 updateScores()
 updateBar()
 
-if(scoreA>=10){endGame("A");return}
-if(scoreB>=10){endGame("B");return}
+if(scoreA >= 10){
+endGame("A")
+return
+}
+
+if(scoreB >= 10){
+endGame("B")
+return
+}
 
 newQuestion()
 
 }
-
-/* UI */
 
 function updateScores(){
 document.getElementById("scoreA").innerText=scoreA
@@ -636,20 +921,21 @@ document.getElementById("scoreB").innerText=scoreB
 
 function updateBar(){
 
-let diff=scoreA-scoreB
+let diff = scoreA - scoreB
 
-let white=50+diff*5
-let red=50-diff*5
+let center = 50
+let change = diff * 5
 
-white=Math.max(0,Math.min(100,white))
-red=Math.max(0,Math.min(100,red))
+let white = center + change
+let red = center - change
 
-document.getElementById("barWhite").style.width=white+"%"
-document.getElementById("barRed").style.width=red+"%"
+white = Math.max(0, Math.min(100, white))
+red = Math.max(0, Math.min(100, red))
+
+document.getElementById("barWhite").style.width = white + "%"
+document.getElementById("barRed").style.width = red + "%"
 
 }
-
-/* END */
 
 function endGame(winner){
 
@@ -665,7 +951,12 @@ overlay.style.display="flex"
 
 overlay.innerHTML=`
 
-<div id="samuraiBG"></div>
+<div style="
+position:absolute;
+inset:0;
+background:url('samurai.png') center/cover no-repeat;
+animation:samuraiZoom 6s ease forwards;
+"></div>
 
 <div style="
 position:absolute;
@@ -677,26 +968,30 @@ z-index:5;
 width:100%;
 ">
 
-<div class="victoryText">TAISTELU OHI</div>
-<div class="victoryWinner">${name} VOITTI!</div>
-
+<div class="victoryText">
+TAISTELU OHI
 </div>
 
+<div class="victoryWinner">
+${name} VOITTI!
+</div>
+
+</div>
 `
 
 play("winSound")
 
-setTimeout(()=>location.reload(),8000)
+setTimeout(()=>{
+backToMenu()
+},8000)
 
 }
 
-/* KEYBOARD */
+document.addEventListener("keydown", function(e){
 
-document.addEventListener("keydown",function(e){
+if(!gameActive) return
 
-if(!gameActive)return
-
-let key=e.key.toLowerCase()
+let key = e.key.toLowerCase()
 
 if(key==="a") pressButton("buttonsA",0)
 if(key==="s") pressButton("buttonsA",1)
@@ -711,7 +1006,10 @@ if(key==="l") pressButton("buttonsB",2)
 function pressButton(container,id){
 
 let buttons=document.getElementById(container).children
-if(buttons[id]) buttons[id].click()
+
+if(buttons[id]){
+buttons[id].click()
+}
 
 }
 
@@ -719,3 +1017,32 @@ if(buttons[id]) buttons[id].click()
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
