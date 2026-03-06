@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Kertotaulu DUEL</title>
+<title>DUEL</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
@@ -32,11 +32,6 @@ justify-content:center;
 align-items:center;
 }
 
-.leftPlayer{background:black;}
-.rightPlayer{background:black;}
-
-/* PISTEET */
-
 .score{
 font-size:60px;
 margin-bottom:30px;
@@ -44,11 +39,11 @@ margin-bottom:30px;
 
 .playerName{
 font-size:32px;
-margin-bottom:10px;
 letter-spacing:3px;
+margin-bottom:10px;
 }
 
-/* KYSYMYS */
+/* QUESTION */
 
 .centerQuestion{
 position:absolute;
@@ -56,21 +51,7 @@ top:15%;
 left:50%;
 transform:translateX(-50%);
 font-size:90px;
-font-weight:bold;
 z-index:2;
-}
-
-/* SAMURAI ALOITUS */
-
-#overlay.startScreen{
-background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url("samurai.png") center/cover no-repeat;
-animation:samuraiZoom 12s ease infinite alternate;
-}
-
-#overlay{
-user-select:none;
 }
 
 /* NINJA */
@@ -94,11 +75,9 @@ left:50%;
 transform:translateX(-50%);
 width:320px;
 height:16px;
-background:black;
 border:2px solid white;
 border-radius:8px;
 overflow:hidden;
-z-index:3;
 display:flex;
 }
 
@@ -125,7 +104,7 @@ width:50%;
 transition:0.3s;
 }
 
-/* VASTAUSNAPIT */
+/* BUTTONS */
 
 .buttons{
 display:flex;
@@ -134,19 +113,14 @@ gap:20px;
 }
 
 button{
+font-family:'Orbitron';
 font-size:50px;
-font-family:'Orbitron',sans-serif;
 padding:30px 50px;
-border:3px solid white;
 border-radius:20px;
+border:none;
 cursor:pointer;
-background:black;
-color:white;
 touch-action:manipulation;
 }
-
-button:hover{transform:scale(1.05);}
-button:active{transform:scale(0.95);}
 
 .leftPlayer button{
 background:white;
@@ -156,82 +130,58 @@ color:black;
 .rightPlayer button{
 background:#e0001a;
 color:white;
-border:3px solid #e0001a;
 }
 
-/* NIMISYÖTTÖ */
+/* MENU */
 
 .nameInput{
-font-family:'Orbitron',sans-serif;
-font-size:26px;
-margin:12px;
-padding:12px 20px;
-background:black;
-color:white;
-border:2px solid white;
-border-radius:10px;
+font-family:'Orbitron';
+font-size:24px;
+padding:10px;
+margin:10px;
 text-align:center;
-width:260px;
 text-transform:uppercase;
-}
-
-/* KOTI */
-
-.homeButton{
-position:fixed;
-top:20px;
-left:20px;
-font-size:20px;
-padding:10px 22px;
-border:2px solid white;
-border-radius:10px;
-letter-spacing:2px;
-font-weight:bold;
 background:black;
 color:white;
-text-decoration:none;
-z-index:1000;
-transition:0.2s;
+border:2px solid white;
+border-radius:10px;
 }
 
-.homeButton:hover{
-background:white;
-color:black;
+.menuButtons button{
+font-size:20px;
+padding:10px 20px;
+margin:5px;
 }
 
-.musicButton{
-top:70px;
+/* SAMURAI BACKGROUND */
+
+#overlay.startScreen{
+background:
+linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+url("samurai.png") center/cover no-repeat;
+animation:samuraiZoom 15s ease infinite alternate;
 }
 
-/* ANIMAATIOT */
-
-@keyframes screenShake{
-0%{transform:translate(0,0);}
-20%{transform:translate(-10px,5px);}
-40%{transform:translate(10px,-5px);}
-60%{transform:translate(-6px,4px);}
-80%{transform:translate(6px,-3px);}
-100%{transform:translate(0,0);}
-}
+/* ANIMATIONS */
 
 @keyframes samuraiZoom{
-0%{transform:scale(1);}
-100%{transform:scale(1.15);}
+0%{transform:scale(1)}
+100%{transform:scale(1.15)}
 }
 
 @keyframes textFade{
-0%{opacity:0;transform:translateY(40px);}
-100%{opacity:1;transform:translateY(0);}
+0%{opacity:0; transform:translateY(40px)}
+100%{opacity:1; transform:translateY(0)}
 }
 
 .victoryText{
-animation:textFade 1.2s ease forwards;
+animation:textFade 1s forwards
 }
 
 .victoryWinner{
-animation:textFade 1.2s ease forwards;
-animation-delay:1.2s;
-opacity:0;
+animation:textFade 1s forwards;
+animation-delay:1s;
+opacity:0
 }
 
 </style>
@@ -239,11 +189,7 @@ opacity:0;
 
 <body>
 
-<a href="index.html" class="homeButton">KOTI</a>
-<a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">MUSIIKKI ON</a>
-
 <div class="centerQuestion" id="question"></div>
-
 <img id="ninja" src="ninja.jpg">
 
 <div id="duelBar">
@@ -261,37 +207,32 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-color:white;
-font-size:70px;
-font-weight:bold;
 z-index:999;
 ">
 
 <input id="nameInputA" class="nameInput" placeholder="PELAAJA 1">
 <input id="nameInputB" class="nameInput" placeholder="PELAAJA 2">
 
-<button onclick="startCountdown()" style="
-font-size:40px;
-padding:20px 50px;
-border:none;
-border-radius:20px;
-cursor:pointer;
-">
-ALOITA PELI
-</button>
+<div class="menuButtons">
+
+<div>LASKU</div>
+<button onclick="setMode('+')">+</button>
+<button onclick="setMode('-')">−</button>
+<button onclick="setMode('*')">×</button>
+<button onclick="setMode('/')">÷</button>
+
+<div>TASO</div>
+<button onclick="setDifficulty('easy')">HELPPO</button>
+<button onclick="setDifficulty('normal')">NORMAALI</button>
+<button onclick="setDifficulty('hard')">VAIKEA</button>
 
 </div>
 
-<div id="flash" style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-opacity:0;
-pointer-events:none;
-z-index:998;
-"></div>
+<button onclick="startCountdown()" style="font-size:40px;margin-top:20px">
+ALOITA
+</button>
+
+</div>
 
 <div class="arena">
 
@@ -309,44 +250,35 @@ z-index:998;
 
 </div>
 
-<audio id="winSound" src="voitto.wav"></audio>
-<audio id="scoreSoundA" src="miekka1.wav"></audio>
-<audio id="scoreSoundB" src="miekka2.wav"></audio>
-<audio id="bip" src="bip.mp3"></audio>
-<audio id="goSound" src="go.mp3"></audio>
-<audio id="music" src="duelmusa.mp3" loop></audio>
-<audio id="ouchBlack" src="ouchmusta.mp3"></audio>
-<audio id="ouchWhite" src="ouchvalk.mp3"></audio>
-
 <script>
 
-let answered=false
+/* GAME STATE */
+
+let mode="*"
+let difficulty="hard"
+
 let scoreA=0
 let scoreB=0
 let duelPosition=10
 let gameActive=false
+let answered=false
 
-let tables=[1,2,3,4,5,6,7,8,9,10]
 let a,b,correctAnswer
 
-function play(id){
-let s=document.getElementById(id)
-if(!s)return
-s.pause()
-s.currentTime=0
-s.play().catch(()=>{})
-}
+/* MENU */
+
+function setMode(m){mode=m}
+function setDifficulty(d){difficulty=d}
+
+/* START */
 
 function startCountdown(){
-
-document.getElementById("overlay").classList.remove("startScreen")
-document.getElementById("overlay").style.background="black"
 
 let nameA=document.getElementById("nameInputA").value.trim().toUpperCase()
 let nameB=document.getElementById("nameInputB").value.trim().toUpperCase()
 
 if(!nameA||!nameB){
-alert("Anna molempien pelaajien nimet")
+alert("Anna nimet")
 return
 }
 
@@ -354,28 +286,26 @@ document.getElementById("nameA").innerText=nameA
 document.getElementById("nameB").innerText=nameB
 
 let overlay=document.getElementById("overlay")
+
+overlay.innerHTML="3"
+
 let count=3
 
-overlay.innerHTML=count
-play("bip")
-
-let interval=setInterval(()=>{
+let timer=setInterval(()=>{
 
 count--
 
 if(count>0){
 overlay.innerHTML=count
-play("bip")
 }
 
 else if(count===0){
 overlay.innerHTML="GO!"
-play("goSound")
 }
 
 else{
 
-clearInterval(interval)
+clearInterval(timer)
 overlay.style.display="none"
 
 gameActive=true
@@ -388,41 +318,89 @@ newQuestion()
 
 }
 
-function toggleMusic(){
+/* QUESTION GENERATOR */
 
-let music=document.getElementById("music")
-let btn=document.getElementById("musicBtn")
+function rand(min,max){
+return Math.floor(Math.random()*(max-min+1))+min
+}
 
-if(music.paused){
-music.play()
-btn.innerText="MUSIIKKI ON"
-}else{
-music.pause()
-btn.innerText="MUSIIKKI OFF"
+function generateQuestion(){
+
+if(mode==="*"){
+
+let tables
+
+if(difficulty==="easy") tables=[1,2,5,10]
+if(difficulty==="normal") tables=[1,2,3,4,5,10]
+if(difficulty==="hard") tables=[1,2,3,4,5,6,7,8,9,10]
+
+a=tables[rand(0,tables.length-1)]
+b=rand(1,10)
+correctAnswer=a*b
+
+}
+
+if(mode==="/"){
+
+let tables
+
+if(difficulty==="easy") tables=[1,2,5,10]
+if(difficulty==="normal") tables=[1,2,3,4,5,10]
+if(difficulty==="hard") tables=[1,2,3,4,5,6,7,8,9,10]
+
+b=tables[rand(0,tables.length-1)]
+correctAnswer=rand(1,10)
+a=b*correctAnswer
+
+}
+
+if(mode==="+"){
+
+let max=20
+if(difficulty==="normal") max=50
+if(difficulty==="hard") max=100
+
+a=rand(1,max)
+b=rand(1,max)
+correctAnswer=a+b
+
+}
+
+if(mode==="−"){
+
+let max=20
+if(difficulty==="normal") max=50
+if(difficulty==="hard") max=100
+
+a=rand(1,max)
+b=rand(1,max)
+
+if(b>a)[a,b]=[b,a]
+
+correctAnswer=a-b
+
 }
 
 }
+
+/* NEW QUESTION */
 
 function newQuestion(){
 
 answered=false
-if(!gameActive)return
 
-a=tables[Math.floor(Math.random()*tables.length)]
-b=Math.floor(Math.random()*10)+1
-correctAnswer=a*b
+generateQuestion()
 
-document.getElementById("question").innerText=a+" × "+b
+document.getElementById("question").innerText=a+" "+mode+" "+b
 
 let answers=[correctAnswer]
 
 while(answers.length<3){
 
-let wrong=correctAnswer+Math.floor(Math.random()*10)-5
+let wrong=correctAnswer+rand(-10,10)
 
-if(wrong>0&&!answers.includes(wrong)){
+if(wrong>0&&!answers.includes(wrong))
 answers.push(wrong)
-}
 
 }
 
@@ -433,16 +411,18 @@ createButtons("buttonsB",answers,"B")
 
 }
 
-function createButtons(containerId,answers,player){
+/* BUTTONS */
 
-let container=document.getElementById(containerId)
+function createButtons(id,answers,player){
+
+let container=document.getElementById(id)
 container.innerHTML=""
 
-answers.forEach(answer=>{
+answers.forEach(ans=>{
 
 let btn=document.createElement("button")
-btn.innerText=answer
-btn.onclick=()=>choose(player,answer)
+btn.innerText=ans
+btn.onclick=()=>choose(player,ans)
 
 container.appendChild(btn)
 
@@ -450,31 +430,11 @@ container.appendChild(btn)
 
 }
 
-function flash(color){
-
-let flash=document.getElementById("flash")
-
-flash.style.background=color
-flash.style.opacity="0.7"
-
-setTimeout(()=>{flash.style.opacity="0"},80)
-
-}
-
-function updateBar(){
-
-let whitePercent=(duelPosition/20)*100
-let redPercent=100-whitePercent
-
-document.getElementById("barWhite").style.width=whitePercent+"%"
-document.getElementById("barRed").style.width=redPercent+"%"
-
-}
+/* ANSWER */
 
 function choose(player,value){
 
-if(!gameActive)return
-if(answered)return
+if(!gameActive||answered)return
 
 if(value===correctAnswer){
 
@@ -483,39 +443,25 @@ answered=true
 if(player==="A"){
 scoreA++
 duelPosition++
-if(scoreB>0)scoreB--
-flash("white")
-play("scoreSoundA")
 }
 
 else{
 scoreB++
 duelPosition--
-if(scoreA>0)scoreA--
-flash("#e0001a")
-play("scoreSoundB")
 }
 
 }
 
 else{
 
-if(player==="A"){
-if(scoreA>0){
+if(player==="A"&&scoreA>0){
 scoreA--
 duelPosition--
 }
-flash("black")
-play("ouchWhite")
-}
 
-else{
-if(scoreB>0){
+if(player==="B"&&scoreB>0){
 scoreB--
 duelPosition++
-}
-flash("black")
-play("ouchBlack")
 }
 
 }
@@ -523,7 +469,6 @@ play("ouchBlack")
 updateScores()
 
 duelPosition=Math.max(0,Math.min(20,duelPosition))
-
 updateBar()
 
 if(duelPosition<=0){
@@ -540,12 +485,24 @@ newQuestion()
 
 }
 
-function updateScores(){
+/* UI */
 
+function updateScores(){
 document.getElementById("scoreA").innerText=scoreA
 document.getElementById("scoreB").innerText=scoreB
+}
+
+function updateBar(){
+
+let white=(duelPosition/20)*100
+let red=100-white
+
+document.getElementById("barWhite").style.width=white+"%"
+document.getElementById("barRed").style.width=red+"%"
 
 }
+
+/* END */
 
 function endGame(winner){
 
@@ -553,14 +510,12 @@ gameActive=false
 
 let overlay=document.getElementById("overlay")
 
-overlay.style.display="flex"
-overlay.style.background="black"
-overlay.style.backgroundImage="none"
-
-let winnerName=
+let name=
 winner==="A"
 ?document.getElementById("nameA").innerText
 :document.getElementById("nameB").innerText
+
+overlay.style.display="flex"
 
 overlay.innerHTML=`
 
@@ -572,50 +527,26 @@ width:100%;
 height:100%;
 background:url('samurai.png') center/cover no-repeat;
 animation:samuraiZoom 6s ease forwards;
-filter:brightness(0.75);
 "></div>
 
-<div style="
-position:relative;
-z-index:2;
-text-align:center;
-">
+<div style="position:relative;text-align:center">
 
-<div class="victoryText" style="
-font-size:80px;
-margin-bottom:40px;
-letter-spacing:6px;
-">
+<div class="victoryText" style="font-size:80px">
 TAISTELU OHI
 </div>
 
-<div class="victoryWinner" style="
-font-size:70px;
-letter-spacing:4px;
-">
-${winnerName} VOITTI!
+<div class="victoryWinner" style="font-size:70px">
+${name} VOITTI!
 </div>
 
 </div>
 `
 
-document.body.style.animation="screenShake 0.4s"
-setTimeout(()=>{document.body.style.animation=""},400)
-
-play("winSound")
-
-window.getSelection().removeAllRanges()
-
-setTimeout(()=>{
-flash("white")
-play("scoreSoundA")
-},1200)
-
-setTimeout(()=>{
-resetGame()
-},7000)
+setTimeout(resetGame,6000)
 
 }
+
+/* RESET */
 
 function resetGame(){
 
@@ -633,17 +564,26 @@ overlay.style.display="flex"
 
 overlay.innerHTML=`
 
-<input id="nameInputA" class="nameInput" placeholder="PELAAJA 1" value="${document.getElementById("nameA").innerText}">
-<input id="nameInputB" class="nameInput" placeholder="PELAAJA 2" value="${document.getElementById("nameB").innerText}">
+<input id="nameInputA" class="nameInput" placeholder="PELAAJA 1">
+<input id="nameInputB" class="nameInput" placeholder="PELAAJA 2">
 
-<button onclick="startCountdown()" style="
-font-size:40px;
-padding:20px 50px;
-border:none;
-border-radius:20px;
-cursor:pointer;
-">
-ALOITA PELI
+<div class="menuButtons">
+
+<div>LASKU</div>
+<button onclick="setMode('+')">+</button>
+<button onclick="setMode('-')">−</button>
+<button onclick="setMode('*')">×</button>
+<button onclick="setMode('/')">÷</button>
+
+<div>TASO</div>
+<button onclick="setDifficulty('easy')">HELPPO</button>
+<button onclick="setDifficulty('normal')">NORMAALI</button>
+<button onclick="setDifficulty('hard')">VAIKEA</button>
+
+</div>
+
+<button onclick="startCountdown()" style="font-size:40px;margin-top:20px">
+ALOITA
 </button>
 
 `
