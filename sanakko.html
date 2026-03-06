@@ -107,6 +107,14 @@ background:#00ffff;
 cursor:pointer;
 }
 
+#nameInput{
+font-family:'Orbitron',sans-serif;
+font-size:22px;
+padding:10px 14px;
+border-radius:10px;
+border:none;
+text-align:center;
+}
 #overlay{
 position:fixed;
 top:0;
@@ -131,6 +139,7 @@ z-index:1000;
 
 <div id="overlay">
 <h2>🔤 Sanaluola</h2>
+<input id="nameInput" placeholder="Nimesi" onkeydown="if(event.key==='Enter')startGame()">
 <button onclick="startGame()">🎮 Aloita peli</button>
 <div id="leaderboard"></div>
 </div>
@@ -138,6 +147,7 @@ z-index:1000;
 <div class="container">
 
 <div class="leftPanel">
+<div id="playerName"></div>
 <div id="timer">Aika: 120</div>
 <div id="score">Pisteet: 0</div>
 <button onclick="toggleMusic()">🎵 Musiikki</button>
@@ -195,7 +205,8 @@ dictionary=new Set(words)
 
 function startGame(){
 
-playerName=prompt("Nimesi?")||"Pelaaja"
+playerName=document.getElementById("nameInput").value || "Pelaaja"
+document.getElementById("playerName").textContent="👤 "+playerName
 
 document.getElementById("overlay").style.display="none"
 
