@@ -586,8 +586,6 @@ btn.classList.add("selected")
 function startCountdown(){
 document.querySelector(".menuLeft").style.display="none"
 document.querySelector(".centerMenu").style.display="none"
-document.querySelector(".menuLeft").style.display="none"
-document.querySelector(".centerMenu").style.display="none"
 
 let guide=document.querySelector(".gameGuide")
 if(guide) guide.style.display="none"
@@ -626,10 +624,6 @@ countdown.style.display="block"
 countdown.innerText="3"
 
 let count=3
-
-let countdown=document.getElementById("countdown")
-countdown.style.display="block"
-countdown.innerText="3"
 play("bip")
 
 let timer=setInterval(()=>{
@@ -986,6 +980,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
