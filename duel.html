@@ -154,6 +154,25 @@ transform:scale(1.05);
 top:70px;
 left:20px;
 }
+@keyframes samuraiZoom{
+0%{transform:scale(1);}
+100%{transform:scale(1.15);}
+}
+
+@keyframes textFade{
+0%{opacity:0; transform:translateY(40px);}
+100%{opacity:1; transform:translateY(0);}
+}
+
+.victoryText{
+animation:textFade 1.2s ease forwards;
+}
+
+.victoryWinner{
+animation:textFade 1.2s ease forwards;
+animation-delay:1.2s;
+opacity:0;
+}
 </style>
 </head>
 
@@ -380,14 +399,14 @@ function choose(player,value){
 
 if(player==="A"){
   scoreA++;
-  duelPosition--;
+  duelPosition++;
   if(scoreB>0) scoreB--;
   flash("white");
   play("scoreSoundA");
 }
 else {
   scoreB++;
-  duelPosition++;   // <-- LISÄÄ TÄMÄ
+  duelPosition--;   // <-- LISÄÄ TÄMÄ
   if(scoreA>0) scoreA--;
   flash("#e0001a");
   play("scoreSoundB");
@@ -397,11 +416,13 @@ else {
 
    if(player==="A"){
      if(scoreA>0) scoreA--;
+     duelPosition--;
      flash("black");
      play("ouchWhite");
    } 
    else {
      if(scoreB>0) scoreB--;
+     duelPosition++;
      flash("black");
      play("ouchBlack");
    }
@@ -409,6 +430,7 @@ else {
 }
 
  updateScores();
+duelPosition = Math.max(0, Math.min(20, duelPosition));
  updateBar();
 
 /* if(scoreA===target){
@@ -439,25 +461,71 @@ function updateScores(){
 }
 
 function endGame(winner){
+
  gameActive=false;
 
  let overlay=document.getElementById("overlay");
  overlay.style.display="flex";
-overlay.style.background="black";
-overlay.style.color="white";
- overlay.innerHTML="PELI OHI<br>Pelaaja "+winner+" voitti!";
+ overlay.style.background="black";
 
-  play("winSound");
+ let winnerName = winner==="A"
+   ? document.getElementById("nameA")?.innerText || "PELAJA 1"
+   : document.getElementById("nameB")?.innerText || "PELAJA 2";
+
+ overlay.innerHTML = `
+ <div style="
+   position:absolute;
+   top:0;
+   left:0;
+   width:100%;
+   height:100%;
+   background:url('samurai.jpg') center/cover no-repeat;
+   animation:samuraiZoom 6s ease forwards;
+   filter:brightness(0.75);
+ "></div>
+
+ <div style="
+   position:relative;
+   z-index:2;
+   text-align:center;
+   color:white;
+ ">
+
+ <div class="victoryText" style="
+   font-size:80px;
+   margin-bottom:40px;
+   letter-spacing:6px;
+ ">
+ TAISTELU OHI
+ </div>
+
+ <div class="victoryWinner" style="
+   font-size:70px;
+   letter-spacing:4px;
+ ">
+ ${winnerName} VOITTI!
+ </div>
+
+ </div>
+ `;
+
+ play("winSound");
+setTimeout(()=>{
+  flash("white");
+  play("scoreSoundA");
+},1200);
 
  setTimeout(()=>{
    location.reload();
- },4000);
+ },7000);
+
 }
 
 </script>
 
 </body>
 </html>
+
 
 
 
