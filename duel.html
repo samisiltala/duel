@@ -545,7 +545,9 @@ KOKO NÄYTTÖ ON
 <audio id="ouchWhite" src="ouchvalk.mp3"></audio>
 
 <script>
+
 let scoreDiff = 0
+
 window.addEventListener("load",()=>{
 let music=document.getElementById("music")
 music.volume=0.25
@@ -566,6 +568,7 @@ btn.innerText="MUSIIKKI OFF"
 
 let mode="*"
 let difficulty="hard"
+
 const modeText={
 "+":"YHTEENLASKU",
 "-":"VÄHENNYSLASKU",
@@ -581,7 +584,6 @@ hard:"VAIKEA"
 
 let scoreA=0
 let scoreB=0
-let duelPosition=10
 let gameActive=false
 let answered=false
 
@@ -594,13 +596,11 @@ let btn=document.getElementById("fullscreenBtn")
 if(!document.fullscreenElement){
 
 document.documentElement.requestFullscreen()
-
 btn.innerText="POISTU KOKO NÄYTÖSTÄ"
 
 }else{
 
 document.exitFullscreen()
-
 btn.innerText="KOKO NÄYTTÖ ON"
 
 }
@@ -632,9 +632,10 @@ btn.classList.add("selected")
 }
 
 function startCountdown(){
+
 scoreA = 0
 scoreB = 0
-scoreDiff = 0
+
 updateScores()
 updateBar()
 
@@ -654,10 +655,12 @@ document.getElementById("nameB").innerText=nameB
 
 document.getElementById("levelLabel").innerHTML =
 modeText[mode] + "<br>" + diffText[difficulty]
+
 document.getElementById("keyPanel").style.display="block"
 
 let overlay=document.getElementById("overlay")
 let countdown=document.getElementById("countdown")
+
 let count=3
 
 countdown.style.display="block"
@@ -681,13 +684,14 @@ play("goSound")
 else{
 
 clearInterval(timer)
+
 overlay.style.display="none"
 countdown.style.display="none"
+
 gameActive=true
 
 document.getElementById("levelLabel").style.display="block"
 
-  
 updateBar()
 newQuestion()
 
@@ -698,11 +702,14 @@ newQuestion()
 }
 
 function play(id){
+
 let s=document.getElementById(id)
 if(!s)return
+
 s.pause()
 s.currentTime=0
 s.play().catch(()=>{})
+
 }
 
 function rand(min,max){
@@ -716,8 +723,6 @@ document.getElementById("keyPanel").style.display="none"
 
 let nameA=document.getElementById("nameA").innerText
 let nameB=document.getElementById("nameB").innerText
-value="${nameA}"
-value="${nameB}"
 
 let overlay=document.getElementById("overlay")
 
@@ -754,13 +759,18 @@ ALOITA
 </button>
 
 </div>
+
+<button onclick="toggleFullscreen()" class="fullscreenButton" id="fullscreenBtn">
+KOKO NÄYTTÖ ON
+</button>
+
 `
 
 gameActive=false
 answered=false
 
 }
-  
+
 function generateQuestion(){
 
 if(mode==="*"){
@@ -779,22 +789,31 @@ correctAnswer = a*b
 }
 
 if(mode==="+"){
+
 let max=10
 if(difficulty==="normal") max=20
 if(difficulty==="hard") max=50
+
 a=rand(1,max)
 b=rand(1,max)
+
 correctAnswer=a+b
+
 }
 
 if(mode==="-" ){
+
 let max=10
 if(difficulty==="normal") max=20
 if(difficulty==="hard") max=50
+
 a=rand(1,max)
 b=rand(1,max)
+
 if(b>a)[a,b]=[b,a]
+
 correctAnswer=a-b
+
 }
 
 }
@@ -810,14 +829,18 @@ if(mode === "*") symbol = "×"
 else if(mode === "/") symbol = ":"
 else if(mode === "-") symbol = "−"
 else symbol = "+"
+
 document.getElementById("question").innerText=a+" "+symbol+" "+b
 
 let answers=[correctAnswer]
 
 while(answers.length<3){
+
 let wrong=correctAnswer+rand(-10,10)
+
 if(wrong>0&&!answers.includes(wrong))
 answers.push(wrong)
+
 }
 
 answers.sort(()=>Math.random()-0.5)
@@ -855,8 +878,7 @@ answered = true
 if(player==="A"){
 scoreA++
 play("scoreSoundA")
-}
-else{
+}else{
 scoreB++
 play("scoreSoundB")
 }
@@ -875,7 +897,6 @@ play("ouchBlack")
 
 }
 
-duelPosition=Math.max(0,Math.min(20,duelPosition))
 updateScores()
 updateBar()
 
@@ -888,16 +909,7 @@ if(scoreB >= 10){
 endGame("B")
 return
 }
-if(scoreDiff >= 10){
-endGame("A")
-return
-}
 
-if(scoreDiff <= -10){
-endGame("B")
-return
-}
-updateBar()
 newQuestion()
 
 }
@@ -966,7 +978,6 @@ ${name} VOITTI!
 
 </div>
 `
-`
 
 play("winSound")
 
@@ -975,18 +986,17 @@ backToMenu()
 },8000)
 
 }
+
 document.addEventListener("keydown", function(e){
 
 if(!gameActive) return
 
 let key = e.key.toLowerCase()
 
-// pelaaja A
 if(key==="a") pressButton("buttonsA",0)
 if(key==="s") pressButton("buttonsA",1)
 if(key==="d") pressButton("buttonsA",2)
 
-// pelaaja B
 if(key==="j") pressButton("buttonsB",0)
 if(key==="k") pressButton("buttonsB",1)
 if(key==="l") pressButton("buttonsB",2)
@@ -1002,11 +1012,12 @@ buttons[id].click()
 }
 
 }
-  
+
 </script>
 
 </body>
 </html>
+
 
 
 
