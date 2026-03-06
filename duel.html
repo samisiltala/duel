@@ -19,6 +19,18 @@ overflow:hidden;
 
 /* HOME */
 
+.restartButton{
+top:120px;
+}
+
+.levelButton{
+top:170px;
+cursor:default;
+}
+
+.musicButton{
+top:70px;
+}
 .homeButton{
 position:fixed;
 top:20px;
@@ -272,8 +284,12 @@ margin-top:30px;
 
 <a href="index.html" class="homeButton">KOTI</a>
 <a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">MUSIIKKI ON</a>
-
-<div id="levelLabel"></div>
+<a href="#" class="homeButton restartButton" onclick="backToMenu()">
+ALKUUN
+</a>
+<div class="homeButton levelButton" id="levelLabel">
+KERTOLASKU • VAIKEA
+</div>
 
 <div class="centerQuestion" id="question"></div>
 
@@ -397,7 +413,8 @@ return
 document.getElementById("nameA").innerText=nameA
 document.getElementById("nameB").innerText=nameB
 
-document.getElementById("levelLabel").innerText=mode+" • "+difficulty
+document.getElementById("levelLabel").innerText =
+modeText[mode] + " • " + diffText[difficulty]
 
 let overlay=document.getElementById("overlay")
 
@@ -446,6 +463,52 @@ function rand(min,max){
 return Math.floor(Math.random()*(max-min+1))+min
 }
 
+function backToMenu(){
+
+let nameA=document.getElementById("nameA").innerText
+let nameB=document.getElementById("nameB").innerText
+
+let overlay=document.getElementById("overlay")
+
+overlay.style.display="flex"
+
+overlay.innerHTML=`
+
+<div id="samuraiBG"></div>
+
+<div class="menuLeft">
+
+<div class="menuTitle">LASKU</div>
+
+<button onclick="setMode(this,'+')">+</button>
+<button onclick="setMode(this,'-')">−</button>
+<button onclick="setMode(this,'*')">×</button>
+<button onclick="setMode(this,'/')">÷</button>
+
+<div class="menuTitle">TASO</div>
+
+<button onclick="setDifficulty(this,'easy')">HELPPO</button>
+<button onclick="setDifficulty(this,'normal')">NORMAALI</button>
+<button onclick="setDifficulty(this,'hard')">VAIKEA</button>
+
+</div>
+
+<div class="centerMenu">
+
+<input id="nameInputA" class="nameInput" value="${nameA}">
+<input id="nameInputB" class="nameInput" value="${nameB}">
+
+<button onclick="startCountdown()" class="startButton">
+ALOITA
+</button>
+
+</div>
+`
+
+gameActive=false
+
+}
+  
 function generateQuestion(){
 
 if(mode==="*"){
@@ -636,3 +699,4 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
