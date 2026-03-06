@@ -401,6 +401,8 @@ btn.classList.add("selected")
 }
 
 function startCountdown(){
+gameActive=false
+answered=false
 
 let nameA=document.getElementById("nameInputA").value.trim().toUpperCase()
 let nameB=document.getElementById("nameInputB").value.trim().toUpperCase()
@@ -495,8 +497,8 @@ overlay.innerHTML=`
 
 <div class="centerMenu">
 
-<input id="nameInputA" class="nameInput" value="${nameA}">
-<input id="nameInputB" class="nameInput" value="${nameB}">
+<input id="nameInputA" class="nameInput" placeholder="PELAAJA 1" value="${nameA}">
+<input id="nameInputB" class="nameInput" placeholder="PELAAJA 2" value="${nameB}">
 
 <button onclick="startCountdown()" class="startButton">
 ALOITA
@@ -506,6 +508,7 @@ ALOITA
 `
 
 gameActive=false
+answered=false
 
 }
   
@@ -699,4 +702,5 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
 
