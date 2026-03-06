@@ -569,7 +569,7 @@ let y1=Number(last.dataset.y)
 let x2=Number(tile.dataset.x)
 let y2=Number(tile.dataset.y)
 
-return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1
+return Math.abs(x1-x2)<=2 && Math.abs(y1-y2)<=1
 
 }
 
@@ -679,7 +679,7 @@ closest=tile
 
 })
 
-if(minDist<150) return closest
+if(minDist<160) return closest
 return null
 
 }
@@ -696,6 +696,10 @@ usedTiles.push(tile)
 currentWord+=tile.textContent
 
 document.getElementById("word").textContent=currentWord
+
+let rect = tile.getBoundingClientRect()
+pointerX = rect.left + rect.width/2
+pointerY = rect.top + rect.height/2
 
 drawLine()
 
