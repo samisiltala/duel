@@ -17,7 +17,7 @@ color:white;
 overflow:hidden;
 }
 
-/* HOME BUTTONS */
+/* HOME */
 
 .homeButton{
 position:fixed;
@@ -101,6 +101,19 @@ top:15%;
 left:50%;
 transform:translateX(-50%);
 font-size:90px;
+z-index:5;
+}
+
+/* LEVEL LABEL */
+
+#levelLabel{
+position:absolute;
+top:90px;
+left:50%;
+transform:translateX(-50%);
+font-size:22px;
+opacity:0.7;
+z-index:5;
 }
 
 /* NINJA */
@@ -113,6 +126,7 @@ transform:translate(-50%,-50%);
 height:300px;
 opacity:0.7;
 pointer-events:none;
+z-index:1;
 }
 
 /* DUEL BAR */
@@ -128,6 +142,7 @@ border:2px solid white;
 border-radius:8px;
 overflow:hidden;
 display:flex;
+z-index:3;
 }
 
 #barWhite{
@@ -146,24 +161,19 @@ transition:0.3s;
 
 #overlay{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
+inset:0;
+background:black;
 display:flex;
 justify-content:center;
 align-items:center;
 z-index:999;
 }
 
-/* SAMURAI BACKGROUND */
+/* SAMURAI */
 
 #samuraiBG{
 position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
+inset:0;
 background:url("samurai.png") center/cover no-repeat;
 opacity:0.35;
 animation:samuraiZoom 14s ease infinite alternate;
@@ -181,8 +191,8 @@ position:relative;
 z-index:2;
 display:flex;
 flex-direction:column;
-align-items:center;
 gap:20px;
+align-items:center;
 }
 
 .nameInput{
@@ -194,15 +204,16 @@ color:white;
 border:2px solid white;
 border-radius:10px;
 text-transform:uppercase;
+font-family:'Orbitron',sans-serif;
 }
 
 .startButton{
-font-size:42px;
+font-size:40px;
 padding:20px 60px;
+background:black;
+color:white;
+border:2px solid white;
 border-radius:20px;
-background:white;
-color:black;
-border:none;
 }
 
 /* LEFT MENU */
@@ -229,6 +240,12 @@ color:white;
 .menuTitle{
 font-size:16px;
 opacity:0.7;
+margin-top:10px;
+}
+
+.selected{
+background:white !important;
+color:black !important;
 }
 
 /* COUNTDOWN */
@@ -241,19 +258,11 @@ font-size:120px;
 
 .victoryText{
 font-size:80px;
-animation:textFade 1s forwards;
 }
 
 .victoryWinner{
 font-size:70px;
-animation:textFade 1s forwards;
-animation-delay:1s;
-opacity:0;
-}
-
-@keyframes textFade{
-0%{opacity:0;transform:translateY(40px)}
-100%{opacity:1;transform:translateY(0)}
+margin-top:30px;
 }
 
 </style>
@@ -263,6 +272,8 @@ opacity:0;
 
 <a href="index.html" class="homeButton">KOTI</a>
 <a href="#" class="homeButton musicButton" onclick="toggleMusic()" id="musicBtn">MUSIIKKI ON</a>
+
+<div id="levelLabel"></div>
 
 <div class="centerQuestion" id="question"></div>
 
@@ -281,16 +292,16 @@ opacity:0;
 
 <div class="menuTitle">LASKU</div>
 
-<button onclick="setMode('+')">+</button>
-<button onclick="setMode('-')">−</button>
-<button onclick="setMode('*')">×</button>
-<button onclick="setMode('/')">÷</button>
+<button onclick="setMode(this,'+')">+</button>
+<button onclick="setMode(this,'-')">−</button>
+<button onclick="setMode(this,'*')">×</button>
+<button onclick="setMode(this,'/')">÷</button>
 
 <div class="menuTitle">TASO</div>
 
-<button onclick="setDifficulty('easy')">HELPPO</button>
-<button onclick="setDifficulty('normal')">NORMAALI</button>
-<button onclick="setDifficulty('hard')">VAIKEA</button>
+<button onclick="setDifficulty(this,'easy')">HELPPO</button>
+<button onclick="setDifficulty(this,'normal')">NORMAALI</button>
+<button onclick="setDifficulty(this,'hard')">VAIKEA</button>
 
 </div>
 
@@ -332,8 +343,6 @@ opacity:0;
 
 <script>
 
-/* MUSIC */
-
 window.addEventListener("load",()=>{
 let music=document.getElementById("music")
 music.volume=0.25
@@ -343,7 +352,6 @@ music.play().catch(()=>{})
 function toggleMusic(){
 let music=document.getElementById("music")
 let btn=document.getElementById("musicBtn")
-
 if(music.paused){
 music.play()
 btn.innerText="MUSIIKKI ON"
@@ -352,8 +360,6 @@ music.pause()
 btn.innerText="MUSIIKKI OFF"
 }
 }
-
-/* GAME STATE */
 
 let mode="*"
 let difficulty="hard"
@@ -366,10 +372,17 @@ let answered=false
 
 let a,b,correctAnswer
 
-function setMode(m){mode=m}
-function setDifficulty(d){difficulty=d}
+function setMode(btn,m){
+mode=m
+document.querySelectorAll(".menuLeft button").forEach(b=>b.classList.remove("selected"))
+btn.classList.add("selected")
+}
 
-/* COUNTDOWN */
+function setDifficulty(btn,d){
+difficulty=d
+btn.parentElement.querySelectorAll("button").forEach(b=>b.classList.remove("selected"))
+btn.classList.add("selected")
+}
 
 function startCountdown(){
 
@@ -383,6 +396,8 @@ return
 
 document.getElementById("nameA").innerText=nameA
 document.getElementById("nameB").innerText=nameB
+
+document.getElementById("levelLabel").innerText=mode+" • "+difficulty
 
 let overlay=document.getElementById("overlay")
 
@@ -409,7 +424,6 @@ else{
 
 clearInterval(timer)
 overlay.style.display="none"
-
 gameActive=true
 updateBar()
 newQuestion()
@@ -420,102 +434,70 @@ newQuestion()
 
 }
 
-/* SOUND */
-
 function play(id){
-
 let s=document.getElementById(id)
-
 if(!s)return
-
 s.pause()
 s.currentTime=0
 s.play().catch(()=>{})
-
 }
-
-/* RANDOM */
 
 function rand(min,max){
 return Math.floor(Math.random()*(max-min+1))+min
 }
 
-/* QUESTION GENERATION */
-
 function generateQuestion(){
 
 if(mode==="*"){
-
-let tables
-
-if(difficulty==="easy") tables=[1,2,5,10]
-if(difficulty==="normal") tables=[1,2,3,4,5,10]
-if(difficulty==="hard") tables=[1,2,3,4,5,6,7,8,9,10]
-
-a=tables[rand(0,tables.length-1)]
+let tables=[1,2,3,4,5,6,7,8,9,10]
+a=tables[rand(0,9)]
 b=rand(1,10)
 correctAnswer=a*b
 }
 
 if(mode==="/"){
-
-let tables
-
-if(difficulty==="easy") tables=[1,2,5,10]
-if(difficulty==="normal") tables=[1,2,3,4,5,10]
-if(difficulty==="hard") tables=[1,2,3,4,5,6,7,8,9,10]
-
-b=tables[rand(0,tables.length-1)]
+b=rand(1,10)
 correctAnswer=rand(1,10)
 a=b*correctAnswer
 }
 
 if(mode==="+"){
-
 let max=20
 if(difficulty==="normal") max=50
 if(difficulty==="hard") max=100
-
 a=rand(1,max)
 b=rand(1,max)
 correctAnswer=a+b
 }
 
-if(mode==="−"){
-
+if(mode==="-" ){
 let max=20
 if(difficulty==="normal") max=50
 if(difficulty==="hard") max=100
-
 a=rand(1,max)
 b=rand(1,max)
-
 if(b>a)[a,b]=[b,a]
-
 correctAnswer=a-b
 }
 
 }
 
-/* NEW QUESTION */
-
 function newQuestion(){
 
 answered=false
-
 generateQuestion()
 
-document.getElementById("question").innerText=a+" "+mode+" "+b
+let symbol=mode
+if(mode==="*") symbol="×"
+
+document.getElementById("question").innerText=a+" "+symbol+" "+b
 
 let answers=[correctAnswer]
 
 while(answers.length<3){
-
 let wrong=correctAnswer+rand(-10,10)
-
 if(wrong>0&&!answers.includes(wrong))
 answers.push(wrong)
-
 }
 
 answers.sort(()=>Math.random()-0.5)
@@ -524,8 +506,6 @@ createButtons("buttonsA",answers,"A")
 createButtons("buttonsB",answers,"B")
 
 }
-
-/* BUTTONS */
 
 function createButtons(id,answers,player){
 
@@ -543,8 +523,6 @@ container.appendChild(btn)
 })
 
 }
-
-/* ANSWER */
 
 function choose(player,value){
 
@@ -599,8 +577,6 @@ newQuestion()
 
 }
 
-/* UI */
-
 function updateScores(){
 document.getElementById("scoreA").innerText=scoreA
 document.getElementById("scoreB").innerText=scoreB
@@ -616,16 +592,13 @@ document.getElementById("barRed").style.width=red+"%"
 
 }
 
-/* END GAME */
-
 function endGame(winner){
 
 gameActive=false
 
 let overlay=document.getElementById("overlay")
 
-let name=
-winner==="A"
+let name=winner==="A"
 ?document.getElementById("nameA").innerText
 :document.getElementById("nameB").innerText
 
@@ -635,10 +608,7 @@ overlay.innerHTML=`
 
 <div style="
 position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
+inset:0;
 background:url('samurai.png') center/cover no-repeat;
 animation:samuraiZoom 6s ease forwards;
 "></div>
@@ -654,19 +624,12 @@ ${name} VOITTI!
 </div>
 
 </div>
-
 `
 
 play("winSound")
 
-setTimeout(resetGame,6000)
+setTimeout(()=>location.reload(),6000)
 
-}
-
-/* RESET */
-
-function resetGame(){
-location.reload()
 }
 
 </script>
