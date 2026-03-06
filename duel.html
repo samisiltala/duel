@@ -54,6 +54,11 @@ body {
     z-index:2;
 }
 
+#overlay{
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url("samurai.png") center/cover no-repeat;
+}
 
 #ninja{
 position:absolute;
@@ -120,6 +125,18 @@ button {
     border: 3px solid #e0001a;
 }
 
+.nameInput{
+font-family:'Orbitron',sans-serif;
+font-size:26px;
+margin:12px;
+padding:12px 20px;
+background:black;
+color:white;
+border:2px solid white;
+border-radius:10px;
+text-align:center;
+width:260px;
+}
 .homeButton{
 position:fixed;
 top:20px;
@@ -154,6 +171,13 @@ transform:scale(1.05);
 top:70px;
 left:20px;
 }
+
+.playerName{
+font-size:28px;
+margin-bottom:10px;
+letter-spacing:2px;
+}
+    
 @keyframes samuraiZoom{
 0%{transform:scale(1);}
 100%{transform:scale(1.15);}
@@ -161,7 +185,7 @@ left:20px;
 
 @keyframes textFade{
 0%{opacity:0; transform:translateY(40px);}
-100%{opacity:1; transform:translateY(0);}
+100%{opacity:1; transform:translateY(0);}<
 }
 
 .victoryText{
@@ -197,7 +221,6 @@ MUSIIKKI ON
 position:fixed;
 top:0;left:0;
 width:100%;height:100%;
-background:black;
 color:white;
 display:flex;
 flex-direction:column;
@@ -208,6 +231,9 @@ font-weight:bold;
 font-family: 'Orbitron', sans-serif;
 z-index:999;
 ">
+
+<input id="nameInputA" class="nameInput" placeholder="Pelaaja1:">
+<input id="nameInputB" class="nameInput" placeholder="Pelaaja2:">
 
 <button onclick="startCountdown()" style="
 font-size:40px;
@@ -231,13 +257,15 @@ z-index:998;
 "></div>
 
 <div class="arena">
-
+  
     <div class="player leftPlayer">
+          <div class="playerName" id="nameA">Pelaaja 1</div>
         <div class="score" id="scoreA">0</div>
         <div class="buttons" id="buttonsA"></div>
     </div>
-
+    
     <div class="player rightPlayer">
+        <div class="playerName" id="nameB">Pelaaja 2</div>
         <div class="score" id="scoreB">0</div>
         <div class="buttons" id="buttonsB"></div>
     </div>
@@ -284,6 +312,16 @@ function play(id){
 }
 
 function startCountdown(){
+let nameA = document.getElementById("nameInputA").value.trim();
+let nameB = document.getElementById("nameInputB").value.trim();
+
+if(!nameA || !nameB){
+alert("Anna molempien pelaajien nimet");
+return;
+}
+
+document.getElementById("nameA").innerText=nameA;
+document.getElementById("nameB").innerText=nameB;
 
   console.log("Countdown started");
   let overlay=document.getElementById("overlay");
@@ -516,8 +554,35 @@ setTimeout(()=>{
 },1200);
 
  setTimeout(()=>{
-   location.reload();
+   resetGame();
  },7000);
+
+}
+
+function resetGame(){
+
+scoreA = 0;
+scoreB = 0;
+duelPosition = 10;
+
+updateScores();
+updateBar();
+
+document.getElementById("overlay").style.display="flex";
+document.getElementById("overlay").innerHTML=`
+<input id="nameInputA" class="nameInput" placeholder="Pelaaja 1 nimi" value="${document.getElementById("nameA").innerText}">
+<input id="nameInputB" class="nameInput" placeholder="Pelaaja 2 nimi" value="${document.getElementById("nameB").innerText}">
+
+<button onclick="startCountdown()" style="
+font-size:40px;
+padding:20px 50px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+">
+ALOITA PELI
+</button>
+`;
 
 }
 
@@ -525,6 +590,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
