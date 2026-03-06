@@ -35,7 +35,6 @@ top:70px;
 }
 .homeButton{
 position:fixed;
-top:20px;
 left:20px;
 font-size:18px;
 padding:10px 20px;
@@ -47,8 +46,8 @@ text-decoration:none;
 z-index:5000;
 }
 
-.musicButton{
-top:70px;
+.homeButton:first-of-type{
+top:20px;
 }
 
 /* ARENA */
@@ -122,13 +121,14 @@ z-index:5;
 
 #levelLabel{
 position:absolute;
-top:20px;
+top:25px;
 left:50%;
 transform:translateX(-50%);
-font-size:20px;
-color:white;
+font-size:24px;
 letter-spacing:3px;
+color:white;
 z-index:10;
+pointer-events:none;
 }
 
 /* NINJA */
@@ -311,7 +311,7 @@ padding:40px;
 
 <a href="#" class="homeButton restartButton" onclick="backToMenu()">
 ALKUUN
-<div class="homeButton levelButton" id="levelLabel">
+<div id="levelLabel">
 KERTOLASKU<br>VAIKEA
 </div>
 </a>
@@ -754,6 +754,7 @@ setTimeout(()=>location.reload(),6000)
 
 </body>
 </html>
+
 
 
 
