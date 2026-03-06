@@ -54,12 +54,13 @@ body {
     z-index:2;
 }
 
-#overlay{
+#overlay.startScreen{
 background:
 linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
 url("samurai.png") center/cover no-repeat;
+animation:samuraiZoom 12s ease infinite alternate;
 }
-
+    
 #ninja{
 position:absolute;
 top:50%;
@@ -177,6 +178,15 @@ font-size:28px;
 margin-bottom:10px;
 letter-spacing:2px;
 }
+
+@keyframes screenShake{
+0%{transform:translate(0,0);}
+20%{transform:translate(-10px,5px);}
+40%{transform:translate(10px,-5px);}
+60%{transform:translate(-6px,4px);}
+80%{transform:translate(6px,-3px);}
+100%{transform:translate(0,0);}
+}
     
 @keyframes samuraiZoom{
 0%{transform:scale(1);}
@@ -217,7 +227,7 @@ MUSIIKKI ON
   <div id="barRed"></div>
 </div>
 
-<div id="overlay" style="
+<div id="overlay" class="startScreen" style="
 position:fixed;
 top:0;left:0;
 width:100%;height:100%;
@@ -312,6 +322,7 @@ function play(id){
 }
 
 function startCountdown(){
+document.getElementById("overlay").classList.remove("startScreen");
 let nameA = document.getElementById("nameInputA").value.trim();
 let nameB = document.getElementById("nameInputB").value.trim();
 
@@ -505,6 +516,7 @@ function endGame(winner){
  let overlay=document.getElementById("overlay");
  overlay.style.display="flex";
  overlay.style.background="black";
+    overlay.style.backgroundImage="none";
 
  let winnerName = winner==="A"
    ? document.getElementById("nameA")?.innerText || "PELAJA 1"
@@ -546,7 +558,9 @@ function endGame(winner){
 
  </div>
  `;
-
+document.body.style.animation="screenShake 0.4s";
+setTimeout(()=>{document.body.style.animation="";},400);
+    
  play("winSound");
 setTimeout(()=>{
   flash("white");
@@ -568,7 +582,10 @@ duelPosition = 10;
 updateScores();
 updateBar();
 
-document.getElementById("overlay").style.display="flex";
+let overlay=document.getElementById("overlay");
+
+overlay.className="startScreen";
+overlay.style.display="flex";
 document.getElementById("overlay").innerHTML=`
 <input id="nameInputA" class="nameInput" placeholder="Pelaaja 1 nimi" value="${document.getElementById("nameA").innerText}">
 <input id="nameInputB" class="nameInput" placeholder="Pelaaja 2 nimi" value="${document.getElementById("nameB").innerText}">
@@ -590,6 +607,7 @@ ALOITA PELI
 
 </body>
 </html>
+
 
 
 
