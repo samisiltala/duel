@@ -58,6 +58,37 @@ top:20px;
 }
 
 /* ARENA */
+.keyPanel{
+position:fixed;
+left:20px;
+top:240px;
+z-index:1000;
+text-align:center;
+}
+
+.keyTitle{
+font-size:14px;
+opacity:0.7;
+margin-bottom:6px;
+}
+
+.keyBox{
+font-size:16px;
+padding:10px 20px;
+border:2px solid white;
+border-radius:10px;
+margin-bottom:8px;
+background:black;
+font-family:'Orbitron';
+}
+
+.whiteKeys{
+color:white;
+}
+
+.redKeys{
+color:#e0001a;
+}
 
 .arena{
 display:flex;
@@ -317,7 +348,21 @@ padding:40px;
 <a href="#" class="homeButton restartButton" onclick="backToMenu()">
 ALKUUN
 <div class="levelButton" id="levelLabel">
+
 KERTOLASKU<br>VAIKEA
+<div class="keyPanel">
+
+<div class="keyTitle">NÄPPÄIMET</div>
+
+<div class="keyBox whiteKeys">
+A S D
+</div>
+
+<div class="keyBox redKeys">
+J K L
+</div>
+
+</div>
 </div>
 </a>
 
@@ -358,6 +403,9 @@ KERTOLASKU<br>VAIKEA
 <input id="nameInputB" class="nameInput" placeholder="PELAAJA 2">
 
 <button onclick="startCountdown()" class="startButton">ALOITA</button>
+<button onclick="goFullscreen()" class="startButton">
+KOKO NÄYTTÖ
+</button>
 
 </div>
 
@@ -430,6 +478,22 @@ let gameActive=false
 let answered=false
 
 let a,b,correctAnswer
+
+function goFullscreen(){
+
+let elem = document.documentElement
+
+if(elem.requestFullscreen){
+elem.requestFullscreen()
+}
+else if(elem.webkitRequestFullscreen){
+elem.webkitRequestFullscreen()
+}
+else if(elem.msRequestFullscreen){
+elem.msRequestFullscreen()
+}
+
+}
 
 function setMode(btn,m){
 
@@ -824,6 +888,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
