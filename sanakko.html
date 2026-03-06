@@ -616,33 +616,7 @@ addTile(el)
 
 drawLine()
 
-let closest=null
-let minDist=9999
 
-tiles.forEach(tile=>{
-
-let rect=tile.getBoundingClientRect()
-
-let cx=rect.left+rect.width/2
-let cy=rect.top+rect.height/2
-
-let dx=cx-e.clientX
-let dy=cy-e.clientY
-
-let dist=Math.sqrt(dx*dx+dy*dy)
-
-if(dist<minDist){
-minDist=dist
-closest=tile
-}
-
-})
-
-if(closest && minDist<120){
-addTile(closest)
-}
-
-})
 
 window.addEventListener("pointerup",(e)=>{
 
