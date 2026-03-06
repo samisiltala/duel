@@ -619,7 +619,9 @@ let overlay=document.getElementById("overlay")
 
 let count=3
 
-overlay.innerHTML="<div class='countdown'>3</div>"
+let countdown=document.getElementById("countdown")
+countdown.style.display="block"
+countdown.innerText="3"
 play("bip")
 
 let timer=setInterval(()=>{
@@ -627,19 +629,21 @@ let timer=setInterval(()=>{
 count--
 
 if(count>0){
-overlay.innerHTML="<div class='countdown'>"+count+"</div>"
+countdown.innerText=count
 play("bip")
 }
 
 else if(count===0){
-overlay.innerHTML="<div class='countdown'>GO!</div>"
+countdown.innerText="GO!"
 play("goSound")
 }
 
 else{
 
 clearInterval(timer)
+countdown.style.display="none"
 overlay.style.display="none"
+
 gameActive=true
 
 document.getElementById("levelLabel").style.display="block"
@@ -667,7 +671,11 @@ return Math.floor(Math.random()*(max-min+1))+min
 }
 
 function backToMenu(){
+document.querySelector(".menuLeft").style.display="flex"
+document.querySelector(".centerMenu").style.display="flex"
 
+let guide=document.querySelector(".gameGuide")
+if(guide) guide.style.display="block"
 document.getElementById("levelLabel").style.display="none"
 document.getElementById("keyPanel").style.display="none"
 
@@ -970,6 +978,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
