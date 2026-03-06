@@ -37,6 +37,30 @@ z-index:1000;
 pointer-events:none;
 }
 
+.fullscreenButton{
+
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+
+font-size:20px;
+padding:10px 24px;
+
+border:2px solid white;
+border-radius:12px;
+
+background:black;
+color:white;
+
+font-family:'Orbitron';
+
+}
+
+.fullscreenButton:hover{
+background:white;
+color:black;
+}
 .musicButton{
 top:70px;
 }
@@ -416,8 +440,8 @@ J K L
 <input id="nameInputB" class="nameInput" placeholder="PELAAJA 2">
 
 <button onclick="startCountdown()" class="startButton">ALOITA</button>
-<button onclick="goFullscreen()" class="startButton">
-KOKO NÄYTTÖ
+<button onclick="toggleFullscreen()" class="fullscreenButton" id="fullscreenBtn">
+KOKO NÄYTTÖ ON
 </button>
 
 </div>
@@ -492,18 +516,22 @@ let answered=false
 
 let a,b,correctAnswer
 
-function goFullscreen(){
+function toggleFullscreen(){
 
-let elem = document.documentElement
+let btn=document.getElementById("fullscreenBtn")
 
-if(elem.requestFullscreen){
-elem.requestFullscreen()
-}
-else if(elem.webkitRequestFullscreen){
-elem.webkitRequestFullscreen()
-}
-else if(elem.msRequestFullscreen){
-elem.msRequestFullscreen()
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen()
+
+btn.innerText="POISTU KOKO NÄYTÖSTÄ"
+
+}else{
+
+document.exitFullscreen()
+
+btn.innerText="KOKO NÄYTTÖ ON"
+
 }
 
 }
@@ -903,6 +931,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
