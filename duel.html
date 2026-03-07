@@ -812,13 +812,25 @@ correctAnswer=a-b
 if(mode==="/"){
 
 let tables
+let maxResult
 
-if(difficulty==="easy") tables=[1,2,5,10]
-if(difficulty==="normal") tables=[1,2,3,4,5,10]
-if(difficulty==="hard") tables=[1,2,3,4,5,6,7,8,9,10]
+if(difficulty==="easy"){
+tables=[1,2,5,10]
+maxResult=10
+}
+
+if(difficulty==="normal"){
+tables=[1,2,3,4,5,10]
+maxResult=20
+}
+
+if(difficulty==="hard"){
+tables=[1,2,3,4,5,6,7,8,9,10]
+maxResult=40
+}
 
 b = tables[rand(0, tables.length-1)]   // jakaja
-correctAnswer = rand(1,10)             // tulos
+correctAnswer = rand(1,maxResult)      // tulos
 a = correctAnswer * b                  // jaettava
 
 }
@@ -1038,6 +1050,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
