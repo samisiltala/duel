@@ -599,6 +599,8 @@ let scoreB=0
 let duelPosition=10
 let gameActive=false
 let answered=false
+let lockA=false
+let lockB=false
 
 let a,b,correctAnswer
 
@@ -903,11 +905,15 @@ play("scoreSoundB")
 if(player==="A"){
 scoreA = Math.max(0, scoreA-1)
 play("ouchWhite")
+lockA=true
+setTimeout(()=>{lockA=false},700)
 }
 
 else{
 scoreB = Math.max(0, scoreB-1)
 play("ouchBlack")
+lockB=true
+setTimeout(()=>{lockB=false},700)
 }
 
 }
@@ -1050,6 +1056,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
