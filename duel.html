@@ -455,9 +455,6 @@ padding:40px;
 MUSIIKKI ON
 </a>
 
-<a href="#" class="homeButton restartButton" onclick="backToMenu()">
-ALKUUN
-</a>
 
 <div class="levelButton" id="levelLabel">
 KERTOLASKU<br>VAIKEA
@@ -987,8 +984,20 @@ backToMenu()
 }
 document.addEventListener("keydown", function(e){
 
+if(e.key === "Enter"){
+backToMenu()
+return
+}
+
+if(e.key==="Escape"){
+
 if(!gameActive) return
 
+gameActive=false
+backToMenu()
+
+return
+}
 let key = e.key.toLowerCase()
 
 // pelaaja A
@@ -1017,6 +1026,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
