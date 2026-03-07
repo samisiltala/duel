@@ -550,7 +550,7 @@ KOKO NÄYTTÖ ON
 
 </div>
 
-<audio id="winSound" src="voitto.wav"></audio>
+<audio id="winSound" src="arigatowin.mp3"></audio>
 <audio id="scoreSoundA" src="miekka1.wav"></audio>
 <audio id="scoreSoundB" src="miekka2.wav"></audio>
 <audio id="bip" src="bip.mp3"></audio>
@@ -982,34 +982,53 @@ overlay.style.display="flex"
 
 overlay.innerHTML=`
 
-document.body.style.animation="screenShake 0.4s";
-setTimeout(()=>{document.body.style.animation=""},400);
-
 <div style="
 position:absolute;
 inset:0;
 background:url('samurai.png') center/cover no-repeat;
-animation:samuraiZoom 6s ease forwards;
+opacity:0.4;
 "></div>
 
-<div style="position:relative;text-align:center">
+<div style="
+position:relative;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100%;
+text-align:center;
+">
 
-<div class="victoryText">
-TAISTELU OHI
+<div style="
+font-size:100px;
+letter-spacing:6px;
+margin-bottom:40px;
+">
+VOITTO
 </div>
 
-<div class="victoryWinner">
-${name} VOITTI!
+<div style="
+font-size:80px;
+color:#ffd700;
+">
+${name}
+</div>
+
+<div style="
+font-size:60px;
+margin-top:20px;
+">
+ON MESTARI
 </div>
 
 </div>
-`
+``
 
 play("winSound")
 
 setTimeout(()=>{
 backToMenu()
-},6000)
+},9000)
 
 }
 document.addEventListener("keydown", function(e){
@@ -1056,6 +1075,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
