@@ -526,7 +526,7 @@ function showStreak(){
     let el = document.createElement("div");
     el.innerText = "🔥 STREAK!";
     el.style.position = "absolute";
-el.style.bottom = "10px";
+el.style.bottom = "0px";
 el.style.left = "50%";
 el.style.transform = "translateX(-50%)";
     el.style.fontSize = "40px";
@@ -546,14 +546,14 @@ function showNewRecord(){
     el.innerText = "🔥 UUSI ENNÄTYS!";
 
 el.style.position = "absolute";
-el.style.bottom = "10px";
+el.style.bottom = "0px";
 el.style.left = "50%";
 el.style.transform = "translateX(-50%)";
 
     el.style.fontSize = "46px";    // selvästi suurempi
     el.style.color = "#ffffff";    // sama valkoinen tunnelma kuin PELI OHI
-    el.style.textShadow =
-        "0 0 10px #00ffff, 0 0 25px #00ffff, 0 0 40px #00ffff";
+    el.style.textShadow = "0 0 10px #00ffff, 0 0 25px #00ffff, 0 0 40px #00ffff";
+    el.style.whiteSpace = "nowrap";
 
     el.style.fontFamily = "'Orbitron', sans-serif";
 
@@ -747,6 +747,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
