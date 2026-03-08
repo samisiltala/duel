@@ -706,6 +706,10 @@ else{
 
 clearInterval(timer)
 overlay.style.display="none"
+
+document.querySelectorAll(".homeButton").forEach(el => el.style.display = "none")
+document.getElementById("keyPanel").style.display = "none"
+  
 gameActive=true
 
 document.getElementById("levelLabel").style.display="block"
@@ -1068,6 +1072,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
