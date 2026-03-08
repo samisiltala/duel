@@ -657,9 +657,7 @@ btn.classList.add("selected")
 
 function startCountdown(){
 duelPosition = 10
-document.querySelectorAll(".homeButton").forEach(el=>{
-el.style.display="none"
-})
+
 
 document.getElementById("keyPanel").style.display="none"
 scoreA = 0
@@ -684,13 +682,16 @@ document.getElementById("nameB").innerText=nameB
 
 document.getElementById("levelLabel").innerHTML =
 modeText[mode] + "<br>" + diffText[difficulty]
-document.getElementById("keyPanel").style.display="block"
+document.getElementById("keyPanel").style.display="none"
 
 let overlay=document.getElementById("overlay")
 
 let count=3
 
-overlay.innerHTML="<div class='countdown'>3</div>"
+overlay.innerHTML=`
+<div id="samuraiBG"></div>
+<div class="countdown">3</div>
+`
 play("bip")
 
 let timer=setInterval(()=>{
@@ -698,12 +699,18 @@ let timer=setInterval(()=>{
 count--
 
 if(count>0){
-overlay.innerHTML="<div class='countdown'>"+count+"</div>"
+overlay.innerHTML=`
+<div id="samuraiBG"></div>
+<div class="countdown">${count}</div>
+`
 play("bip")
 }
 
 else if(count===0){
-overlay.innerHTML="<div class='countdown'>GO!</div>"
+overlay.innerHTML=`
+<div id="samuraiBG"></div>
+<div class="countdown">${count}</div>
+`
 play("goSound")
 }
 
@@ -1081,6 +1088,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
