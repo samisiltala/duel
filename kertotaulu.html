@@ -168,6 +168,33 @@ button:hover {
     background:#f44336 !important;
 }
 
+.homeBtn{
+
+position:fixed;
+top:15px;
+left:15px;
+
+font-family:'Orbitron', sans-serif;
+font-size:16px;
+
+background:#ffd700;
+color:black;
+
+padding:10px 16px;
+border-radius:12px;
+
+text-decoration:none;
+
+box-shadow:0 0 15px #ffd700;
+
+transition:0.2s;
+
+}
+
+.homeBtn:hover{
+transform:scale(1.05);
+}
+
 @keyframes spaceZoom {
 
 0%{
@@ -276,18 +303,7 @@ transform:scale(1.05);
 
 <body>
 
-<a href="index.html" style="
-position:fixed;
-top:15px;
-left:15px;
-background:#00ffff;
-color:black;
-padding:6px 12px;
-border-radius:8px;
-text-decoration:none;
-font-size:14px;
-box-shadow:0 0 8px #00ffff;
-">🏠 KOTI</a>
+<a href="index.html" class="homeBtn">🏠 KOTI</a>
 
 
 
@@ -420,8 +436,9 @@ function changeTheme(){
  let body=document.body;
  let mascot=document.getElementById("mascot");
 
- if(theme==="panda"){
-    document.body.style.setProperty('--bg-image',"url('panda.jpg')");
+if(theme==="panda"){
+    document.body.style.backgroundImage =
+    "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('panda.jpg')";
     body.style.color="white";
     mascot.innerText="🐼";
 }
@@ -769,6 +786,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
