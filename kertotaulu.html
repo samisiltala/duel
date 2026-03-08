@@ -819,9 +819,9 @@ function endGame(){
 
   if(score > previousBest){
       previousBest = score;
-
-      document.getElementById("personalBest").innerText =
-      "🔥 Oma ennätys: " + score;
+      
+document.getElementById("personalBest").innerHTML =
+"🔥 Oma ennätys (" + name + "):<br>" + previousBest;
 
       setTimeout(()=>{
           showNewRecord();
@@ -901,7 +901,10 @@ document.getElementById("levelSelect").addEventListener("change", function(){
     level = Number(document.getElementById("levelSelect").value);
     previousBest = 0;
     loadScores();
+document.getElementById("name").addEventListener("input", ()=>{
+loadScores();
 });
+
 
 
     
@@ -913,6 +916,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
