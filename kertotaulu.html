@@ -516,11 +516,13 @@ function choose(i){
 
 if(streak === 3){
     showStreak();
+    score += 1;  
     rocketIgnite();
 }
 
 if(streak === 6){
     showDoubleStreak();
+    score += 2;  
     rocketLaunch();
     streak = 0;
 }
@@ -581,7 +583,7 @@ level = Number(document.getElementById("levelSelect").value);
 }
 function showStreak(){
     let el = document.createElement("div");
-    el.innerText = "🔥 STREAK!";
+    el.innerText = "🔥 STREAK + 1!";
     el.style.position = "absolute";
 el.style.top = "95%";
 el.style.left = "50%";
@@ -601,7 +603,7 @@ el.style.transform = "translateX(-50%)";
 function showDoubleStreak(){
 
     let el = document.createElement("div");
-    el.innerText = "🚀 DOUBLE STREAK!";
+    el.innerText = "🚀 DOUBLE STREAK +2!";
 
     el.style.position = "absolute";
     el.style.top = "95%";
@@ -856,6 +858,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
