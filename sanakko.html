@@ -332,9 +332,13 @@ let tile = document.elementFromPoint(e.clientX, e.clientY)
 
 if(!tile || !tile.classList.contains("tile")) return
 
-if(tile !== usedTiles[usedTiles.length-1]){
+// estetään sama ruutu
+if(tile === usedTiles[usedTiles.length-1]) return
+
+// tarkistetaan että ruutu on viereinen
+if(!isNeighbor(tile)) return
+
 addTile(tile)
-}
 
 })
 
