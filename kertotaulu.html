@@ -40,7 +40,7 @@ body::after{
 content:"";
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.35);
+background:var(--overlay, rgba(0,0,0,0.35));
 z-index:-1;
 }
     
@@ -98,13 +98,16 @@ h1 {
     font-size: 28px;
 }
 
-#question {
-    font-size: clamp(50px, 6vw, 110px);
-    background: rgba(0,255,255,0.1);
-    box-shadow: 0 0 30px rgba(0,255,255,0.4);
-    border-radius: 20px;
-    padding: 30px 40px;
-    margin: 15px 0;
+#question{
+
+background:rgba(0,0,0,0.55);
+backdrop-filter:blur(6px);
+
+border-radius:20px;
+padding:25px 40px;
+
+box-shadow:0 0 20px rgba(0,255,255,0.4);
+
 }
 
 #statusMessage {
@@ -420,10 +423,12 @@ function changeTheme(){
  let body=document.body;
  let mascot=document.getElementById("mascot");
 
- if(theme==="panda"){
+if(theme==="panda"){
     document.body.style.setProperty('--bg-image',"url('panda.jpg')");
     body.style.color="white";
     mascot.innerText="🐼";
+
+    document.body.style.setProperty('--overlay',"rgba(0,0,0,0.55)");
 }
 
 if(theme==="frog"){
@@ -769,6 +774,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
