@@ -523,17 +523,24 @@ function showNewRecord(){
     let el = document.createElement("div");
     el.innerText = "🔥 UUSI ENNÄTYS!";
 
-    el.style.position = "fixed";
-    el.style.top = "60px";
-    el.style.right = "20px";
+    el.style.position = "absolute";
+    el.style.top = "65%";
+    el.style.left = "50%";
+    el.style.transform = "translateX(-50%)";
 
-    el.style.fontSize = "26px";
+    el.style.fontSize = "28px";
     el.style.color = "#ffd700";
-    el.style.textShadow = "0 0 15px #ffd700";
+    el.style.textShadow = "0 0 20px #ffd700";
+    el.style.transition = "all 1s ease-out";
 
     el.style.zIndex = "999";
 
     document.body.appendChild(el);
+
+    setTimeout(()=>{
+    el.style.top = "58%";
+    el.style.opacity = "0";
+},50);
 
     setTimeout(()=>{
         el.remove();
@@ -698,6 +705,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
