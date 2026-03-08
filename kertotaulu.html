@@ -40,7 +40,7 @@ body::after{
 content:"";
 position:fixed;
 inset:0;
-background:var(--overlay, rgba(0,0,0,0.35));
+background:rgba(0,0,0,0.35);
 z-index:-1;
 }
     
@@ -98,16 +98,13 @@ h1 {
     font-size: 28px;
 }
 
-#question{
-
-background:rgba(0,0,0,0.55);
-backdrop-filter:blur(6px);
-
-border-radius:20px;
-padding:25px 40px;
-
-box-shadow:0 0 20px rgba(0,255,255,0.4);
-
+#question {
+    font-size: clamp(50px, 6vw, 110px);
+    background: rgba(0,255,255,0.1);
+    box-shadow: 0 0 30px rgba(0,255,255,0.4);
+    border-radius: 20px;
+    padding: 30px 40px;
+    margin: 15px 0;
 }
 
 #statusMessage {
@@ -189,25 +186,6 @@ background-size:110%;
     100%{ transform:scale(1); }
 }
 
-@keyframes popEffect{
-
-0%{
-transform:translateX(-50%) scale(0.6);
-opacity:0;
-}
-
-50%{
-transform:translateX(-50%) scale(1.15);
-opacity:1;
-}
-
-100%{
-transform:translateX(-50%) scale(1);
-opacity:1;
-}
-
-}
-
 /* ===== RIGHT ===== */
 
 .right {
@@ -260,6 +238,15 @@ box-shadow:0 0 18px #ffd700, 0 0 40px rgba(255,215,0,0.5);
 
 .buttonContainer button:hover{
 transform:scale(1.05);
+}
+
+#question{
+    font-size:clamp(40px,10vw,70px);
+    padding:20px;
+}
+
+.scoreboard{
+    font-size:24px;
 }
 
 }
@@ -414,12 +401,10 @@ function changeTheme(){
  let body=document.body;
  let mascot=document.getElementById("mascot");
 
-if(theme==="panda"){
+ if(theme==="panda"){
     document.body.style.setProperty('--bg-image',"url('panda.jpg')");
     body.style.color="white";
     mascot.innerText="🐼";
-
-    document.body.style.setProperty('--overlay',"rgba(0,0,0,0.55)");
 }
 
 if(theme==="frog"){
@@ -548,7 +533,6 @@ el.style.transform = "translateX(-50%)";
     el.style.color = "#ff00ff";
     el.style.textShadow = "0 0 15px #ff00ff";
     el.style.zIndex = "999";
-    el.style.animation = "popEffect 0.5s ease-out";
     document.querySelector(".centerGame").appendChild(el);
 
     setTimeout(()=>{
@@ -561,18 +545,17 @@ function showNewRecord(){
     let el = document.createElement("div");
     el.innerText = "🔥 UUSI ENNÄTYS!";
 
-    el.style.position = "absolute";
-    el.style.bottom = "-5px";
-    el.style.left = "50%";
-    el.style.transform = "translateX(-50%)";
-
+el.style.position = "absolute";
+el.style.bottom = "-5px";
+el.style.left = "50%";
+el.style.transform = "translateX(-50%)";
 
     el.style.fontSize = "46px";    // selvästi suurempi
     el.style.color = "#ffffff";    // sama valkoinen tunnelma kuin PELI OHI
     el.style.textShadow = "0 0 10px #00ffff, 0 0 25px #00ffff, 0 0 40px #00ffff";
     el.style.letterSpacing = "3px";
     el.style.whiteSpace = "nowrap";
-    el.style.animation = "popEffect 0.5s ease-out";
+
     el.style.fontFamily = "'Orbitron', sans-serif";
 
     el.style.opacity = "1";
@@ -765,10 +748,6 @@ loadScores();
 
 </body>
 </html>
-
-
-
-
 
 
 
