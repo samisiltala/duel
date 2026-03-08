@@ -186,6 +186,25 @@ background-size:110%;
     100%{ transform:scale(1); }
 }
 
+    @keyframes popEffect{
+
+0%{
+transform:translateX(-50%) scale(0.6);
+opacity:0;
+}
+
+50%{
+transform:translateX(-50%) scale(1.15);
+opacity:1;
+}
+
+100%{
+transform:translateX(-50%) scale(1);
+opacity:1;
+}
+
+}
+    
 /* ===== RIGHT ===== */
 
 .right {
@@ -531,6 +550,7 @@ el.style.left = "50%";
 el.style.transform = "translateX(-50%)";
     el.style.fontSize = "40px";
     el.style.color = "#ff00ff";
+    el.style.animation = "popEffect 0.5s ease-out";
     el.style.textShadow = "0 0 15px #ff00ff";
     el.style.zIndex = "999";
     document.querySelector(".centerGame").appendChild(el);
@@ -557,6 +577,7 @@ el.style.transform = "translateX(-50%)";
     el.style.whiteSpace = "nowrap";
 
     el.style.fontFamily = "'Orbitron', sans-serif";
+    el.style.animation = "popEffect 0.5s ease-out";
 
     el.style.opacity = "1";
     el.style.transition = "all 1.6s ease-out";
@@ -748,6 +769,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
