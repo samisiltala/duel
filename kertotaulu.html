@@ -22,6 +22,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
    animation: spaceZoom 60s linear infinite alternate;
+    --bg:url("space.jpg");
 }
 
 body::before{
@@ -445,8 +446,10 @@ function changeTheme(){
  let mascot=document.getElementById("mascot");
 
 if(theme==="panda"){
-    document.body.style.backgroundImage =
-    "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('panda.jpg')";
+    document.body.style.setProperty(
+        "--bg",
+        "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('panda.jpg')"
+    );
     body.style.color="white";
     mascot.innerText="🐼";
 }
@@ -853,6 +856,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
