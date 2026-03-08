@@ -732,8 +732,7 @@ document.getElementById("keyPanel").style.display="none"
 
 let nameA=document.getElementById("nameA").innerText
 let nameB=document.getElementById("nameB").innerText
-value="${nameA}"
-value="${nameB}"
+
 
 let overlay=document.getElementById("overlay")
 
@@ -887,6 +886,8 @@ container.appendChild(btn)
 function choose(player,value){
 
 if(!gameActive||answered)return
+if(player==="A" && lockA) return
+if(player==="B" && lockB) return
 
 if(value === correctAnswer){
 
@@ -941,7 +942,7 @@ if(scoreDiff <= -10){
 endGame("B")
 return
 }
-updateBar()
+
 newQuestion()
 
 }
@@ -1076,6 +1077,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
