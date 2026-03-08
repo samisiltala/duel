@@ -412,6 +412,11 @@ color:black !important;
 font-size:120px;
 }
 
+/* TÄLLÄ POISTETAAN PISTEET NÄKYVISTÄ, PALAUTA JOS HALUAT TAKAISIN */
+.score{
+display:none;
+}
+
 /* VICTORY */
 
 .victoryText{
@@ -650,6 +655,7 @@ btn.classList.add("selected")
 }
 
 function startCountdown(){
+duelPosition = 10
 scoreA = 0
 scoreB = 0
 scoreDiff = 0
@@ -894,25 +900,25 @@ if(value === correctAnswer){
 answered = true
 
 if(player==="A"){
-scoreA++
+duelPosition++
 play("scoreSoundA")
 }
 else{
-scoreB++
+duelPosition--
 play("scoreSoundB")
 }
 
 }else{
 
 if(player==="A"){
-scoreA = Math.max(0, scoreA-1)
+duelPosition--
 play("ouchWhite")
 lockA=true
 setTimeout(()=>{lockA=false},1500)
 }
 
 else{
-scoreB = Math.max(0, scoreB-1)
+duelPosition++
 play("ouchBlack")
 lockB=true
 setTimeout(()=>{lockB=false},1500)
@@ -924,21 +930,12 @@ duelPosition=Math.max(0,Math.min(20,duelPosition))
 updateScores()
 updateBar()
 
-if(scoreA >= 10){
+if(duelPosition >= 20){
 endGame("A")
 return
 }
 
-if(scoreB >= 10){
-endGame("B")
-return
-}
-if(scoreDiff >= 10){
-endGame("A")
-return
-}
-
-if(scoreDiff <= -10){
+if(duelPosition <= 0){
 endGame("B")
 return
 }
@@ -954,19 +951,12 @@ document.getElementById("scoreB").innerText=scoreB
 
 function updateBar(){
 
-let diff = scoreA - scoreB
+duelPosition = Math.max(0, Math.min(20, duelPosition))
 
-let center = 50
-let change = diff * 5
+let percent = duelPosition / 20 * 100
 
-let white = center + change
-let red = center - change
-
-white = Math.max(0, Math.min(100, white))
-red = Math.max(0, Math.min(100, red))
-
-document.getElementById("barWhite").style.width = white + "%"
-document.getElementById("barRed").style.width = red + "%"
+document.getElementById("barWhite").style.width = percent + "%"
+document.getElementById("barRed").style.width = (100-percent) + "%"
 
 }
 
@@ -1077,6 +1067,7 @@ buttons[id].click()
 
 </body>
 </html>
+
 
 
 
