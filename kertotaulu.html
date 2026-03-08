@@ -524,27 +524,27 @@ function showNewRecord(){
     el.innerText = "🔥 UUSI ENNÄTYS!";
 
     el.style.position = "absolute";
-    el.style.top = "65%";
+    el.style.top = "75%";
     el.style.left = "50%";
     el.style.transform = "translateX(-50%)";
 
-    el.style.fontSize = "28px";
+    el.style.fontSize = "30px";
     el.style.color = "#ffd700";
     el.style.textShadow = "0 0 20px #ffd700";
-    el.style.transition = "all 1s ease-out";
+    el.style.transition = "all 1,2s ease-out";
 
     el.style.zIndex = "999";
 
     document.body.appendChild(el);
 
     setTimeout(()=>{
-    el.style.top = "58%";
+    el.style.top = "68%";
     el.style.opacity = "0";
-},50);
+},100);
 
     setTimeout(()=>{
         el.remove();
-    },2000);
+    },3500);
 }
 
 function starRain(){
@@ -705,6 +705,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
