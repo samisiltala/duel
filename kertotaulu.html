@@ -333,6 +333,16 @@ box-shadow:0 0 8px #00ffff;
 
 <!-- RIGHT -->
 <div class="right">
+
+<div id="levelTitle" style="
+font-size:28px;
+font-weight:bold;
+text-align:center;
+margin-bottom:15px;
+text-shadow:0 0 10px #00ffff;
+">
+TASO: HELPPO
+</div>
 <div style="margin-bottom:15px;">
     <div id="classBest">🏆 Luokan ennätys: -</div>
     <div id="personalBest">🔥 Oma ennätys: -</div>
@@ -664,6 +674,15 @@ function endGame(){
 
 function loadScores(){
 
+const levelNames = {
+1:"HELPPO",
+2:"NORMAALI",
+3:"SUPER"
+};
+
+document.getElementById("levelTitle").innerText =
+"TASO: " + levelNames[level];
+
  fetch(WEB_APP_URL + "?level=" + level)
  .then(r=>r.json())
  .then(data=>{
@@ -727,6 +746,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
