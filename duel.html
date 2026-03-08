@@ -939,8 +939,6 @@ play("scoreSoundB")
 
 }else{
 
-answered = true
-  
 if(player==="A"){
 duelPosition--
 play("ouchWhite")
@@ -960,7 +958,6 @@ setTimeout(()=>{lockB=false},1500)
 }
 
 duelPosition=Math.max(0,Math.min(20,duelPosition))
-updateScores()
 updateBar()
 
 if(duelPosition >= 20){
@@ -973,7 +970,10 @@ endGame("B")
 return
 }
 
-setTimeout(newQuestion,300)
+if(answered){
+newQuestion()
+}
+
 }
 
 function updateScores(){
@@ -1115,6 +1115,7 @@ b.classList.remove("wrongFlash")
 
 </body>
 </html>
+
 
 
 
