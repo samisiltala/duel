@@ -897,17 +897,17 @@ function sendScore(name, score){
  });
 }
 document.getElementById("themeSelect").addEventListener("change",changeTheme);
+
 document.getElementById("levelSelect").addEventListener("change", function(){
     level = Number(document.getElementById("levelSelect").value);
     previousBest = 0;
     loadScores();
-document.getElementById("name").addEventListener("input", ()=>{
-loadScores();
 });
 
+document.getElementById("name").addEventListener("input", ()=>{
+    loadScores();
+});
 
-
-    
 changeTheme();
 level = Number(document.getElementById("levelSelect").value);
 loadScores();
@@ -916,6 +916,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
