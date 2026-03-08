@@ -65,10 +65,20 @@ text-shadow:
 2px 2px 0 rgba(0,0,0,0.9),
 4px 6px 14px rgba(0,0,0,0.8);
 
-/* pieni epätasaisuus */
-filter: contrast(1.05) brightness(0.95);
+/* epätasaisuus + hehku */
+filter:
+contrast(1.05)
+brightness(0.95)
+drop-shadow(0 0 12px rgba(255,200,120,0.4))
+drop-shadow(0 0 30px rgba(255,170,60,0.25));
 
-};
+animation:
+torch 4.5s infinite ease-in-out,
+floatTitle 7s infinite ease-in-out;
+
+white-space:nowrap;
+
+}
 
 filter:
 drop-shadow(0 0 12px rgba(255,200,120,0.4))
