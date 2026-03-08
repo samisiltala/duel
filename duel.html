@@ -920,7 +920,6 @@ container.appendChild(btn)
 
 function choose(player,value){
 
-value = Number(value)
 
 if(!gameActive||answered)return
 if(player==="A" && lockA) return
@@ -928,7 +927,8 @@ if(player==="B" && lockB) return
 
 if(value === correctAnswer){
 
-answered = true
+if(answered) return
+  answered = true
 
 if(player==="A"){
 duelPosition++
@@ -1117,6 +1117,7 @@ b.classList.remove("wrongFlash")
 
 </body>
 </html>
+
 
 
 
