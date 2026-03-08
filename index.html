@@ -137,6 +137,24 @@ margin-bottom:60px;
 }
 
 /* AARTEET ELI LINKIT */
+
+.scroll{
+bottom:18%;
+right:8%;
+transform:rotate(-6deg);
+}
+
+.sword{
+bottom:14%;
+left:8%;
+transform:rotate(8deg);
+}
+
+.abacus{
+bottom:32%;
+left:50%;
+transform:translateX(-50%) rotate(-2deg);
+}
   
 .treasures{
 
@@ -160,10 +178,6 @@ flex-wrap:wrap;
 
 position:absolute;
 
-bottom:18%;
-
-right:8%;
-
 width:220px;
 
 cursor:pointer;
@@ -177,27 +191,6 @@ width:100%;
 display:block;
 }
 
-.treasure span{
-
-position:absolute;
-
-top:50%;
-left:50%;
-
-transform:translate(-50%,-50%);
-
-font-family:'IM Fell English', serif;
-
-font-size:28px;
-
-color:#3a2b14;
-
-text-shadow:
-0 2px 3px rgba(255,255,255,0.4),
-0 3px 6px rgba(0,0,0,0.6);
-
-}
-
 .treasure:hover{
 
 transform:scale(1.06);
@@ -205,7 +198,6 @@ transform:scale(1.06);
 filter:drop-shadow(0 0 20px rgba(255,220,120,0.6));
 
 }
-
 
 
 /* HEHKU LUOLAAN */
@@ -263,19 +255,16 @@ font-size:18px;
 
 
 
-<a href="kertotaulu.html" class="treasure">
-<img src="taulu.png">
-<span>Kertotaulu</span>
+<a href="kertotaulu.html" class="treasure abacus">
+<img src="helmitaulu.png">
 </a>
 
-<a href="duel.html" class="treasure">
+<a href="duel.html" class="treasure sword">
 <img src="miekka.png">
-<span>Kaksintaistelu</span>
 </a>
 
 <a href="sanakko.html" class="treasure scroll">
 <img src="kaaro.png">
-<span>Sanaluola</span>
 </a>
 
 </div>
