@@ -46,6 +46,49 @@ object-fit:cover;
 z-index:-2;
 }
 
+#batHint{
+
+position:absolute;
+top:8%;
+left:60%;
+
+font-family:'MedievalSharp', serif;
+font-size:18px;
+color:#ffd27a;
+
+text-shadow:
+0 0 6px rgba(255,210,120,0.6),
+0 0 12px rgba(255,170,60,0.4);
+
+display:flex;
+align-items:center;
+gap:8px;
+
+animation:hintPulse 2.5s infinite ease-in-out;
+
+}
+
+.arrow{
+font-size:22px;
+animation:arrowMove 1.8s infinite ease-in-out;
+}
+
+@keyframes arrowMove{
+
+0%{transform:translateX(0)}
+50%{transform:translateX(-6px)}
+100%{transform:translateX(0)}
+
+}
+
+@keyframes hintPulse{
+
+0%{opacity:0.6}
+50%{opacity:1}
+100%{opacity:0.6}
+
+}
+
 .title{
 
 position:absolute;
@@ -361,6 +404,9 @@ transform:translateX(-50%) scale(1.08);
 <div class="bat" onclick="startExperience()">
 <img src="bat.png">
 </div>
+<div id="batHint">
+<span class="arrow">➜</span> HERÄTÄ LUOLA
+</div>
 
 <div class="overlay"></div>
 
@@ -397,6 +443,8 @@ transform:translateX(-50%) scale(1.08);
 <script>
 
 function startExperience(){
+
+document.getElementById("batHint").style.display="none"
 
 /* fullscreen */
 
