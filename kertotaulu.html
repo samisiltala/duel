@@ -120,12 +120,11 @@ h1 {
 
 .buttonContainer{
 
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:18px;
+position:relative;
+width:160px;
+height:160px;
 
-max-width:320px;
-margin:auto;
+margin:30px auto;
 
 }
 
@@ -308,12 +307,12 @@ margin-top:20px;
 
 .buttonContainer button{
 
-aspect-ratio:1/1;
-width:100%;
+position:absolute;
 
-animation: idleSpin 3s ease-in-out infinite;
+width:60px;
+height:60px;
 
-font-size:32px;
+font-size:28px;
 
 display:flex;
 align-items:center;
@@ -326,16 +325,9 @@ border:none;
 
 background:#ffd700;
 
-box-shadow:0 0 18px #ffd700, 0 0 40px rgba(255,215,0,0.5);
-
-
-position:absolute;
-width:60px;
-height:60px;
-
-display:flex;
-align-items:center;
-justify-content:center;
+box-shadow:
+0 0 18px #ffd700,
+0 0 40px rgba(255,215,0,0.5);
 
 animation:orbit 6s linear infinite;
 
@@ -912,6 +904,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
