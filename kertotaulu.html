@@ -84,6 +84,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position:relative;
 }
 
 .scoreboard {
@@ -525,14 +526,14 @@ function showStreak(){
     let el = document.createElement("div");
     el.innerText = "🔥 STREAK!";
     el.style.position = "absolute";
-    el.style.top = "30%";
-    el.style.left = "50%";
-    el.style.transform = "translateX(-50%)";
+el.style.bottom = "10px";
+el.style.left = "50%";
+el.style.transform = "translateX(-50%)";
     el.style.fontSize = "40px";
     el.style.color = "#ff00ff";
     el.style.textShadow = "0 0 15px #ff00ff";
     el.style.zIndex = "999";
-    document.body.appendChild(el);
+    document.querySelector(".centerGame").appendChild(el);
 
     setTimeout(()=>{
         el.remove();
@@ -544,10 +545,10 @@ function showNewRecord(){
     let el = document.createElement("div");
     el.innerText = "🔥 UUSI ENNÄTYS!";
 
-    el.style.position = "absolute";
-    el.style.top = "76%";          // alkaa nappien alapuolelta
-    el.style.left = "50%";
-    el.style.transform = "translateX(-50%)";
+el.style.position = "absolute";
+el.style.bottom = "10px";
+el.style.left = "50%";
+el.style.transform = "translateX(-50%)";
 
     el.style.fontSize = "46px";    // selvästi suurempi
     el.style.color = "#ffffff";    // sama valkoinen tunnelma kuin PELI OHI
@@ -562,7 +563,7 @@ function showNewRecord(){
     el.style.zIndex = "999";
 
     el.style.letterSpacing = "3px";
-    document.body.appendChild(el);
+   document.querySelector(".centerGame").appendChild(el);
 
     // pieni nousu
     setTimeout(()=>{
@@ -746,6 +747,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
