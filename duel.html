@@ -920,6 +920,8 @@ container.appendChild(btn)
 
 function choose(player,value){
 
+value = Number(value)
+
 if(!gameActive||answered)return
 if(player==="A" && lockA) return
 if(player==="B" && lockB) return
@@ -1115,6 +1117,7 @@ b.classList.remove("wrongFlash")
 
 </body>
 </html>
+
 
 
 
