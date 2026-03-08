@@ -32,7 +32,11 @@ flex-direction:column;
 gap:20px;
 align-items:flex-start;
 }
-
+  
+.tile:hover{
+background:#00ccff;
+}
+  
 #timer{
 font-size:42px;
 font-weight:bold;
@@ -185,6 +189,10 @@ let grid=document.getElementById("grid")
 let board=[]
 let tiles=[]
 
+let music = new Audio("sanatausta.mp3")
+music.loop = true
+music.volume = 0.25
+  
 let currentWord=""
 let score=0
 let time=120
@@ -200,10 +208,10 @@ let playerName=""
 let dictionary=new Set()
 
 let dice=[
-"AAEIOU","AAEIOU","AEIOUY","AEIOUY",
-"ÄÄÖEEA","ÄÖAEIO","EEEAAA","EEEIII",
-"IIIOOO","IOOUUY","NNNRST","NNRSTL",
-"RSTLNA","STLNRK","KKRTLN","HMPLVK"
+"AAEEGN","ABBJOO","ACHOPS","AFFKPS",
+"AOOTTW","CIMOTU","DEILRX","DELRVY",
+"DISTTY","EEGHNW","EEINSU","EHRTVW",
+"EIOSST","ELRTTY","HIMNQU","HLNNRZ"
 ]
 
 fetch("sanat.txt")
@@ -235,6 +243,8 @@ document.getElementById("found").innerHTML=""
 generateBoard()
 
 startTimer()
+
+music.play()
 
 }
 
@@ -424,7 +434,15 @@ let w=currentWord.toLowerCase()
 if(dictionary.has(w) && !foundWords.has(w)){
 foundWords.add(w)
 
-let pts=w.length-2
+function getPoints(len){
+
+if(len<=4) return 1
+if(len==5) return 2
+if(len==6) return 3
+if(len==7) return 5
+return 11
+
+}
 
 score+=pts
 
@@ -506,8 +524,6 @@ document.getElementById("leaderboard").innerHTML=html
 renderLeaderboard()
 
 function toggleMusic(){
-
-let music=new Audio("sanatausta.mp3")
 
 if(music.paused) music.play()
 else music.pause()
