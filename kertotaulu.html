@@ -553,6 +553,7 @@ el.style.transform = "translateX(-50%)";
     el.style.fontSize = "46px";    // selvästi suurempi
     el.style.color = "#ffffff";    // sama valkoinen tunnelma kuin PELI OHI
     el.style.textShadow = "0 0 10px #00ffff, 0 0 25px #00ffff, 0 0 40px #00ffff";
+    el.style.letterSpacing = "3px";
     el.style.whiteSpace = "nowrap";
 
     el.style.fontFamily = "'Orbitron', sans-serif";
@@ -566,9 +567,9 @@ el.style.transform = "translateX(-50%)";
    document.querySelector(".centerGame").appendChild(el);
 
     // pieni nousu
-    setTimeout(()=>{
-        el.style.top = "71%";
-    },100);
+  setTimeout(()=>{
+    el.style.bottom = "15px";
+},100);
 
     // häivytys myöhemmin
     setTimeout(()=>{
@@ -747,6 +748,7 @@ loadScores();
 
 </body>
 </html>
+
 
 
 
