@@ -310,6 +310,7 @@ document.getElementById("score").textContent="Pisteet: 0"
 document.getElementById("found").innerHTML=""
 
 let minWords = 80
+let minVowels = 4
 let attempts = 0
 
 do{
@@ -317,7 +318,7 @@ generateBoard()
 findAllWords()
 attempts++
 }
-while(validWords.size < minWords && attempts < 50)
+while((validWords.size < minWords || countVowels() < minVowels) && attempts < 50)
 
 startTimer()
 
@@ -370,6 +371,21 @@ tiles.push(div)
 
 }
 
+function countVowels(){
+
+let vowels="AEIOUYÄÖ"
+let count=0
+
+for(let letter of board){
+if(vowels.includes(letter)){
+count++
+}
+}
+
+return count
+
+}
+  
 function findAllWords(){
 
 validWords.clear()
