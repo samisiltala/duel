@@ -278,17 +278,7 @@ return
 
 playerName=name
 
-document.getElementById("overlay").innerHTML=
-`
-<div class="overlayBox">
-<h2>Salaiset sanat</h2>
-<input id="nameInput" placeholder="Nimesi">
-<button class="startButton" onclick="startGame()">Aloita peli</button>
-<div id="leaderboard"></div>
-</div>
-`
 
-document.getElementById("overlay").style.display="flex"
 document.getElementById("playerName").textContent="👤 "+playerName
 
 document.getElementById("overlay").style.display="none"
@@ -505,7 +495,7 @@ function checkWord(){
 
 let w=currentWord.toLowerCase()
 
-if(validWords.has(w) && !foundWords.has(w))
+if(validWords.has(w) && !foundWords.has(w)){
 
 foundWords.add(w)
 
