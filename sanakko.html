@@ -84,6 +84,48 @@ text-align:center;
 text-transform:uppercase;
 }
 
+.endTitle{
+font-size:52px;
+margin-bottom:10px;
+}
+
+.endStats{
+font-size:24px;
+margin:4px 0;
+}
+
+.endGrid{
+display:grid;
+grid-template-columns:1fr 200px;
+gap:25px;
+margin-top:20px;
+}
+
+.wordWall{
+max-height:260px;
+overflow:auto;
+background:#111;
+padding:15px;
+border-radius:10px;
+
+font-family:'JetBrains Mono', monospace;
+font-size:14px;
+line-height:1.6;
+}
+
+.wordFound{
+color:#6aff9c;
+}
+
+.wordMissed{
+color:#666;
+}
+
+.wordLong{
+color:#ffd86b;
+font-weight:bold;
+}
+  
 /* PELI */
 
 .container{
@@ -628,25 +670,63 @@ clearSelection()
 document.getElementById("win").play()
 
 let overlay=document.getElementById("overlay")
-
 overlay.style.display="flex"
+
+let words=[...validWords].sort()
+
+let wordHTML=""
+
+words.forEach(w=>{
+
+if(foundWords.has(w)){
+
+wordHTML+=`<span class="wordFound">${w}</span> `
+
+}else if(w.length>=7){
+
+wordHTML+=`<span class="wordLong">${w}</span> `
+
+}else{
+
+wordHTML+=`<span class="wordMissed">${w}</span> `
+
+}
+
+})
 
 overlay.innerHTML=`
 <div class="overlayBox">
-<h2>Peli ohi!</h2>
 
-<h3>${playerName}: ${score} pistettä</h3>
-<h3>Maksimi: ${maxScore}</h3>
-<h3>Osuus: ${Math.round(score/maxScore*100)}%</h3>
+<div class="endTitle">Peli ohi!</div>
+
+<div class="endStats">${playerName}: ${score} pistettä</div>
+<div class="endStats">Maksimi: ${maxScore}</div>
+<div class="endStats">Osuus: ${Math.round(score/maxScore*100)}%</div>
+
+<div class="endGrid">
+
+<div class="wordWall">
+${wordHTML}
+</div>
+
+<div>
 
 <button class="startButton" onclick="newGame()">Uusi peli</button>
-<a href="index.html"><button class="startButton">Kotivalikko</button></a>
+
+<br><br>
+
+<a href="index.html">
+<button class="startButton">Kotivalikko</button>
+</a>
+
+</div>
+
+</div>
 
 </div>
 `
 
 }
-
 function newGame(){
 
 clearInterval(timer)
