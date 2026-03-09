@@ -715,24 +715,27 @@ else music.pause()
 
 function animateTitle(){
 
-const el=document.getElementById("gameTitle")
-const bip=document.getElementById("bip")
+const el = document.getElementById("gameTitle")
+const bip = document.getElementById("bip")
 
-const original="SALAISET SANAT"
-const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ#@!?$%&"
+const original = "SALAISET SANAT"
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@!?$%&"
 
-let iteration=0
+let iteration = -10   // pieni "sekovaihe" alussa
 
-const interval=setInterval(()=>{
+const interval = setInterval(()=>{
 
 let text=""
 
 for(let i=0;i<original.length;i++){
 
+if(original[i]===" "){
+text+=" "
+continue
+}
+
 if(i < iteration){
 text+=original[i]
-}else if(original[i]===" "){
-text+=" "
 }else{
 text+=chars[Math.floor(Math.random()*chars.length)]
 }
@@ -744,14 +747,14 @@ el.textContent=text
 bip.currentTime=0
 bip.play()
 
-iteration+=0.25
+iteration += 0.15
 
-if(iteration>=original.length){
+if(iteration >= original.length){
 clearInterval(interval)
-el.textContent=original
+el.textContent = original
 }
 
-},40)
+},60)
 
 }
 
