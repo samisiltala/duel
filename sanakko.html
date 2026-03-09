@@ -203,7 +203,7 @@ font-weight:bold;
 
 <div class="leftPanel">
 <div id="playerName"></div>
-<div id="timer">Aika: 120</div>
+<div id="timer">Aika: 20</div>
 <div id="score">Pisteet: 0</div>
 <div id="debugWords">Sanat: 0 / 0</div>
 <button onclick="toggleMusic()">Musiikki</button>
@@ -353,7 +353,7 @@ document.getElementById("playerName").textContent="👤 "+playerName
 document.getElementById("overlay").style.display="none"
 
 score=0
-time=120
+time=20
 foundWords.clear()
 
 generateGoodBoard()
@@ -614,7 +614,7 @@ function newGame(){
 clearInterval(timer)
 
 score=0
-time=120
+time=20
 foundWords.clear()
 
 document.getElementById("score").textContent="Pisteet: 0"
