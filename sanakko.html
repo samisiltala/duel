@@ -168,16 +168,34 @@ border-radius:8px;
 text-align:center;
 }
 
-#word{
-margin-top:55px;
-font-size:44px;
-letter-spacing:3px;
-min-height:50px;
-text-shadow:0 0 12px #00ffff;
+#gameTitle{
+font-size:56px;
+letter-spacing:6px;
+animation:titleFloat 3s ease-in-out infinite alternate;
 }
 
-#timer,#score{
-text-shadow:0 0 10px black;
+@keyframes titleFloat{
+from{ transform:translateY(-2px);}
+to{ transform:translateY(2px);}
+}
+
+#word{
+margin-top:40px;
+font-size:46px;
+letter-spacing:6px;
+min-height:50px;
+
+color:black;
+background:rgba(255,255,255,0.85);
+
+padding:10px 25px;
+border-radius:12px;
+
+box-shadow:
+0 0 12px rgba(0,0,0,0.7),
+0 0 20px rgba(0,0,0,0.5);
+
+font-weight:bold;
 }
 
 </style>
@@ -189,7 +207,7 @@ text-shadow:0 0 10px black;
 
 <div id="overlay">
 <div class="overlayBox">
-<h2>Salaiset sanat</h2>
+<h2 id="gameTitle"></h2>
 <input id="nameInput" placeholder="Nimesi" maxlength="6">
 <button class="startButton" onclick="startGame()">Aloita peli</button>
 <div id="leaderboard"></div>
@@ -671,6 +689,33 @@ else music.pause()
 
 }
 
+function animateTitle(){
+
+let title="SALAISET SANAT"
+let el=document.getElementById("gameTitle")
+let bip=document.getElementById("bip")
+
+el.textContent=""
+
+let i=0
+
+let interval=setInterval(()=>{
+
+el.textContent+=title[i]
+
+bip.currentTime=0
+bip.play()
+
+i++
+
+if(i>=title.length){
+clearInterval(interval)
+}
+
+},80)
+
+}
+
 function newGame(){
 
 clearInterval(timer)
@@ -687,7 +732,7 @@ document.getElementById("overlay").style.display="none"
 
 generateGoodBoard()
 startTimer()
-
+animateTitle()
 }
 
 </script>
