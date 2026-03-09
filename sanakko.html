@@ -232,6 +232,8 @@ let foundWords=new Set()
 let playerName=""
 
 let dictionary=new Set()
+let validWords=new Set()
+let maxScore=0
 
 let dice=[
 "AAEEGN","ABBJOO","ACHOPS","AFFKPS",
@@ -286,6 +288,7 @@ document.getElementById("score").textContent="Pisteet: 0"
 document.getElementById("found").innerHTML=""
 
 generateBoard()
+findAllWords()
 startTimer()
 
 music.play()
@@ -334,6 +337,60 @@ grid.appendChild(div)
 tiles.push(div)
 
 }
+
+}
+
+function findAllWords(){
+
+validWords.clear()
+maxScore=0
+
+let directions=[
+[-1,-1],[-1,0],[-1,1],
+[0,-1],[0,1],
+[1,-1],[1,0],[1,1]
+]
+
+function dfs(x,y,visited,word){
+
+let index=y*4+x
+let letter=board[index].toLowerCase()
+
+word+=letter
+visited.add(index)
+
+if(word.length>=3 && dictionary.has(word)){
+if(!validWords.has(word)){
+validWords.add(word)
+maxScore+=getPoints(word.length)
+}
+}
+
+for(let d of directions){
+
+let nx=x+d[0]
+let ny=y+d[1]
+
+if(nx<0||ny<0||nx>3||ny>3) continue
+
+let nIndex=ny*4+nx
+
+if(visited.has(nIndex)) continue
+
+dfs(nx,ny,new Set(visited),word)
+
+}
+
+}
+
+for(let y=0;y<4;y++){
+for(let x=0;x<4;x++){
+dfs(x,y,new Set(),"")
+}
+}
+
+console.log("Mahdolliset sanat:",validWords.size)
+console.log("Maksimipisteet:",maxScore)
 
 }
 
@@ -434,7 +491,7 @@ function checkWord(){
 
 let w=currentWord.toLowerCase()
 
-if(dictionary.has(w) && !foundWords.has(w)){
+if(validWords.has(w) && !foundWords.has(w))
 
 foundWords.add(w)
 
@@ -483,6 +540,8 @@ overlay.innerHTML=
 <div class="overlayBox">
 <h2>Peli ohi!</h2>
 <h3>${playerName}: ${score} pistettä</h3>
+<h3>Maksimi: ${maxScore}</h3>
+<h3>Osuus: ${Math.round(score/maxScore*100)}%</h3>
 
 <button class="startButton" onclick="restartGame()">Uusi peli</button>
 <a href="index.html"><button class="startButton">Kotivalikko</button></a>
