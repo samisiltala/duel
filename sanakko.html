@@ -723,7 +723,7 @@ const bip = document.getElementById("bip")
 const original = "SALAISET SANAT"
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@!?$%&"
 
-let iteration = -10   // pieni "sekovaihe" alussa
+let iteration = 0
 
 const interval = setInterval(()=>{
 
@@ -746,17 +746,14 @@ text+=chars[Math.floor(Math.random()*chars.length)]
 
 el.textContent=text
 
-bip.currentTime=0
-bip.play()
-
-iteration += 0.15
+iteration += 0.5
 
 if(iteration >= original.length){
 clearInterval(interval)
 el.textContent = original
 }
 
-},60)
+},50)
 
 }
 
