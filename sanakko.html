@@ -104,7 +104,11 @@ padding:20px;
 border-radius:15px;
 }
 
-#timer{font-size:42px;font-weight:bold;}
+#timer{
+font-size:42px;
+font-weight:bold;
+transition:all 0.2s;
+}
 #score{font-size:36px;font-weight:bold;}
 
 .centerGame{
@@ -597,21 +601,21 @@ function startTimer(){
 clearInterval(timer)
 
 timer=setInterval(()=>{
-
-time--
-
+if(time<=10){
+document.getElementById("timer").style.color="red"
+document.getElementById("timer").style.transform="scale(1.1)"
+}
 if(time<=0){
-
-time=0
-document.getElementById("timer").textContent="Aika: 0"
 
 clearInterval(timer)
 endGame()
-
 return
+
 }
 
 document.getElementById("timer").textContent="Aika: "+time
+
+time--
 
 },1000)
 
