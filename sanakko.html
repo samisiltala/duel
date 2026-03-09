@@ -96,9 +96,10 @@ margin:4px 0;
 
 .endGrid{
 display:grid;
-grid-template-columns:1fr 200px;
-gap:25px;
+grid-template-columns:1fr 180px;
+gap:35px;
 margin-top:20px;
+align-items:start;
 }
 
 .wordWall{
@@ -113,6 +114,20 @@ font-size:14px;
 line-height:1.6;
 }
 
+.wordWallWrapper{
+width:100%;
+}
+  
+.wordLegend{
+font-family:'JetBrains Mono', monospace;
+font-size:13px;
+margin-bottom:8px;
+}
+
+.legendFound{color:#6aff9c;}
+.legendMissed{color:#666;}
+.legendLong{color:#ffd86b;}
+  
 .wordFound{
 color:#6aff9c;
 }
@@ -405,7 +420,7 @@ foundWords.clear()
 generateGoodBoard()
 startTimer()
 music.play()
-
+setTimeout(endGame,5000)
 }
 
 function generateGoodBoard(){
@@ -683,7 +698,19 @@ overlay.innerHTML=`
 
 <div class="endGrid">
 
-<div class="wordWall" id="wordWall"></div>
+<div class="wordWallWrapper">
+
+<div class="wordLegend">
+<span class="legendFound">■ löydetty</span> 
+<span class="legendMissed">■ puuttuu</span> 
+<span class="legendLong">■ pitkä sana</span>
+</div>
+
+<div class="wordWall" id="wordWall">
+${wordHTML}
+</div>
+
+</div>
 
 <div>
 
