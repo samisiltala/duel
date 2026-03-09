@@ -6,6 +6,7 @@
 
 <audio id="blip" src="blip.mp3"></audio>
 <audio id="win" src="voitto.wav"></audio>
+<audio id="bip" src="bip.mp3"></audio>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
@@ -182,7 +183,7 @@ text-shadow:0 0 12px #00ffff;
 <div id="overlay">
 <div class="overlayBox">
 <h2>Salaiset sanat</h2>
-<input id="nameInput" placeholder="Nimesi">
+<input id="nameInput" placeholder="Nimesi" maxlength="6">
 <button class="startButton" onclick="startGame()">Aloita peli</button>
 <div id="leaderboard"></div>
 </div>
@@ -212,6 +213,16 @@ text-shadow:0 0 12px #00ffff;
 <script>
 
 let grid=document.getElementById("grid")
+document.addEventListener("input",(e)=>{
+
+if(e.target.id!=="nameInput") return
+if(e.inputType==="deleteContentBackward") return
+
+let bip=document.getElementById("bip")
+bip.currentTime=0
+bip.play()
+
+})
 
 let board=[]
 let tiles=[]
