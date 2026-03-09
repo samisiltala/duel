@@ -296,9 +296,7 @@ return
 
 playerName=name
 
-
 document.getElementById("playerName").textContent="👤 "+playerName
-
 document.getElementById("overlay").style.display="none"
 
 score=0
@@ -312,15 +310,24 @@ let minWords = 80
 let minVowels = 4
 let attempts = 0
 
-do{
+while(true){
+
 generateBoard()
 findAllWords()
 attempts++
+
+if(validWords.size >= minWords && countVowels() >= minVowels){
+break
 }
-while((validWords.size < minWords || countVowels() < minVowels) && attempts < 50)
+
+if(attempts > 100){
+console.log("Fallback ruudukko:", validWords.size)
+break
+}
+
+}
 
 startTimer()
-
 music.play()
 
 }
@@ -626,12 +633,22 @@ let minWords = 80
 let minVowels = 4
 let attempts = 0
 
-do{
+while(true){
+
 generateBoard()
 findAllWords()
 attempts++
+
+if(validWords.size >= minWords && countVowels() >= minVowels){
+break
 }
-while((validWords.size < minWords || countVowels() < minVowels) && attempts < 50)
+
+if(attempts > 100){
+console.log("Fallback ruudukko:", validWords.size)
+break
+}
+
+}
 
 startTimer()
 
