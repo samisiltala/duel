@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <title>Sanaluola</title>
 
-<audio id="blip" src="blip.mp3"></audio>
-<audio id="win" src="voitto.wav"></audio>
-<audio id="bip" src="bip.mp3"></audio>
-
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -21,80 +17,9 @@ margin:0;
 }
 
 button{
-font-family:'Cinzel', serif;
+font-family:'Cinzel',serif;
 text-transform:uppercase;
 letter-spacing:2px;
-}
-/* OVERLAY */
-
-#overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.35);
-background:url("papyrus.jpg") center/cover no-repeat;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:1000;
-}
-
-.overlayBox{
-text-transform:uppercase;
-letter-spacing:1px;
-background:rgba(20,20,20,0.92);
-padding:50px 70px;
-border-radius:18px;
-max-width:560px;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:20px;
-z-index:1100;
-position:relative;
-
-box-shadow:
-0 0 30px rgba(0,0,0,0.8),
-0 0 80px rgba(0,0,0,0.4);
-}
-
-.overlayBox h2{
-font-size:56px;
-margin:0;
-color:#e8e8e8;
-text-shadow:
-0 0 6px rgba(255,255,255,0.3),
-0 0 20px rgba(0,0,0,0.8);
-}
-
-#nameInput{
-text-transform:uppercase;
-}
-
-.startButton{
-font-family:'Cinzel', serif;
-letter-spacing:2px;
-
-background:#e6e6e6;
-color:#111;
-
-padding:16px 40px;
-border-radius:12px;
-
-box-shadow:
-0 6px 12px rgba(0,0,0,0.4),
-inset 0 1px 2px rgba(255,255,255,0.6);
-
-transition:all 0.15s ease;
-}
-
-.startButton:hover{
-transform:translateY(-2px);
-box-shadow:
-0 10px 18px rgba(0,0,0,0.5),
-inset 0 1px 2px rgba(255,255,255,0.6);
 }
 
 #matrixCanvas{
@@ -105,10 +30,45 @@ width:100%;
 height:100%;
 pointer-events:none;
 opacity:0.12;
-z-index:900;
+z-index:0;
 }
-  
-/* PELI */
+
+#overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.overlayBox{
+background:rgba(20,20,20,0.9);
+padding:50px 70px;
+border-radius:18px;
+max-width:560px;
+display:flex;
+flex-direction:column;
+gap:20px;
+align-items:center;
+}
+
+.overlayBox h2{
+font-size:56px;
+margin:0;
+}
+
+.startButton{
+background:#e6e6e6;
+color:#111;
+padding:16px 40px;
+border-radius:12px;
+cursor:pointer;
+}
 
 .container{
 display:grid;
@@ -119,24 +79,13 @@ margin:30px auto;
 }
 
 .leftPanel{
-display:flex;
-flex-direction:column;
-gap:20px;
-align-items:flex-start;
 background:rgba(0,0,0,0.75);
 padding:20px;
 border-radius:15px;
 }
 
-#timer{
-font-size:42px;
-font-weight:bold;
-}
-
-#score{
-font-size:36px;
-font-weight:bold;
-}
+#timer{font-size:42px}
+#score{font-size:36px}
 
 .centerGame{
 display:flex;
@@ -149,65 +98,24 @@ display:grid;
 grid-template-columns:repeat(4,80px);
 gap:14px;
 margin-top:30px;
-touch-action:none;
 }
 
 .tile{
-
 width:80px;
 height:80px;
-
 display:flex;
 align-items:center;
 justify-content:center;
-
-font-family:'JetBrains Mono', monospace;
+font-family:'JetBrains Mono';
 font-size:34px;
-font-weight:600;
-
-color:#222;
-
-background:linear-gradient(#f4f1e6,#ddd6c3);
-
-border:1px solid rgba(0,0,0,0.25);
-border-radius:12px;
-
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.7),
-inset 0 -3px 6px rgba(0,0,0,0.25),
-0 3px 6px rgba(0,0,0,0.4);
-
+background:#eee;
+color:black;
+border-radius:10px;
 cursor:pointer;
-user-select:none;
-
-transition:all 0.15s ease;
 }
 
-.tile:hover{
-
-transform:translateY(-3px) scale(1.05);
-
-box-shadow:
-inset 0 2px 3px rgba(255,255,255,0.7),
-inset 0 -3px 6px rgba(0,0,0,0.25),
-0 6px 14px rgba(0,0,0,0.5);
-
-}
-  
 .tile.active{
-
-background:linear-gradient(#fff7d6,#e9d58f);
-
-transform:scale(1.12);
-
-box-shadow:
-0 0 12px rgba(255,220,120,0.7),
-inset 0 2px 4px rgba(255,255,255,0.8);
-
-}
-
-.titleFloat{
-animation:titleFloat 3s ease-in-out infinite alternate;
+background:#ffd966;
 }
 
 .rightPanel{
@@ -218,82 +126,13 @@ max-height:400px;
 overflow:auto;
 }
 
-#found div{
-padding:4px 0;
-border-bottom:1px solid #444;
-}
-
-.homeButton{
-position:fixed;
-top:15px;
-left:15px;
-background:white;
-color:black;
-padding:8px 14px;
-border-radius:8px;
-text-decoration:none;
-}
-
-.musicButton{
-font-family:'Cinzel', serif;
-font-size:16px;
-padding:8px 14px;
-border:none;
-border-radius:8px;
-background:white;
-color:black;
-cursor:pointer;
-}
-
-#nameInput{
-font-family:'Orbitron';
-font-size:24px;
-padding:10px;
-border:none;
-border-radius:8px;
-text-align:center;
-}
-
-#gameTitle{
-font-size:56px;
-letter-spacing:6px;
-
-
-text-shadow:
-0 0 8px rgba(255,255,255,0.25),
-0 0 30px rgba(0,0,0,0.8);
-
-display:block;
-width:520px;
-margin:auto;
-text-align:center;
-white-space:nowrap;
-font-variant-ligatures:none;
-}
-
-@keyframes titleFloat{
-from{ transform:translateY(-2px);}
-to{ transform:translateY(2px);}
-}
-
 #word{
-margin-top:40px;
-font-family:'JetBrains Mono', monospace;
-font-size:46px;
-letter-spacing:6px;
-min-height:50px;
-
+margin-top:30px;
+font-size:42px;
+background:white;
 color:black;
-background:rgba(255,255,255,0.85);
-
-padding:10px 25px;
-border-radius:12px;
-
-box-shadow:
-0 0 12px rgba(0,0,0,0.7),
-0 0 20px rgba(0,0,0,0.5);
-
-font-weight:bold;
+padding:10px 20px;
+border-radius:10px;
 }
 
 </style>
@@ -301,16 +140,13 @@ font-weight:bold;
 
 <body>
 
-  <canvas id="matrixCanvas"></canvas>
-
-<a href="index.html" class="homeButton">Koti</a>
+<canvas id="matrixCanvas"></canvas>
 
 <div id="overlay">
 <div class="overlayBox">
-<h2 id="gameTitle">SALAISET SANAT</h2>
+<h2>SALAISET SANAT</h2>
 <input id="nameInput" placeholder="Nimesi" maxlength="6">
 <button class="startButton" onclick="startGame()">Aloita peli</button>
-<div id="leaderboard"></div>
 </div>
 </div>
 
@@ -321,7 +157,6 @@ font-weight:bold;
 <div id="timer">Aika: 120</div>
 <div id="score">Pisteet: 0</div>
 <div id="debugWords">Sanat: 0 / 0</div>
-<button class="musicButton" onclick="toggleMusic()">Musiikki</button>
 </div>
 
 <div class="centerGame">
@@ -339,30 +174,15 @@ font-weight:bold;
 <script>
 
 let grid=document.getElementById("grid")
-document.addEventListener("input",(e)=>{
-
-if(e.target.id!=="nameInput") return
-if(e.inputType==="deleteContentBackward") return
-
-let bip=document.getElementById("bip")
-bip.currentTime=0
-bip.play()
-
-})
 
 let board=[]
 let tiles=[]
-
-let music=new Audio("sanatausta.mp3")
-music.loop=true
-music.volume=0.25
 
 let currentWord=""
 let score=0
 let time=120
 let timer
 
-let selecting=false
 let usedTiles=[]
 let foundWords=new Set()
 
@@ -371,7 +191,6 @@ let playerName=""
 let dictionary=new Set()
 let prefixes=new Set()
 let validWords=new Set()
-let maxScore=0
 
 let dice=[
 "AAEIOU","AEIOUY","AEIOUY","AAEIOU",
@@ -379,6 +198,7 @@ let dice=[
 "KKRTLN","HMPLVK","DEIINS","TLAEIN",
 "ÄÄÖEEA","ÄÖAEIO","EEEAAA","EEEIII"
 ]
+
 fetch("sanat.txt")
 .then(r=>r.text())
 .then(data=>{
@@ -389,7 +209,6 @@ let words=data.split("\n")
 
 dictionary=new Set(words)
 
-// prefix-lista nopeuttamaan hakua
 words.forEach(word=>{
 for(let i=1;i<=word.length;i++){
 prefixes.add(word.slice(0,i))
@@ -398,63 +217,12 @@ prefixes.add(word.slice(0,i))
 
 })
 
-function startMatrix(){
-
-const canvas = document.getElementById("matrixCanvas")
-const ctx = canvas.getContext("2d")
-
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"
-const fontSize = 18
-
-const columns = Math.floor(canvas.width / fontSize)
-const drops = []
-
-for(let x = 0; x < columns; x++){
-drops[x] = 1
-}
-
-function draw(){
-
-ctx.fillStyle = "rgba(0,0,0,0.05)"
-ctx.fillRect(0,0,canvas.width,canvas.height)
-
-ctx.fillStyle = "#6aff9c"
-ctx.font = fontSize + "px JetBrains Mono"
-
-for(let i=0;i<drops.length;i++){
-
-const text = letters[Math.floor(Math.random()*letters.length)]
-
-ctx.fillText(text,i*fontSize,drops[i]*fontSize)
-
-if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
-drops[i]=0
-}
-
-drops[i]++
-
-}
-
-}
-
-setInterval(draw,50)
-
-}
-  
 function startGame(){
-
-if(dictionary.size===0){
-alert("Sanakirja latautuu vielä...")
-return
-}
 
 let name=document.getElementById("nameInput").value.trim().toUpperCase()
 
 if(name===""){
-alert("Kirjoita nimesi ensin")
+alert("Kirjoita nimesi")
 return
 }
 
@@ -470,33 +238,10 @@ foundWords.clear()
 document.getElementById("score").textContent="Pisteet: 0"
 document.getElementById("found").innerHTML=""
 
-generateGoodBoard()
-startTimer()
-music.play()
-
-}
-
-function generateGoodBoard(){
-
-let attempts = 0
-
-while(attempts < 20){
-
 generateBoard()
-
-attempts++
-
-if(
-countVowels() >= 4 &&
-!tooManySameLetters() &&
-goodLetterPairs() >= 2
-){
-break
-}
-
-}
-
 findAllWords()
+
+startTimer()
 
 }
 
@@ -507,10 +252,12 @@ clearInterval(timer)
 timer=setInterval(()=>{
 
 time--
-
 document.getElementById("timer").textContent="Aika: "+time
 
-if(time<=0) endGame()
+if(time<=0){
+clearInterval(timer)
+alert("Peli ohi!")
+}
 
 },1000)
 
@@ -538,6 +285,8 @@ div.textContent=letter
 div.dataset.x=i%4
 div.dataset.y=Math.floor(i/4)
 
+div.onclick=()=>selectTile(div)
+
 grid.appendChild(div)
 tiles.push(div)
 
@@ -545,100 +294,23 @@ tiles.push(div)
 
 }
 
-function generateGoodBoard(){
+function selectTile(tile){
 
-let minWords = 40
-let minVowels = 4
-let attempts = 0
+if(usedTiles.includes(tile)) return
 
-while(true){
+tile.classList.add("active")
 
-generateBoard()
-findAllWords()
-attempts++
+usedTiles.push(tile)
 
-if(
-validWords.size >= minWords &&
-countVowels() >= minVowels &&
-!tooManySameLetters() &&
-goodLetterPairs() >= 2
-){
-break
-}
+currentWord+=tile.textContent
 
-if(attempts > 100){
-console.log("Fallback ruudukko:", validWords.size)
-break
-}
-
-}
-
-}
-
-function countVowels(){
-
-let vowels="AEIOUYÄÖ"
-let count=0
-
-for(let letter of board){
-if(vowels.includes(letter)){
-count++
-}
-}
-
-return count
-
-}
-
-function tooManySameLetters(){
-
-let counts={}
-
-for(let letter of board){
-
-if(!counts[letter]){
-counts[letter]=0
-}
-
-counts[letter]++
-
-if(counts[letter] > 4){
-return true
-}
-
-}
-
-return false
-
-}
-  
-function goodLetterPairs(){
-
-let pairs=["ST","NT","LL","LA","RA","IN","TA","EN"]
-
-let count=0
-
-for(let i=0;i<board.length;i++){
-for(let j=i+1;j<board.length;j++){
-
-let pair=board[i]+board[j]
-let pair2=board[j]+board[i]
-
-if(pairs.includes(pair) || pairs.includes(pair2)){
-count++
-}
-
-}
-}
-
-return count
+document.getElementById("word").textContent=currentWord
 
 }
 
 function findAllWords(){
 
 validWords.clear()
-maxScore=0
 
 let dirs=[
 [-1,-1],[-1,0],[-1,1],
@@ -649,18 +321,15 @@ let dirs=[
 function dfs(x,y,visited,word){
 
 let index=y*4+x
+
 word+=board[index].toLowerCase()
 
-// jos mikään sana ei ala tällä → lopetetaan heti
 if(!prefixes.has(word)) return
 
 visited.add(index)
 
 if(word.length>=3 && dictionary.has(word)){
-if(!validWords.has(word)){
 validWords.add(word)
-maxScore+=getPoints(word.length)
-}
 }
 
 for(let d of dirs){
@@ -686,252 +355,59 @@ dfs(x,y,new Set(),"")
 }
 }
 
-console.log("Mahdolliset sanat:",validWords.size)
-document.getElementById("debugWords").textContent =
-"Sanat: 0 / " + validWords.size
+document.getElementById("debugWords").textContent="Sanat: 0 / "+validWords.size
 
 }
 
-function isNeighbor(tile){
+function startMatrix(){
 
-if(usedTiles.length===0) return true
+const canvas=document.getElementById("matrixCanvas")
+const ctx=canvas.getContext("2d")
 
-let last=usedTiles[usedTiles.length-1]
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
 
-let x1=Number(last.dataset.x)
-let y1=Number(last.dataset.y)
+const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const fontSize=18
+const columns=Math.floor(canvas.width/fontSize)
 
-let x2=Number(tile.dataset.x)
-let y2=Number(tile.dataset.y)
+const drops=[]
 
-return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1
-
+for(let x=0;x<columns;x++){
+drops[x]=1
 }
 
-grid.addEventListener("pointerdown",e=>{
+function draw(){
 
-if(!e.target.classList.contains("tile"))return
+ctx.fillStyle="rgba(0,0,0,0.05)"
+ctx.fillRect(0,0,canvas.width,canvas.height)
 
-selecting=true
+ctx.fillStyle="#6aff9c"
+ctx.font=fontSize+"px monospace"
 
-grid.setPointerCapture(e.pointerId)
+for(let i=0;i<drops.length;i++){
 
-addTile(e.target)
+let text=letters[Math.floor(Math.random()*letters.length)]
 
-})
+ctx.fillText(text,i*fontSize,drops[i]*fontSize)
 
-grid.addEventListener("pointermove",e=>{
-
-if(!selecting) return
-
-let tile=document.elementFromPoint(e.clientX,e.clientY)
-
-if(!tile || !tile.classList.contains("tile")) return
-
-if(tile===usedTiles[usedTiles.length-1]) return
-
-if(!isNeighbor(tile)) return
-
-addTile(tile)
-
-})
-
-window.addEventListener("pointerup",e=>{
-
-if(!selecting)return
-
-selecting=false
-
-grid.releasePointerCapture(e.pointerId)
-
-checkWord()
-
-clearSelection()
-
-})
-
-function addTile(tile){
-
-if(usedTiles.length>1 && tile===usedTiles[usedTiles.length-2]){
-
-let last=usedTiles.pop()
-last.classList.remove("active")
-
-currentWord=currentWord.slice(0,-1)
-document.getElementById("word").textContent=currentWord
-
-return
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
+drops[i]=0
 }
 
-if(usedTiles.includes(tile)) return
-if(!isNeighbor(tile)) return
-
-tile.classList.add("active")
-
-usedTiles.push(tile)
-
-currentWord+=tile.textContent
-document.getElementById("word").textContent=currentWord
-
-}
-
-function getPoints(len){
-
-if(len<=4) return 1
-if(len==5) return 2
-if(len==6) return 3
-if(len==7) return 5
-return 11
-
-}
-
-function checkWord(){
-
-let w=currentWord.toLowerCase()
-
-if(validWords.has(w) && !foundWords.has(w)){
-
-foundWords.add(w)
-
-let pts=getPoints(w.length)
-
-score+=pts
-
-document.getElementById("score").textContent="Pisteet: "+score
-
-let div=document.createElement("div")
-div.textContent=w+" +"+pts
-document.getElementById("found").prepend(div)
-
-document.getElementById("blip").play()
-document.getElementById("debugWords").textContent =
-"Sanat: " + foundWords.size + " / " + validWords.size
+drops[i]++
 
 }
 
 }
 
-function clearSelection(){
-
-usedTiles.forEach(t=>t.classList.remove("active"))
-
-usedTiles=[]
-currentWord=""
-
-document.getElementById("word").textContent=""
+setInterval(draw,50)
 
 }
 
-function endGame(){
-
-clearInterval(timer)
-
-selecting=false
-clearSelection()
-
-document.getElementById("win").play()
-
-let overlay=document.getElementById("overlay")
-
-overlay.style.display="flex"
-
-overlay.innerHTML=
-`
-<div class="overlayBox">
-<h2>Peli ohi!</h2>
-<h3>${playerName}: ${score} pistettä</h3>
-<h3>Maksimi: ${maxScore}</h3>
-<h3>Osuus: ${Math.round(score/maxScore*100)}%</h3>
-
-<button class="startButton" onclick="newGame()">Uusi peli</button>
-<a href="index.html"><button class="startButton">Kotivalikko</button></a>
-
-</div>
-`
-
-}
-
-function toggleMusic(){
-
-if(music.paused) music.play()
-else music.pause()
-
-}
-
-function animateTitle(){
-
-const el = document.getElementById("gameTitle")
-const bip = document.getElementById("bip")
-
-const original = "SALAISET SANAT"
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@!?$%&"
-
-let iteration = 0
-
-const interval = setInterval(()=>{
-
-let text=""
-
-for(let i=0;i<original.length;i++){
-
-if(original[i]===" "){
-text+=" "
-continue
-}
-
-if(i < iteration){
-text+=original[i]
-}else{
-text+=chars[Math.floor(Math.random()*chars.length)]
-}
-
-}
-
-el.textContent=text
-
-// bip ääni
-if(bip){
-bip.currentTime=0
-bip.play().catch(()=>{})
-}
-
-iteration += 0.35
-
-if(iteration >= original.length){
-clearInterval(interval)
-el.textContent = original
-
-// käynnistetään leijunta vasta lopuksi
-el.classList.add("titleFloat")
-}
-
-},70)
-
-}
-
-function newGame(){
-
-clearInterval(timer)
-
-score=0
-time=120
-foundWords.clear()
-
-document.getElementById("score").textContent="Pisteet: 0"
-document.getElementById("found").innerHTML=""
-document.getElementById("word").textContent=""
-
-document.getElementById("overlay").style.display="none"
-
-generateGoodBoard()
-startTimer()
-
-}
-
-window.addEventListener("load", () => {
-animateTitle()
+window.onload=()=>{
 startMatrix()
-})
+}
 
 </script>
 
