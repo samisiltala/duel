@@ -97,6 +97,17 @@ inset 0 1px 2px rgba(255,255,255,0.6);
 }
 
 #matrixCanvas{
+const canvas = document.getElementById("matrixCanvas")
+
+if(!canvas){
+console.log("Matrix canvas ei löytynyt")
+return
+}
+
+const ctx = canvas.getContext("2d")
+
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
 position:fixed;
 top:0;
 left:0;
@@ -401,6 +412,9 @@ prefixes.add(word.slice(0,i))
 })
 
 function startMatrix(){
+
+  ctx.fillStyle="red"
+ctx.fillRect(0,0,200,200)
 
 const canvas = document.getElementById("matrixCanvas")
 const ctx = canvas.getContext("2d")
@@ -907,8 +921,10 @@ startTimer()
 
 }
 
-window.addEventListener("load", animateTitle)
+window.addEventListener("load", () => {
+animateTitle()
 startMatrix()
+})
 
 </script>
 
