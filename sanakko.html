@@ -22,6 +22,7 @@ margin:0;
 
 button{
 font-family:'Cinzel', serif;
+text-transform:uppercase;
 letter-spacing:2px;
 }
 /* OVERLAY */
@@ -40,6 +41,7 @@ z-index:1000;
 }
 
 .overlayBox{
+text-transform:uppercase;
 background:rgba(20,20,20,0.92);
 padding:40px;
 border-radius:18px;
@@ -60,6 +62,10 @@ color:#e8e8e8;
 text-shadow:
 0 0 6px rgba(255,255,255,0.3),
 0 0 20px rgba(0,0,0,0.8);
+}
+
+#nameInput{
+text-transform:uppercase;
 }
 
 .startButton{
@@ -376,7 +382,7 @@ alert("Sanakirja latautuu vielä...")
 return
 }
 
-let name=document.getElementById("nameInput").value.trim()
+let name=document.getElementById("nameInput").value.trim().toUpperCase()
 
 if(name===""){
 alert("Kirjoita nimesi ensin")
