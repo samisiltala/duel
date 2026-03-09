@@ -604,13 +604,24 @@ if(time<=0) endGame()
 
 }
 
-function endGame(){
+console.log("dictionary size:",dictionary.size)
+
+function newGame(){
 
 clearInterval(timer)
 
-document.getElementById("win").play()
+score=0
+time=120
+foundWords.clear()
 
-alert("Peli ohi! Pisteet: "+score)
+document.getElementById("score").textContent="Pisteet: 0"
+document.getElementById("found").innerHTML=""
+document.getElementById("word").textContent=""
+
+document.getElementById("overlay").style.display="none"
+
+generateGoodBoard()
+startTimer()
 
 }
 
