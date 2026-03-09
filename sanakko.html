@@ -23,14 +23,14 @@ letter-spacing:2px;
 }
 
 #matrixCanvas{
-position:fixed;
+position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
-pointer-events:none;
 opacity:0.12;
-z-index:900;
+pointer-events:none;
+z-index:0;
 }
 
 #overlay{
@@ -140,9 +140,8 @@ border-radius:10px;
 
 <body>
 
-<canvas id="matrixCanvas"></canvas>
-
 <div id="overlay">
+<canvas id="matrixCanvas"></canvas>
 <div class="overlayBox">
 <h2>SALAISET SANAT</h2>
 <input id="nameInput" placeholder="Nimesi" maxlength="6">
