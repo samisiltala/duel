@@ -150,6 +150,23 @@ max-height:400px;
 overflow:auto;
 }
 
+.homeButton{
+position:fixed;
+top:15px;
+left:15px;
+background:white;
+color:black;
+padding:8px 14px;
+border-radius:8px;
+text-decoration:none;
+font-family:'Cinzel', serif;
+z-index:2000;
+}
+
+.homeButton:hover{
+background:#eee;
+}
+
 #word{
 margin-top:40px;
 font-family:'JetBrains Mono', monospace;
@@ -168,6 +185,8 @@ font-weight:bold;
 
 <body>
 
+<a href="index.html" class="homeButton">Koti</a>
+  
 <div id="overlay">
 
 <canvas id="matrixCanvas"></canvas>
