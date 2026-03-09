@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <title>Sanaluola</title>
 
+<audio id="blip" src="blip.mp3"></audio>
+<audio id="win" src="voitto.wav"></audio>
+<audio id="bip" src="bip.mp3"></audio>
+
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -17,9 +21,25 @@ margin:0;
 }
 
 button{
-font-family:'Cinzel',serif;
+font-family:'Cinzel', serif;
 text-transform:uppercase;
 letter-spacing:2px;
+}
+
+/* OVERLAY */
+
+#overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url("papyrus.jpg") center/cover no-repeat;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1000;
+overflow:hidden;
 }
 
 #matrixCanvas{
@@ -28,44 +48,39 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-opacity:0.18;
 pointer-events:none;
+opacity:0.12;
 z-index:0;
 }
 
-#overlay{
-position:fixed;
-overflow:hidden;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.75);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:1000;
-}
-
 .overlayBox{
-background:rgba(20,20,20,0.9);
+text-transform:uppercase;
+letter-spacing:1px;
+background:rgba(20,20,20,0.92);
 padding:50px 70px;
 border-radius:18px;
 max-width:560px;
 display:flex;
 flex-direction:column;
-gap:20px;
 align-items:center;
+gap:20px;
+z-index:10;
 position:relative;
-z-index:5;
+
+box-shadow:
+0 0 30px rgba(0,0,0,0.8),
+0 0 80px rgba(0,0,0,0.4);
 }
 
 .overlayBox h2{
 font-size:56px;
 margin:0;
+color:#e8e8e8;
 }
 
 .startButton{
+font-family:'Cinzel', serif;
+letter-spacing:2px;
 background:#e6e6e6;
 color:#111;
 padding:16px 40px;
@@ -73,24 +88,28 @@ border-radius:12px;
 cursor:pointer;
 }
 
+/* PELI */
+
 .container{
 display:grid;
 grid-template-columns:200px 1fr 220px;
 gap:30px;
 max-width:1000px;
 margin:30px auto;
-position:relative;
-z-index:10;
 }
 
 .leftPanel{
+display:flex;
+flex-direction:column;
+gap:20px;
+align-items:flex-start;
 background:rgba(0,0,0,0.75);
 padding:20px;
 border-radius:15px;
 }
 
-#timer{font-size:42px}
-#score{font-size:36px}
+#timer{font-size:42px;font-weight:bold;}
+#score{font-size:36px;font-weight:bold;}
 
 .centerGame{
 display:flex;
@@ -103,6 +122,7 @@ display:grid;
 grid-template-columns:repeat(4,80px);
 gap:14px;
 margin-top:30px;
+touch-action:none;
 }
 
 .tile{
@@ -114,14 +134,16 @@ justify-content:center;
 font-family:'JetBrains Mono', monospace;
 font-size:34px;
 font-weight:600;
-background:#eee;
-color:black;
-border-radius:10px;
+color:#222;
+background:linear-gradient(#f4f1e6,#ddd6c3);
+border:1px solid rgba(0,0,0,0.25);
+border-radius:12px;
 cursor:pointer;
+user-select:none;
 }
 
 .tile.active{
-background:#ffd966;
+background:linear-gradient(#fff7d6,#e9d58f);
 }
 
 .rightPanel{
@@ -133,35 +155,33 @@ overflow:auto;
 }
 
 #word{
-margin-top:30px;
-font-size:42px;
-background:white;
+margin-top:40px;
+font-family:'JetBrains Mono', monospace;
+font-size:46px;
+letter-spacing:6px;
+min-height:50px;
 color:black;
-padding:10px 20px;
-border-radius:10px;
+background:rgba(255,255,255,0.85);
+padding:10px 25px;
+border-radius:12px;
+font-weight:bold;
 }
 
-#nameInput{
-font-family:'Cinzel', serif;
-font-size:22px;
-padding:10px;
-border-radius:8px;
-border:none;
-text-align:center;
-}
-  
 </style>
 </head>
 
 <body>
 
 <div id="overlay">
+
 <canvas id="matrixCanvas"></canvas>
+
 <div class="overlayBox">
-<h2>SALAISET SANAT</h2>
+<h2 id="gameTitle">SALAISET SANAT</h2>
 <input id="nameInput" placeholder="Nimesi" maxlength="6">
 <button class="startButton" onclick="startGame()">Aloita peli</button>
 </div>
+
 </div>
 
 <div class="container">
@@ -171,6 +191,7 @@ text-align:center;
 <div id="timer">Aika: 120</div>
 <div id="score">Pisteet: 0</div>
 <div id="debugWords">Sanat: 0 / 0</div>
+<button onclick="toggleMusic()">Musiikki</button>
 </div>
 
 <div class="centerGame">
@@ -192,11 +213,16 @@ let grid=document.getElementById("grid")
 let board=[]
 let tiles=[]
 
+let music=new Audio("sanatausta.mp3")
+music.loop=true
+music.volume=0.25
+
 let currentWord=""
 let score=0
 let time=120
 let timer
 
+let selecting=false
 let usedTiles=[]
 let foundWords=new Set()
 
@@ -233,11 +259,8 @@ prefixes.add(word.slice(0,i))
 
 function startGame(){
 
-usedTiles=[]
-currentWord=""
-document.getElementById("word").textContent=""
-  
 document.getElementById("matrixCanvas").style.display="none"
+
 let name=document.getElementById("nameInput").value.trim().toUpperCase()
 
 if(name===""){
@@ -259,8 +282,8 @@ document.getElementById("found").innerHTML=""
 
 generateBoard()
 findAllWords()
-
 startTimer()
+music.play()
 
 }
 
@@ -273,10 +296,7 @@ timer=setInterval(()=>{
 time--
 document.getElementById("timer").textContent="Aika: "+time
 
-if(time<=0){
-clearInterval(timer)
-alert("Peli ohi!")
-}
+if(time<=0) endGame()
 
 },1000)
 
@@ -304,8 +324,6 @@ div.textContent=letter
 div.dataset.x=i%4
 div.dataset.y=Math.floor(i/4)
 
-div.onclick=()=>selectTile(div)
-
 grid.appendChild(div)
 tiles.push(div)
 
@@ -313,104 +331,44 @@ tiles.push(div)
 
 }
 
-function selectTile(tile){
-
-if(usedTiles.includes(tile)) return
-
-tile.classList.add("active")
-
-usedTiles.push(tile)
-
-currentWord+=tile.textContent
-
-document.getElementById("word").textContent=currentWord
-
-}
-
-function findAllWords(){
-
-validWords.clear()
-
-let dirs=[
-[-1,-1],[-1,0],[-1,1],
-[0,-1],[0,1],
-[1,-1],[1,0],[1,1]
-]
-
-function dfs(x,y,visited,word){
-
-let index=y*4+x
-
-word+=board[index].toLowerCase()
-
-if(!prefixes.has(word)) return
-
-visited.add(index)
-
-if(word.length>=3 && dictionary.has(word)){
-validWords.add(word)
-}
-
-for(let d of dirs){
-
-let nx=x+d[0]
-let ny=y+d[1]
-
-if(nx<0||ny<0||nx>3||ny>3) continue
-
-let ni=ny*4+nx
-
-if(visited.has(ni)) continue
-
-dfs(nx,ny,new Set(visited),word)
-
-}
-
-}
-
-for(let y=0;y<4;y++){
-for(let x=0;x<4;x++){
-dfs(x,y,new Set(),"")
-}
-}
-
-document.getElementById("debugWords").textContent="Sanat: 0 / "+validWords.size
-
+function toggleMusic(){
+if(music.paused) music.play()
+else music.pause()
 }
 
 function startMatrix(){
 
-const canvas=document.getElementById("matrixCanvas")
-const ctx=canvas.getContext("2d")
+const canvas = document.getElementById("matrixCanvas")
+const ctx = canvas.getContext("2d")
 
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
 
-const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-const fontSize=18
-const columns=Math.floor(canvas.width/fontSize)
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const fontSize = 18
 
-const drops=[]
+const columns = Math.floor(canvas.width / fontSize)
+const drops = []
 
-for(let x=0;x<columns;x++){
-drops[x]=1
+for(let x = 0; x < columns; x++){
+drops[x] = 1
 }
 
 function draw(){
 
-ctx.fillStyle="rgba(0,0,0,0.05)"
+ctx.fillStyle = "rgba(0,0,0,0.05)"
 ctx.fillRect(0,0,canvas.width,canvas.height)
 
-ctx.fillStyle="#6aff9c"
-ctx.font=fontSize+"px monospace"
+ctx.fillStyle = "#6aff9c"
+ctx.font = fontSize + "px JetBrains Mono"
 
 for(let i=0;i<drops.length;i++){
 
-let text=letters[Math.floor(Math.random()*letters.length)]
+const text = letters[Math.floor(Math.random()*letters.length)]
 
 ctx.fillText(text,i*fontSize,drops[i]*fontSize)
 
-if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
+if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
 drops[i]=0
 }
 
@@ -424,9 +382,9 @@ setInterval(draw,50)
 
 }
 
-window.onload=()=>{
+window.addEventListener("load", () => {
 startMatrix()
-}
+})
 
 </script>
 
