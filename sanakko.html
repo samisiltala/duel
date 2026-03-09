@@ -601,10 +601,9 @@ function startTimer(){
 clearInterval(timer)
 
 timer=setInterval(()=>{
-if(time<=10){
-document.getElementById("timer").style.color="red"
-document.getElementById("timer").style.transform="scale(1.1)"
-}
+
+document.getElementById("timer").textContent="Aika: "+time
+
 if(time<=0){
 
 clearInterval(timer)
@@ -613,15 +612,40 @@ return
 
 }
 
-document.getElementById("timer").textContent="Aika: "+time
-
 time--
 
 },1000)
 
 }
 
+function endGame(){
 
+clearInterval(timer)
+
+selecting=false
+clearSelection()
+
+document.getElementById("win").play()
+
+let overlay=document.getElementById("overlay")
+
+overlay.style.display="flex"
+
+overlay.innerHTML=`
+<div class="overlayBox">
+<h2>Peli ohi!</h2>
+
+<h3>${playerName}: ${score} pistettä</h3>
+<h3>Maksimi: ${maxScore}</h3>
+<h3>Osuus: ${Math.round(score/maxScore*100)}%</h3>
+
+<button class="startButton" onclick="newGame()">Uusi peli</button>
+<a href="index.html"><button class="startButton">Kotivalikko</button></a>
+
+</div>
+`
+
+}
 
 function newGame(){
 
