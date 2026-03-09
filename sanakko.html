@@ -370,7 +370,12 @@ generateBoard()
 findAllWords()
 attempts++
 
-if(validWords.size >= minWords && countVowels() >= minVowels){
+if(
+validWords.size >= minWords &&
+countVowels() >= minVowels &&
+!tooManySameLetters() &&
+goodLetterPairs() >= 2
+){
 break
 }
 
@@ -397,7 +402,52 @@ count++
 return count
 
 }
+
+function tooManySameLetters(){
+
+let counts={}
+
+for(let letter of board){
+
+if(!counts[letter]){
+counts[letter]=0
+}
+
+counts[letter]++
+
+if(counts[letter] > 4){
+return true
+}
+
+}
+
+return false
+
+}
   
+function goodLetterPairs(){
+
+let pairs=["ST","NT","LL","LA","RA","IN","TA","EN"]
+
+let count=0
+
+for(let i=0;i<board.length;i++){
+for(let j=i+1;j<board.length;j++){
+
+let pair=board[i]+board[j]
+let pair2=board[j]+board[i]
+
+if(pairs.includes(pair) || pairs.includes(pair2)){
+count++
+}
+
+}
+}
+
+return count
+
+}
+
 function findAllWords(){
 
 validWords.clear()
