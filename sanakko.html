@@ -14,7 +14,7 @@
 
 body{
 font-family:'Orbitron',sans-serif;
-background:#111;
+background:url("papyrus.jpg") center/cover no-repeat fixed;
 color:white;
 text-align:center;
 margin:0;
@@ -195,6 +195,7 @@ text-shadow:0 0 12px #00ffff;
 <div id="playerName"></div>
 <div id="timer">Aika: 120</div>
 <div id="score">Pisteet: 0</div>
+<div id="debugWords">Sanat: 0 / 0</div>
 <button class="musicButton" onclick="toggleMusic()">Musiikki</button>
 </div>
 
@@ -406,6 +407,8 @@ dfs(x,y,new Set(),"")
 }
 
 console.log("Mahdolliset sanat:",validWords.size)
+document.getElementById("debugWords").textContent =
+"Sanat: 0 / " + validWords.size
 
 }
 
@@ -521,6 +524,8 @@ div.textContent=w+" +"+pts
 document.getElementById("found").prepend(div)
 
 document.getElementById("blip").play()
+document.getElementById("debugWords").textContent =
+"Sanat: " + foundWords.size + " / " + validWords.size
 
 }
 
