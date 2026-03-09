@@ -687,6 +687,22 @@ document.getElementById("win").play()
 let overlay=document.getElementById("overlay")
 overlay.style.display="flex"
 
+let words=[...validWords].sort()
+
+let wordHTML=""
+
+words.forEach(w=>{
+
+if(foundWords.has(w)){
+wordHTML+=`<span class="wordFound">${w}</span> `
+}else if(w.length>=7){
+wordHTML+=`<span class="wordLong">${w}</span> `
+}else{
+wordHTML+=`<span class="wordMissed">${w}</span> `
+}
+
+})
+
 overlay.innerHTML=`
 <div class="overlayBox">
 
