@@ -94,6 +94,17 @@ box-shadow:
 inset 0 1px 2px rgba(255,255,255,0.6);
 }
 
+#matrixCanvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:0;
+opacity:0.15;
+}
+  
 /* PELI */
 
 .container{
@@ -287,6 +298,8 @@ font-weight:bold;
 
 <body>
 
+  <canvas id="matrixCanvas"></canvas>
+
 <a href="index.html" class="homeButton">Koti</a>
 
 <div id="overlay">
@@ -382,6 +395,52 @@ prefixes.add(word.slice(0,i))
 
 })
 
+function startMatrix(){
+
+const canvas = document.getElementById("matrixCanvas")
+const ctx = canvas.getContext("2d")
+
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"
+const fontSize = 18
+
+const columns = canvas.width / fontSize
+const drops = []
+
+for(let x = 0; x < columns; x++){
+drops[x] = 1
+}
+
+function draw(){
+
+ctx.fillStyle = "rgba(0,0,0,0.05)"
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle = "#6aff9c"
+ctx.font = fontSize + "px JetBrains Mono"
+
+for(let i=0;i<drops.length;i++){
+
+const text = letters[Math.floor(Math.random()*letters.length)]
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize)
+
+if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+drops[i]=0
+}
+
+drops[i]++
+
+}
+
+}
+
+setInterval(draw,50)
+
+}
+  
 function startGame(){
 
 if(dictionary.size===0){
@@ -844,6 +903,7 @@ startTimer()
 }
 
 window.addEventListener("load", animateTitle)
+startMatrix()
 
 </script>
 
