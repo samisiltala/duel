@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    margin:0;
+    font-family:"Patrick Hand", cursive;
+
+    background:
+      linear-gradient(#dcdcdc 1px, transparent 1px),
+      linear-gradient(90deg,#dcdcdc 1px, transparent 1px);
+
+    background-size:40px 40px;
+}
+
+#board{
+    display:grid;
+    grid-template-columns:repeat(20,40px);
+    width:800px;
+    margin:auto;
+    margin-top:40px;
+}
+
+.cell{
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    cursor:pointer;
+    user-select:none;
+}
+
+/* pieni käsintehty vinous */
+
+.cell:nth-child(odd){
+    transform:rotate(-3deg);
+}
+
+.cell:nth-child(even){
+    transform:rotate(2deg);
+}
+
+#title{
+    text-align:center;
+    font-size:40px;
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="title">Ristinolla</div>
+
+<div id="board"></div>
+
+<script>
+
+let current="X"
+
+const board=document.getElementById("board")
+
+const size=20
+let grid=[]
+
+for(let y=0;y<size;y++){
+    grid[y]=[]
+    for(let x=0;x<size;x++){
+
+        grid[y][x]=""
+
+        let cell=document.createElement("div")
+        cell.className="cell"
+
+        cell.onclick=function(){
+
+            if(grid[y][x]!="") return
+
+            grid[y][x]=current
+            cell.textContent=current
+
+            checkWin(x,y)
+
+            current=current=="X"?"O":"X"
+        }
+
+        board.appendChild(cell)
+    }
+}
+
+function checkWin(x,y){
+
+    let player=grid[y][x]
+
+    let directions=[
+        [1,0],
+        [0,1],
+        [1,1],
+        [1,-1]
+    ]
+
+    for(let d of directions){
+
+        let count=1
+
+        for(let i=1;i<5;i++){
+            let nx=x+d[0]*i
+            let ny=y+d[1]*i
+
+            if(grid[ny]?.[nx]==player) count++
+            else break
+        }
+
+        for(let i=1;i<5;i++){
+            let nx=x-d[0]*i
+            let ny=y-d[1]*i
+
+            if(grid[ny]?.[nx]==player) count++
+            else break
+        }
+
+        if(count>=5){
+            setTimeout(()=>{
+                alert(player+" voitti!")
+                location.reload()
+            },50)
+        }
+
+    }
+}
+
+</script>
+
+</body>
+</html>
