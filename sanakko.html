@@ -344,17 +344,18 @@ z-index:10;
 }
 
 #greekGlow{
-position:absolute;
-right:20px;
-bottom:-20px;
+position:fixed;
+right:40px;
+bottom:35px;
 
 font-family:'Cinzel', serif;
-font-size:28px;
+font-size:26px;
 
 color:rgba(255,255,255,0.18);
 letter-spacing:4px;
 
 pointer-events:none;
+z-index:20;
 
 animation:greekFloat 8s ease-in-out infinite;
 text-shadow:0 0 8px rgba(255,255,255,0.15);
@@ -469,7 +470,7 @@ transform:translate(-50%,-140%);
 <div id="score">Pisteet: 0</div>
 <div id="debugWords">Sanat: 0 / 0</div>
 <button onclick="toggleMusic()">Musiikki</button>
-<div id="greekGlow">ἘΝ ΑΡΧΗ ΗΝ Ο ΛΟΓΟΣ</div>
+<div id="greekGlow">ἐν ἀρχῇ ἦν ὁ λόγος</div>
 </div>
 
 <div class="centerGame">
