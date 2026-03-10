@@ -8,6 +8,7 @@
 <audio id="win" src="voitto.wav"></audio>
 <audio id="bip" src="bip.mp3"></audio>
 <audio id="moka" src="moka.mp3"></audio>
+<audio id="longword" src="longword.mp3"></audio>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
@@ -930,7 +931,14 @@ foundWords.add(w)
 
 let pts = getPoints(w)
 if(w.length>=6){
+
+let long=document.getElementById("longword")
+long.pause()
+long.currentTime=0
+long.play().catch(()=>{})
+
 flashLogos()
+
 }
 score+=pts
 showFloatingScore(pts)
