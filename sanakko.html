@@ -343,6 +343,40 @@ position:relative;
 z-index:10;
 }
 
+#greekGlow{
+position:fixed;
+right:40px;
+bottom:30px;
+
+font-family:'Cinzel', serif;
+font-size:42px;
+
+color:rgba(106,255,156,0.18);
+
+letter-spacing:8px;
+
+pointer-events:none;
+
+animation:greekFloat 7s ease-in-out infinite;
+}
+
+@keyframes greekFloat{
+0%{
+transform:translateY(0px);
+opacity:0.15;
+}
+
+50%{
+transform:translateY(-8px);
+opacity:0.25;
+}
+
+100%{
+transform:translateY(0px);
+opacity:0.15;
+}
+}
+  
 @media (max-width:900px) and (orientation:portrait){
 
 body{
@@ -1171,6 +1205,6 @@ endGame()
 })
   
 </script>
-
+<div id="greekGlow">ἘΝ ΑΡΧΗ ΗΝ Ο ΛΟΓΟΣ</div>
 </body>
 </html>
