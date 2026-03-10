@@ -520,13 +520,16 @@ ctx.beginPath()
 
 for(let i=0;i<usedTiles.length;i++){
 
-let tile=usedTiles[i]
+let tile = usedTiles[i]
 
 let x = tile.offsetLeft + tile.offsetWidth/2
 let y = tile.offsetTop + tile.offsetHeight/2
 
-if(i===0) ctx.moveTo(x,y)
-else ctx.lineTo(x,y)
+if(i===0){
+ctx.moveTo(x,y)
+}else{
+ctx.lineTo(x,y)
+}
 
 }
 
