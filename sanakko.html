@@ -881,7 +881,10 @@ let div=document.createElement("div")
 div.textContent=w+" +"+pts
 document.getElementById("found").prepend(div)
 
-document.getElementById("blip").play()
+let blip=document.getElementById("blip")
+blip.pause()
+blip.currentTime=0
+blip.play().catch(()=>{})
 
 document.getElementById("debugWords").textContent =
 "Sanat: " + foundWords.size + " / " + validWords.size
