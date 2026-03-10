@@ -520,8 +520,11 @@ for(let i=0;i<usedTiles.length;i++){
 
 let tile = usedTiles[i]
 
-let x = tile.offsetLeft + tile.offsetWidth/2
-let y = tile.offsetTop + tile.offsetHeight/2
+let tileRect = tile.getBoundingClientRect()
+let gridRect = grid.getBoundingClientRect()
+
+let x = tileRect.left - gridRect.left + tileRect.width/2
+let y = tileRect.top - gridRect.top + tileRect.height/2
 
 if(i===0){
 ctx.moveTo(x,y)
@@ -680,11 +683,12 @@ function checkWord(){
 
 let w=currentWord.toLowerCase()
 
-if(foundWords.has(w)){
+if(foundWords.has(w) && validWords.has(w)){
 
 let moka=document.getElementById("moka")
 moka.currentTime=0
 moka.play()
+
 return
 }
 
