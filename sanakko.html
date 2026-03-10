@@ -696,14 +696,22 @@ let w=currentWord.toLowerCase()
 if(foundWords.has(w)){
 
 let moka=document.getElementById("moka")
+
 moka.currentTime=0
+moka.volume=1
 moka.play().catch(()=>{})
 
 usedTiles.forEach(t=>t.classList.add("error"))
 
 setTimeout(()=>{
-usedTiles.forEach(t=>t.classList.remove("error"))
+
+usedTiles.forEach(t=>{
+t.classList.remove("error")
+t.classList.remove("active")
+})
+
 clearSelection()
+
 },350)
 
 return
@@ -734,10 +742,7 @@ document.getElementById("debugWords").textContent =
 
 function clearSelection(){
 
-usedTiles.forEach(t=>{
-t.classList.remove("active")
-t.classList.remove("error")
-})
+usedTiles.forEach(t=>t.classList.remove("active"))
 
 usedTiles=[]
 currentWord=""
