@@ -396,6 +396,12 @@ text-shadow:
 color:white;
 }
 
+.bonus{
+color:#ffd86b;
+font-weight:bold;
+margin-left:6px;
+}
+  
 @media (max-width:900px) and (orientation:portrait){
 
 body{
@@ -969,7 +975,11 @@ let div=document.createElement("div")
 if(bonus>0){
 div.textContent = w+" +"+pts+" (+"+bonus+" bonus)"
 }else{
+if(bonus>0){
+div.innerHTML = w+" +"+pts+" <span class='bonus'>⭐ +"+bonus+"</span>"
+}else{
 div.textContent = w+" +"+pts
+}
 }
 document.getElementById("found").prepend(div)
 
