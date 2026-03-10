@@ -262,6 +262,11 @@ margin-top:30px;
 touch-action:none;
 }
 
+#grid.longWordFlash{
+box-shadow:0 0 30px rgba(106,255,156,0.8);
+transition:box-shadow 0.2s;
+}
+  
 .tile{
 width:80px;
 height:80px;
@@ -938,6 +943,7 @@ long.currentTime=0
 long.play().catch(()=>{})
 
 flashLogos()
+flashGrid()
 
 }
 score+=pts
@@ -1008,6 +1014,18 @@ el.classList.remove("logosFlash")
 },300)
 
 }
+
+function flashGrid(){
+
+let g=document.getElementById("grid")
+
+g.classList.add("longWordFlash")
+
+setTimeout(()=>{
+g.classList.remove("longWordFlash")
+},250)
+
+}  
   
 function startTimer(){
 
