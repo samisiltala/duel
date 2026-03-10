@@ -934,7 +934,21 @@ t.classList.remove("success")
 
 foundWords.add(w)
 
-let pts = getPoints(w)
+
+
+let basePts = getPoints(w)
+let bonus = 0
+
+if(w.length==6) bonus = 5
+if(w.length==7) bonus = 10
+if(w.length>=8) bonus = 20
+
+let pts = basePts + bonus
+
+if(w.length==6) pts+=5
+if(w.length==7) pts+=10
+if(w.length>=8) pts+=20
+
 if(w.length>=6){
 
 let long=document.getElementById("longword")
@@ -952,7 +966,11 @@ showFloatingScore(pts)
 document.getElementById("score").textContent="Pisteet: "+score
 
 let div=document.createElement("div")
-div.textContent=w+" +"+pts
+if(bonus>0){
+div.textContent = w+" +"+pts+" (+"+bonus+" bonus)"
+}else{
+div.textContent = w+" +"+pts
+}
 document.getElementById("found").prepend(div)
 
 let blip=document.getElementById("blip")
