@@ -7,6 +7,7 @@
 <audio id="blip" src="blip.mp3"></audio>
 <audio id="win" src="voitto.wav"></audio>
 <audio id="bip" src="bip.mp3"></audio>
+<audio id="moka" src="moka.mp3"></audio>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
@@ -511,7 +512,7 @@ ctx.clearRect(0,0,lineCanvas.width,lineCanvas.height)
 
 if(usedTiles.length<2) return
 
-ctx.strokeStyle="rgba(255,230,120,0.8)"
+ctx.strokeStyle="rgba(255,230,120,0.85)"
 ctx.lineWidth=6
 ctx.lineCap="round"
 
@@ -519,11 +520,10 @@ ctx.beginPath()
 
 for(let i=0;i<usedTiles.length;i++){
 
-let rect=usedTiles[i].getBoundingClientRect()
-let gridRect=grid.getBoundingClientRect()
+let tile=usedTiles[i]
 
-let x=rect.left-gridRect.left+rect.width/2
-let y=rect.top-gridRect.top+rect.height/2
+let x = tile.offsetLeft + tile.offsetWidth/2
+let y = tile.offsetTop + tile.offsetHeight/2
 
 if(i===0) ctx.moveTo(x,y)
 else ctx.lineTo(x,y)
@@ -533,7 +533,7 @@ else ctx.lineTo(x,y)
 ctx.stroke()
 
 }
-  
+
 function findAllWords(){
 
 validWords.clear()
@@ -651,6 +651,7 @@ usedTiles.push(tile)
 currentWord+=tile.textContent
 document.getElementById("word").textContent=currentWord
 drawLines()
+ctx.clearRect(0,0,lineCanvas.width,lineCanvas.height)
 }
 
 function getPoints(word){
@@ -677,6 +678,11 @@ return score
 function checkWord(){
 
 let w=currentWord.toLowerCase()
+
+if(foundWords.has(w)){
+document.getElementById("moka").play()
+return
+}
 
 if(validWords.has(w) && !foundWords.has(w)){
 
