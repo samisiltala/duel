@@ -112,34 +112,32 @@ for(let y=0;y<size;y++){
         let cell=document.createElement("div")
         cell.className="cell"
 
-        cell.onclick=function(){
+     cell.onclick=function(){
 
-            if(grid[y][x]!="") return
+    if(grid[y][x]!="") return
 
-            grid[y][x]=current
-            if(current=="X"){
-  cell.innerHTML = `
-  <svg class="draw" width="32" height="32">
-    <line x1="6" y1="6" x2="26" y2="26"/>
-    <line x1="26" y1="6" x2="6" y2="26"/>
-  </svg>`
-}
+    grid[y][x]=current
 
-if(current=="O"){
-  cell.innerHTML = `
-  <svg class="draw" width="32" height="32">
-    <circle cx="16" cy="16" r="10"/>
-  </svg>`
-}
-
-            checkWin(x,y)
-
-            current=current=="X"?"O":"X"
-        }
-
-        board.appendChild(cell)
+    if(current=="X"){
+        cell.innerHTML = `
+        <svg class="draw" width="32" height="32">
+            <line x1="6" y1="6" x2="26" y2="26"/>
+            <line x1="26" y1="6" x2="6" y2="26"/>
+        </svg>`
     }
-cell.style.transform = "rotate("+(Math.random()*10-5)+"deg)"
+
+    if(current=="O"){
+        cell.innerHTML = `
+        <svg class="draw" width="32" height="32">
+            <circle cx="16" cy="16" r="10"/>
+        </svg>`
+    }
+
+    cell.style.transform="rotate("+(Math.random()*10-5)+"deg)"
+
+    checkWin(x,y)
+
+    current=current=="X"?"O":"X"
 }
 
 function checkWin(x,y){
