@@ -1082,7 +1082,8 @@ name:playerName,
 score:score,
 level:10
 })
-})  
+})
+.then(()=>loadSanaluolaTop())  
 clearInterval(timer)
 
 selecting=false
@@ -1166,7 +1167,7 @@ löysit ${Math.round(foundWords.size/validWords.size*100)} % sanoista
 </div>
 `
 startWordWall()
-loadSanaluolaTop()
+
 
 }
 
