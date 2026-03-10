@@ -907,9 +907,15 @@ let el=document.createElement("div")
 el.className="floatingScore"
 el.textContent="+"+points
 
-let center=document.querySelector(".centerGame")
+let lastTile = usedTiles[usedTiles.length-1]
 
-center.appendChild(el)
+let rect = lastTile.getBoundingClientRect()
+
+el.style.left = rect.left + rect.width/2 + "px"
+el.style.top  = rect.top  + rect.height/2 + "px"
+el.style.position = "fixed"
+
+document.body.appendChild(el)
 
 setTimeout(()=>{
 el.remove()
