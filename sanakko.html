@@ -344,11 +344,16 @@ font-weight:bold;
 }
 
 #leaderboard{
-margin-top:20px;
-font-size:20px;
-line-height:1.6;
+margin-top:25px;
+font-size:22px;
+line-height:1.7;
 }
 
+#leaderboard h3{
+letter-spacing:2px;
+margin-bottom:10px;
+}
+  
 #lineCanvas{
 position:absolute;
 top:30px;   /* sama kuin grid margin-top */
@@ -1161,7 +1166,7 @@ löysit ${Math.round(foundWords.size/validWords.size*100)} % sanoista
 
 <button class="startButton" onclick="newGame()">Uusi peli</button>
 <div id="leaderboard"></div>
-<br><br>
+
 
 
 </div>
@@ -1192,6 +1197,9 @@ sorted.slice(0,5).forEach((r,i)=>{
 html += (i+1)+". "+r[0]+" — "+r[1]+"<br>"
 })
 
+
+
+  
 /* päivän pisin sana */
 
 let longest=""
