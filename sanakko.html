@@ -944,8 +944,7 @@ const bip = document.getElementById("bip")
 const original = "SALAISET SANAT"
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@!?$%&"
 
-let frame = 0
-let locked = new Array(original.length).fill(false)
+let iteration = 0
 
 const interval = setInterval(()=>{
 
@@ -958,13 +957,7 @@ text+=" "
 continue
 }
 
-if(locked[i]){
-text+=original[i]
-continue
-}
-
-if(Math.random() < frame/25){
-locked[i]=true
+if(i < iteration){
 text+=original[i]
 }else{
 text+=chars[Math.floor(Math.random()*chars.length)]
@@ -974,26 +967,25 @@ text+=chars[Math.floor(Math.random()*chars.length)]
 
 el.textContent=text
 
-/* piippaus vain välillä */
+/* vanha hyvä piippaus */
 
-if(bip && Math.random()<0.25){
+if(bip){
 bip.currentTime=0
 bip.play().catch(()=>{})
 }
 
-frame++
+iteration += 0.25   // hitaampi kuin ennen
 
-/* lopetus */
+/* pysähtyy varmasti */
 
-if(frame>40 || locked.every(v=>v)){
+if(iteration >= original.length){
 clearInterval(interval)
-el.textContent=original
+el.textContent = original
 }
 
-},70)
+},80)
 
 }
-
 window.addEventListener("load",()=>{
 startMatrix()
 animateTitle()
