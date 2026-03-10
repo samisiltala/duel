@@ -1086,7 +1086,8 @@ method:"POST",
 body:JSON.stringify({
 name:playerName,
 score:score,
-level:10
+level:10,
+longest:longestWord
 })
 })
 .then(()=>loadSanaluolaTop())  
@@ -1180,13 +1181,36 @@ fetch(WEB_APP_URL + "?level=10")
 .then(r=>r.json())
 .then(data=>{
 
-let sorted=data.sort((a,b)=>b[1]-a[1]).slice(0,5)
+let sorted=data.sort((a,b)=>b[1]-a[1])
+
+/* TOP 5 */
 
 let html="<h3>🏆 TOP 5</h3>"
 
-sorted.forEach((r,i)=>{
+sorted.slice(0,5).forEach((r,i)=>{
 html += (i+1)+". "+r[0]+" — "+r[1]+"<br>"
 })
+
+/* päivän pisin sana */
+
+let longest=""
+let longestPlayer=""
+
+data.forEach(r=>{
+
+let word=r[4] || ""
+
+if(word.length > longest.length){
+longest=word
+longestPlayer=r[0]
+}
+
+})
+
+if(longest){
+html += "<br>📜 Päivän pisin sana<br>"
+html += longestPlayer+" — "+longest.toUpperCase()
+}
 
 document.getElementById("leaderboard").innerHTML=html
 
