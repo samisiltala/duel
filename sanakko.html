@@ -286,6 +286,13 @@ user-select:none;
 background:linear-gradient(#fff7d6,#e9d58f);
 }
 
+.tile.success{
+background:linear-gradient(#d4ffd4,#7fff9c);
+box-shadow:0 0 12px rgba(106,255,156,0.9);
+transition:all 0.3s;
+}
+
+  
 .rightPanel{
 background:#222;
 padding:15px;
@@ -899,6 +906,16 @@ return
 }
 
 if(validWords.has(w) && !foundWords.has(w)){
+
+let successTiles=[...usedTiles]
+
+successTiles.forEach(t=>t.classList.add("success"))
+
+setTimeout(()=>{
+successTiles.forEach(t=>{
+t.classList.remove("success")
+})
+},350)
 
 foundWords.add(w)
 
