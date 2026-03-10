@@ -250,24 +250,26 @@ transition:all 0.2s;
 display:flex;
 flex-direction:column;
 align-items:center;
+width:100%;
 }
 
 #grid{
 display:grid;
-grid-template-columns:repeat(4,80px);
-gap:14px;
+grid-template-columns:repeat(4,1fr);
+gap:3vw;
+width:min(92vw,520px);
 margin-top:30px;
 touch-action:none;
 }
 
 .tile{
-width:80px;
-height:80px;
+aspect-ratio:1/1;
+width:100%;
 display:flex;
 align-items:center;
 justify-content:center;
 font-family:'JetBrains Mono', monospace;
-font-size:34px;
+font-size:clamp(26px,6vw,42px);
 font-weight:600;
 color:#222;
 background:linear-gradient(#f4f1e6,#ddd6c3);
