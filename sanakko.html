@@ -344,37 +344,26 @@ z-index:10;
 }
 
 #greekGlow{
-position:fixed;
-right:40px;
-bottom:30px;
+position:absolute;
+right:20px;
+bottom:-20px;
 
 font-family:'Cinzel', serif;
-font-size:30px;
+font-size:28px;
 
-color:rgba(255,255,255,0.22);
-
+color:rgba(255,255,255,0.18);
 letter-spacing:4px;
 
 pointer-events:none;
-z-index:50;
 
 animation:greekFloat 8s ease-in-out infinite;
 text-shadow:0 0 8px rgba(255,255,255,0.15);
 }
 
 @keyframes greekFloat{
-0%{
-transform:translateY(0px);
-opacity:0.18;
-}
-50%{
-transform:translateY(-10px);
-opacity:0.28;
-}
-100%{
-transform:translateY(0px);
-opacity:0.18;
-}
+0%{transform:translateY(0px)}
+50%{transform:translateY(-8px)}
+100%{transform:translateY(0px)}
 }
   
 @media (max-width:900px) and (orientation:portrait){
@@ -480,6 +469,7 @@ transform:translate(-50%,-140%);
 <div id="score">Pisteet: 0</div>
 <div id="debugWords">Sanat: 0 / 0</div>
 <button onclick="toggleMusic()">Musiikki</button>
+<div id="greekGlow">ἘΝ ΑΡΧΗ ΗΝ Ο ΛΟΓΟΣ</div>
 </div>
 
 <div class="centerGame">
@@ -1205,6 +1195,6 @@ endGame()
 })
   
 </script>
-<div id="greekGlow">ἘΝ ΑΡΧΗ ΗΝ Ο ΛΟΓΟΣ</div>
+
 </body>
 </html>
