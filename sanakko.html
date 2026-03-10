@@ -1082,6 +1082,14 @@ time--
 
 function endGame(){
 
+fetch(WEB_APP_URL,{
+method:"POST",
+body:JSON.stringify({
+name:playerName,
+score:score,
+level:10
+})
+})  
 clearInterval(timer)
 
 selecting=false
@@ -1151,7 +1159,7 @@ löysit ${Math.round(foundWords.size/validWords.size*100)} % sanoista
 <br>
 
 <button class="startButton" onclick="newGame()">Uusi peli</button>
-
+<div id="leaderboard"></div>
 <br><br>
 
 <a href="index.html">
@@ -1165,6 +1173,27 @@ löysit ${Math.round(foundWords.size/validWords.size*100)} % sanoista
 </div>
 `
 startWordWall()
+loadSanaluolaTop()
+
+}
+
+function loadSanaluolaTop(){
+
+fetch(WEB_APP_URL + "?level=10")
+.then(r=>r.json())
+.then(data=>{
+
+let sorted=data.sort((a,b)=>b[1]-a[1]).slice(0,5)
+
+let html="<h3>🏆 TOP 5</h3>"
+
+sorted.forEach((r,i)=>{
+html += (i+1)+". "+r[0]+" — "+r[1]+"<br>"
+})
+
+document.getElementById("leaderboard").innerHTML=html
+
+})
 
 }
   
