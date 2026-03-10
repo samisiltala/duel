@@ -157,6 +157,10 @@ margin-top:20px;
 align-items:start;
 }
 
+.overlayBox.endScreen{
+max-width:1000px;
+}
+  
 .wordWall{
 background:#111;
 padding:18px;
@@ -285,6 +289,12 @@ z-index:2000;
 background:#eee;
 }
 
+.endStatsSmall{
+font-size:18px;
+opacity:0.8;
+margin-top:6px;
+}
+  
 #word{
 margin-top:40px;
 font-family:'JetBrains Mono', monospace;
@@ -392,6 +402,9 @@ let dictionary=new Set()
 let prefixes=new Set()
 let validWords=new Set()
 let maxScore=0
+
+let maxWords = validWords.size
+let foundCount = foundWords.size
 
 let lineCanvas=document.getElementById("lineCanvas")
 let ctx=lineCanvas.getContext("2d")
@@ -842,7 +855,7 @@ wordHTML+=`<span class="wordMissed">${w}</span> `
 })
 
 overlay.innerHTML=`
-<div class="overlayBox">
+<div class="overlayBox endScreen">
 
 <div class="endTitle">Peli ohi!</div>
 
@@ -862,9 +875,15 @@ overlay.innerHTML=`
 
 <div class="endRight">
 
-<div class="endStats">${playerName}: ${score} pistettä</div>
-<div class="endStats">Maksimi: ${maxScore}</div>
-<div class="endStats">Osuus: ${Math.round(score/maxScore*100)}%</div>
+<div class="endStats">${playerName}: ${score} pistettä – ${foundWords.size} sanaa</div>
+
+<div class="endStatsSmall">
+maksimi: ${maxScore} pistettä – ${validWords.size} sanaa
+</div>
+
+<div class="endStatsSmall">
+löysit ${Math.round(foundWords.size/validWords.size*100)} % sanoista
+</div>
 
 <br>
 
