@@ -943,7 +943,8 @@ const bip = document.getElementById("bip")
 const original = "SALAISET SANAT"
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@!?$%&"
 
-let iteration = 0
+let frame = 0
+let locked = new Array(original.length).fill(false)
 
 const interval = setInterval(()=>{
 
@@ -956,7 +957,15 @@ text+=" "
 continue
 }
 
-if(i < iteration){
+if(locked[i]){
+text+=original[i]
+continue
+}
+
+/* satunnaisia merkkejä ennen lukittumista */
+
+if(Math.random() < frame/25){
+locked[i]=true
 text+=original[i]
 }else{
 text+=chars[Math.floor(Math.random()*chars.length)]
@@ -971,11 +980,11 @@ bip.currentTime=0
 bip.play().catch(()=>{})
 }
 
-iteration += 0.35
+frame++
 
-if(iteration >= original.length){
+if(locked.every(v=>v)){
 clearInterval(interval)
-el.textContent = original
+el.textContent=original
 }
 
 },70)
