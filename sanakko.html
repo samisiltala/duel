@@ -566,7 +566,7 @@ let foundCount = foundWords.size
 
 let lineCanvas=document.getElementById("lineCanvas")
 let ctx=lineCanvas.getContext("2d")
-
+let longestWord=""
   
 let dice=[
 "AAEIOU","AEIOUY","AEIOUY","AAEIOU",
@@ -939,6 +939,9 @@ t.classList.remove("success")
 },350)
 
 foundWords.add(w)
+if(w.length > longestWord.length){
+longestWord = w
+}
 
 
 
@@ -1132,6 +1135,9 @@ overlay.innerHTML=`
 ${playerName}: ${score} pistettä<br>
 ${foundWords.size} sanaa
 </div>
+<div class="endStatsSmall">
+pisin sanasi: ${longestWord.toUpperCase()} (${longestWord.length})
+</div>
 
 <div class="endStatsSmall">
 maksimi: ${maxScore} pistettä<br>
@@ -1212,6 +1218,7 @@ i++
 function newGame(){
 
 clearInterval(timer)
+longestWord=""
 
 score=0
 time=120
