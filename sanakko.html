@@ -393,17 +393,14 @@ gap:20px;
 }
 
 .floatingScore{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
+position:fixed;
 font-family:'JetBrains Mono', monospace;
-font-size:36px;
+font-size:34px;
 font-weight:bold;
 color:#6aff9c;
 pointer-events:none;
 animation:floatUp 1s ease-out forwards;
-text-shadow:0 0 10px rgba(106,255,156,0.7);
+text-shadow:0 0 10px rgba(106,255,156,0.8);
 }
 
 @keyframes floatUp{
@@ -903,17 +900,19 @@ ctx.clearRect(0,0,lineCanvas.width,lineCanvas.height)
 
 function showFloatingScore(points){
 
-let el=document.createElement("div")
-el.className="floatingScore"
-el.textContent="+"+points
+if(usedTiles.length===0) return
 
 let lastTile = usedTiles[usedTiles.length-1]
 
 let rect = lastTile.getBoundingClientRect()
 
+let el=document.createElement("div")
+el.className="floatingScore"
+el.textContent="+"+points
+
+el.style.position="fixed"
 el.style.left = rect.left + rect.width/2 + "px"
 el.style.top  = rect.top  + rect.height/2 + "px"
-el.style.position = "fixed"
 
 document.body.appendChild(el)
 
