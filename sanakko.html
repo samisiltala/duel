@@ -186,6 +186,12 @@ font-size:30px;
 text-align:right;
 }
 
+.playerRank{
+color:#6aff9c;
+text-shadow:0 0 10px rgba(106,255,156,0.7);
+font-weight:bold;
+}
+
 
 .endGrid{
 display:grid;
@@ -416,8 +422,10 @@ margin:3px 0;
 position:absolute;
 top:30px;   /* sama kuin grid margin-top */
 left:0;
+width:100%;
+height:100%;
 pointer-events:none;
-z-index:5;
+z-index:15;
 }
 
 #grid{
@@ -1308,9 +1316,20 @@ let sorted=data.sort((a,b)=>b[1]-a[1])
 let html="<h3>🏆 TOP 5</h3>"
 
 sorted.slice(0,5).forEach((r,i)=>{
+if(r[0] === playerName){
+html += "<span class='playerRank'>" + (i+1)+". "+r[0]+" — "+r[1]+"</span><br>"
+}else{
 html += (i+1)+". "+r[0]+" — "+r[1]+"<br>"
+}
 })
 
+let playerRank = sorted.findIndex(r => r[0] === playerName) + 1
+let playerScore = score
+
+if(playerRank > 5){
+html += "<br>— — —<br>"
+html += playerRank + ". " + playerName + " — " + playerScore
+}
 
 
   
