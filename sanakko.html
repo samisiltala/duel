@@ -1309,6 +1309,9 @@ fetch(WEB_APP_URL + "?level=10")
 .then(r=>r.json())
 .then(data=>{
 
+console.log(data)
+
+
 let sorted=data.sort((a,b)=>b[1]-a[1])
 
 /* TOP 5 */
