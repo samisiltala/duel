@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2B:n Kertotaulukisa</title>
+<title>Kertotaulukisa</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 <style>
 
@@ -108,6 +108,13 @@ h1 {
     margin: 15px 0;
 }
 
+#ranking{
+font-size:36px;
+margin-top:12px;
+font-weight:bold;
+color:#ffffff;
+text-shadow:0 0 10px #00ffff, 0 0 20px #00ffff;
+}
 
 #statusMessage {
     min-height: 30px;
@@ -596,6 +603,7 @@ if(streak === 6){
 }
 
 function startGame(){
+document.getElementById("ranking").innerText="";
 document.querySelectorAll(".buttonContainer button").forEach(btn=>{
 btn.style.animation="none";
 });
@@ -818,6 +826,26 @@ function endGame(){
 
   sendScore(name, score);
 
+setTimeout(()=>{
+
+fetch(WEB_APP_URL + "?level=" + level)
+.then(r=>r.json())
+.then(data=>{
+
+let sorted=data.sort((a,b)=>b[1]-a[1]);
+
+let better = sorted.filter(r => r[1] > score).length;
+let rank = better + 1;
+
+lockRanking = true;
+
+document.getElementById("ranking").innerText =
+"⭐ Olet sijalla " + rank;
+
+});
+
+},1200);
+
   if(score > previousBest){
       previousBest = score;
       
@@ -889,10 +917,17 @@ if(found){
    let html=sorted.map((row,i)=> (i+1)+". "+row[0]+": "+row[1]).join("<br>");
    document.getElementById("leaderboard").innerHTML=html;
 
+let rankIndex = sorted.findIndex(r => r[0] === name);
+let totalPlayers = sorted.length;
+
 if(rankIndex !== -1){
     let rank = rankIndex + 1;
+    if(!lockRanking){
     document.getElementById("ranking").innerText =
-    "⭐ Olet sijalla " + rank + ".";
+     "⭐ Olet sijalla " + rank;
+    }
+}else{
+    document.getElementById("ranking").innerText = "";
 }
    
 
