@@ -1,7 +1,5 @@
 Tunnustuskirjojen suomennokset
 
-Tunnustuskirjojen suomennokset
-
 
 <<<0007>>>
 
@@ -91,8 +89,6 @@ Helsinki 25.9.1987 Erkki Kansanaho
 
 <<<0015>>>
 
-
-Luterilaisen kirkon tunnustuskirjat
 
 Luterilaisen kirkon tunnustuskirjojen kokonaisuus määriteltiin v. 1580 hyväksytyssä Yksimielisyyden kirjassa (Liber concordiae). Seuraavassa esitellään näiden tunnustuskirjojen synty ja luonne samassa pääasiallisesti kronologisessa järjestyksessä, jossa ne on otettu tunnustuskirjojen kokoelmaan. Samalla kiinnitetään huomiota siihen, miten ne ovat tulleet tunnustuskirjoiksi.
 
@@ -322,8 +318,6 @@ Ruotsin kirkon tunnustuskirjoihin kuuluu myös 1593 hyväksytty Upsalan kokoukse
 
 Ruotsissa omaksutun kirkko-oikeudellisen tulkinnan mukaan tunnustuskirjoilla on siellä lain voima ruotsinkielisessä asussa ja siinä kokoonpanossa, jossa ne ovat R. R. Broocmanin kuninkaallisen privilegion nojalla 1730 toimittamassa julkaisussa. Tämän ei voi katsoa koskevan enää meitä, sillä kun Upsalan kokouksen päätös jätettiin pois Suomen evankelis-luterilaisen kirkon kirkkolaista, katkaistiin muodollinen liityntä Ruotsin tunnustuskirjatraditioon. Historiallinen yhteys on tietenkin olemassa.
 
-Yksimielisyys
-
 OPIN JA USKON KRISTILLINEN, TOISTETTU, YKSIMIELINEN TUNNUSTUS, jonka allekirjoittaneet Augsburgin tunnustuksessa pysyvät vaaliruhtinaat, ruhtinaat ja säädyt sekä myös kirjan loppuun allekirjoituksensa liittäneet jumaluusoppineet ovat antaneet. Mukaan on liitetty eräiden tohtori Martti Lutherin autuaallisen kuoleman jälkeen väittelyä ja kiistaa aiheuttaneiden opinkohtien selitys, joka on lujasti perustettu ainoaan ohjeeseen, Jumalan sanaan. Mainittujen vaaliruhtinaiden, ruhtinaiden ja säätyjen yksimieliseen sopimuksen ja määräyksen mukaisesti tämä kaikki on painettu asianomaisten maiden, kirkkojen, koulujen ja myös jälkipolvien opiksi ja varoitukseksi.
 
 1580
@@ -432,15 +426,11 @@ Kolme vanhan kirkon tunnustusta
 <<<0043>>>
 
 
-Apostolinen uskontunnustus
-
 
 <<<0044>>>
 
 
 Minä uskon Jumalaan, Isään, Kaikkivaltiaaseen, taivaan ja maan Luojaan, ja Jeesukseen Kristukseen, Jumalan ainoaan Poikaan, meidän Herraamme, joka sikisi Pyhästä Hengestä, syntyi neitsyt Mariasta, kärsi Pontius Pilatuksen aikana, ristiinnaulittiin, kuoli ja haudattiin, astui alas helvettiin1, nousi kolmantena päivänä kuolleista, astui ylös taivaisiin, istuu Jumalan, Isän, Kaikkivaltiaan, oikealla puolella ja on sieltä tuleva tuomitsemaan eläviä ja kuolleita, ja Pyhään Henkeen, pyhän yhteisen kirkon, pyhäin yhteyden, syntien anteeksiantamisen, ruumiin ylösnousemisen ja iankaikkisen elämän.
-
-Nikaian uskontunnustus
 
 Me uskomme yhteen Jumalaan, Isään, Kaikkivaltiaaseen, taivaan ja maan, kaikkien näkyväisten ja näkymättömien Luojaan, ja yhteen Herraan, Jeesukseen Kristukseen, Jumalan ainoaan Poikaan, joka ennen aikojen alkua on Isästä syntynyt, Jumala Jumalasta, Valkeus Valkeudesta, tosi Jumala tosi Jumalasta, syntynyt, ei luotu, joka on samaa olemusta kuin Isä ja jonka kautta kaikki on saanut syntynsä, joka meidän ihmisten ja meidän pelastuksemme tähden astui alas taivaista, tuli lihaksi Pyhästä Hengestä ja neitsyt Mariasta ja syntyi ihmiseksi, meidän edestämme ristiinnaulittiin Pontius Pilatuksen aikana, kärsi kuoleman ja haudattiin, nousi kuolleista kolmantena päivänä, niin kuin oli kirjoitettu, astui ylös taivaisiin, istuu Isän oikealla puolella ja on kirkkaudessa tuleva takaisin tuomitsemaan eläviä ja kuolleita, ja jonka valtakunnalla ei ole loppua.
 
@@ -449,8 +439,6 @@ Me uskomme yhteen Jumalaan, Isään, Kaikkivaltiaaseen, taivaan ja maan, kaikkie
 
 
 Uskomme Pyhään Henkeen, Herraan ja eläväksi tekijään, joka lähtee Isästä ja Pojasta ja jota yhdessä Isän ja Pojan kanssa kumarretaan ja kunnioitetaan ja joka on puhunut profeettojen kautta. Uskomme yhden, pyhän, yleisen ja apostolisen kirkon. Tunnustamme yhden kasteen syntien anteeksiantamiseksi, odotamme kuolleiden ylösnousemusta ja tulevan maailman elämää.
-
-Athanasioksen tunnustus
 
 areiolaisuutta vastaan
 
@@ -515,8 +503,6 @@ Tämä on yhteinen kristillinen oppi. Se joka ei usko sitä vakaasti ja vahvasti
 
 <<<0047>>>
 
-
-Augsburgin tunnustus
 
 Uskontunnustus
 
@@ -977,8 +963,6 @@ Teidän Keisarillisen Majesteettinne uskolliset alamaiset
 
 
 Juhana, Saksin herttua, vaaliruhtinas Yrjö, Brandenburgin rajakreivi Ernst, Lüneburgin herttua Filip, Hessenin maakreivi Juhana Fredrik, Saksin herttua Frans, Lüneburgin herttua Wolf, Anhaltin ruhtinas Nürnbergin raati ja pormestarit Reutlingenin raati
-
-Augsburgin tunnustuksen puolustus
 
 
 <<<0083>>>
@@ -3816,8 +3800,6 @@ Loppu.
 <<<0253>>>
 
 
-Schmalkaldenin opinkohdat
-
 Kristillisen opin kohdat
 
 jotka oli tarkoitus esittää meidän puoleltamme kirkolliskokoukselle, jos sellainen olisi pidetty Mantovassa tai muualla. Näistä käy ilmi, mitä voimme hyväksyä sekä missä kohden voimme tai emme voi tehdä myönnytyksiä.
@@ -4318,8 +4300,6 @@ Ja minä Egidius Mechelerus allekirjoitan omakätisesti
 
 1537
 
-Paavin valta ja johtoasema
-
 Rooman piispa väittää rohkeasti olevansa jure divino (Jumalan säätämyksen perusteella) kaikkia piispoja ja seurakuntapappeja ylempi. Hän lisää vielä, että hänellä on jure divino molemmat miekat, ts. valta asettaa ja syöstä vallasta kuninkaat. Kolmanneksi hän sanoo, että tämän uskominen on pelastumisen välttämätön ehto. Näin perustellen Rooman piispa nimittää itseään Kristuksen sijaiseksi maan päällä. Nämä kolme kohtaa me vakaumuksemme mukaisesti julistamme vääriksi ja jumalattomiksi, tyrannille tyypillisiksi mutta kirkolle turmiollisiksi.
 
 Jotta perustelumme olisi ymmärrettävää, me toteamme ensiksi, mitä paavilaiset tarkoittavat sillä, että paavi on jure divino kaikkia piispoja ylempi. He tarkoittavat, että paavi on universaalipiispa eli ns. ekumeeninen piispa. Se merkitsee, että maailman kaikkien piispojen ja pappien on anottava vihkimystä ja virkaan vahvistamista häneltä, jolla yksin on oikeus valita, vihkiä, vahvistaa virkaan ja panna viralta piispoja. Lisäksi hän röyhkeästi vaatii itselleen valtaa säätää lakeja, jotka koskevat kultteja, sakramenttien muuttamista ja oppia. Hänen laatimiaan oppilauselmia, säädöksiä ja lakeja on muka pidettävä omaatuntoa velvoittavina uskonkohtina ja Jumalan käskyinä, hän kun katsoo vallan kuuluvan hänelle juro divino; ne on jopa asetettava Jumalan käskyjen edelle. Vielä pöyristyttävämpää on, mitä hän lisäksi väittää, nimittäin että tämän kaiken uskominen on pelastumisen välttämätön ehto.
@@ -4547,8 +4527,6 @@ Ambrosius Baurer
 
 
 KÄSIKIRJA
-
-Vähä katekismus
 
 TAVALLISILLE PAPEILLE JA SAARNAAJILLE
 
@@ -5055,8 +5033,6 @@ Sitten kummit ottavat lapsen vastaan ja pappi lausuu, pukien samalla lasta kaste
 
 <<<0327>>>
 
-
-Tohtori Martti Lutherin Iso Katekismus
 
 MARTTI LUTHERIN ESIPUHE
 
@@ -6173,8 +6149,6 @@ Kehottaessani ripittäytymään kehotan siis vain elämään kristittynä. Jos o
 
 <<<0425>>>
 
-
-Yksimielisyyden ohje
 
 Eräiden Augsburgin tunnustuksen uskonkohtien perinpohjainen, selkeä, oikea ja lopullinen toisto ja selitys.
 
@@ -9131,8 +9105,6 @@ Loppusanat
 
 
 Kristitty lukija! Näitä todistuksia ei ole kerätty vanhan kirkon opettajilta siinä mielessä, että meidän kristillinen uskomme perustuisi ihmisten nauttimaan arvonantoon. Eihän todella pelastava usko saa perustua yhdenkään vanhan tai uuden kirkollisen opettajan sanaan vaan yksinomaan Jumalan sanaan, joka on talletettu pyhien profeettojen ja apostolien, jumalallisen totuuden luotettavien todistajien, kirjoituksiin. Saatanan keksimän hirmuisen juonen mukaisesti kiihkohenget ovat kuitenkin halunneet vieroittaa ihmiset Pyhästä Raamatusta, jota Jumalan kiitos nykyään tavallinen maallikkokin osaa hyödykseen lukea, ja ohjata heidät isien ja vanhan kirkon opettajien kirjoitusten aavalle merelle. Heidän tarkoituksenaan on jättää ihmiset kiusallisen epävarmuuden tilaan. Ken ei ole lukenut isiä, ei oikeastaan voi myöskään tietää, ovatko he kirjoituksissaan todellakin tarkoittaneet sitä, mitä nämä uudet opettajat heihin vedotessaan väittävät. Siksi on ollut pakko tämän luettelon avulla osoittaa ja asettaa kaikkien silmien eteen todisteet siitä, että tämä uusi väärä oppi ei perustu yhtään sen paremmin vanhan, oikeaoppisen kirkon opettajien kirjoituksiin kuin Raamattuunkaan, vaan on jyrkässä ristiriidassa niiden kanssa. Nuo opettajat viittaavat isiltä poimittuihin todistuksiin vastoin isien omaa tarkoitusta, aivan kuin he vääristelevät myös Kristuksen testamentin yksinkertaiset, selkeät ja kirkkaat sanat ja Pyhän Raamatun selvät todistukset. Tämän he tekevät tieten tahtoen. Siksi Yksimielisyyden ohje ohjaa itse kunkin tutkimaan Pyhää Raamattua ja Katekismusta. Parhaiten varjelee sielunsa ja omantuntonsa se, joka oikealla, yksinkertaisella uskolla pitää kiinni tästä yksinkertaisesta opista. Sellainen on rakentanut elämänsä vankalle, järkkymättömälle kalliolle. Matt. 7:24 s.; Matt. 17:20 ; Gal. 1:8 - 10 ; Ps. 119 .
-
-Upsalan kokouksen päätös
 
 
 <<<0590>>>
