@@ -11,6 +11,11 @@ font-family: Georgia, serif;
 max-width:900px;
 margin:auto;
 padding:30px;
+background:#fafafa;
+}
+
+h1{
+text-align:center;
 }
 
 input{
@@ -21,9 +26,21 @@ margin:20px 0;
 }
 
 .result{
+background:white;
 margin-bottom:25px;
-padding:10px;
-border-left:4px solid #999;
+padding:15px;
+border-left:5px solid #999;
+}
+
+.book{
+font-weight:bold;
+font-size:18px;
+}
+
+.page{
+color:#666;
+font-size:14px;
+margin-bottom:6px;
 }
 
 mark{
@@ -31,8 +48,8 @@ background:yellow;
 }
 
 </style>
-
 </head>
+
 <body>
 
 <h1>Luther-haku</h1>
@@ -45,9 +62,12 @@ background:yellow;
 
 let files=[]
 
+// kuinka monta tiedostoa
 for(let i=1;i<=120;i++){
+
 let n=i.toString().padStart(3,"0")
 files.push("luther/txt/"+n+".txt")
+
 }
 
 let corpus=[]
@@ -61,7 +81,10 @@ try{
 let r=await fetch(f)
 let t=await r.text()
 
-corpus.push({file:f,text:t})
+corpus.push({
+file:f,
+text:t
+})
 
 }catch{}
 
@@ -82,13 +105,31 @@ if(q.length<2)return
 
 corpus.forEach(doc=>{
 
-let t=doc.text.toLowerCase()
+let text=doc.text
+let lower=text.toLowerCase()
 
-if(t.includes(q)){
+let pos=lower.indexOf(q)
 
-let pos=t.indexOf(q)
+if(pos!==-1){
 
-let snippet=doc.text.substring(pos-80,pos+120)
+// sivunumero
+let before=text.substring(0,pos)
+let pages=before.match(/<<<(\d+)>>>/g)
+
+let page="?"
+
+if(pages){
+page=pages[pages.length-1].replace(/[^0-9]/g,"")
+}
+
+// teoksen nimi
+let title=text.split("\n")[0]
+
+// tekstikatkelma
+let start=Math.max(pos-80,0)
+let end=pos+120
+
+let snippet=text.substring(start,end)
 
 snippet=snippet.replace(
 new RegExp(q,"gi"),
@@ -99,7 +140,9 @@ results.innerHTML+=`
 
 <div class="result">
 
-<b>${doc.file}</b>
+<div class="book">${title}</div>
+
+<div class="page">s.${page}</div>
 
 <div>${snippet}</div>
 
