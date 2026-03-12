@@ -1,1 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Luther-haku</title>
 
+<style>
+
+body{
+font-family: Georgia, serif;
+max-width:900px;
+margin:auto;
+padding:30px;
+background:#fafafa;
+}
+
+h1{
+text-align:center;
+}
+
+input{
+width:100%;
+font-size:20px;
+padding:10px;
+margin:20px 0;
+}
+
+.result{
+background:white;
+margin-bottom:25px;
+padding:15px;
+border-left:5px solid #999;
+}
+
+.book{
+font-weight:bold;
+font-size:18px;
+}
+
+.page{
+color:#666;
+font-size:14px;
+margin-bottom:6px;
+}
+
+mark{
+background:yellow;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Luther-haku</h1>
+
+<input id="search" placeholder="Hae sana..." oninput="search()">
+
+<div id="results"></div>
+
+<script>
+
+let files=[]
+
+// kuinka monta tiedostoa
+for(let i=1;i<=120;i++){
+
+let n=i.toString().padStart(3,"0")
+files.push("luther/txt/"+n+".txt")
+
+}
+
+let corpus=[]
+
+async function load(){
+
+for(let f of files){
+
+try{
+
+let r=await fetch(f)
+let t=await r.text()
+
+corpus.push({
+file:f,
+text:t
+})
+
+}catch{}
+
+}
+
+}
+
+load()
+
+function search(){
+
+let q=document.getElementById("search").value.toLowerCase()
+
+let results=document.getElementById("results")
+results.innerHTML=""
+
+if(q.length<2)return
+
+corpus.forEach(doc=>{
+
+let text=doc.text
+let lower=text.toLowerCase()
+
+let pos=lower.indexOf(q)
+
+if(pos!==-1){
+
+// sivunumero
+let before=text.substring(0,pos)
+let pages=before.match(/<<<(\d+)>>>/g)
+
+let page="?"
+
+if(pages){
+page=pages[pages.length-1].replace(/[^0-9]/g,"")
+}
+
+// teoksen nimi
+let title=text.split("\n")[0]
+
+// tekstikatkelma
+let start=Math.max(pos-80,0)
+let end=pos+120
+
+let snippet=text.substring(start,end)
+
+snippet=snippet.replace(
+new RegExp(q,"gi"),
+m=>"<mark>"+m+"</mark>"
+)
+
+results.innerHTML+=`
+
+<div class="result">
+
+<div class="book">${title}</div>
+
+<div class="page">s.${page}</div>
+
+<div>${snippet}</div>
+
+</div>
+
+`
+
+}
+
+})
+
+}
+
+</script>
+
+</body>
+</html>
