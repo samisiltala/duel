@@ -10,8 +10,6 @@ Olemme pyrkineet oikolukemaan CD:llä olevat tekstit mahdollisimman hyvin, mutta
 
 Käyttöohje
 
-Yleistä
-
 Luther CD 2 koostuu kahdesta osasta:
 - Raamattuohjelmasta (joka sisältää vanhan ja uuden käännöksen) ja
 - muusta sisällöstä.
@@ -21,8 +19,6 @@ Raamattuohjelma pitää asentaa kiintolevylle, jotta raamattulinkit toimisivat. 
 Muu sisältö toimii Internet-selaimessa. Suositellut selaimet ovat Internet Explorer 5.0 tai uudempi ja Mozilla FireFox® 1.0 tai uudempi Windows XP-ympäristössä.
 
 Huomaa, että et tarvitse internet-yhteyttä käyttääksesi Luther CD:tä.
-
-Alkuikkuna
 
 Voit avata haluamasi kirjan painamalla kirjan nimen päällä.
 
