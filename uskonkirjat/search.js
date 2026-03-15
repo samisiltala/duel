@@ -1,15 +1,14 @@
-let lutherCorpus = [];
+let lutherSearchIndex = {};
 
-fetch("data/luther_corpus.json")
+fetch("data/luther_search_index.json")
 .then(r => r.json())
 .then(data => {
 
-    lutherCorpus = data;
+    lutherSearchIndex = data;
 
-    console.log("Luther corpus ladattu:", lutherCorpus.length);
+    console.log("Luther search index ladattu:",Object.keys(data).length,"sanaa");
 
 });
-
 
 async function loadJSON(path){
     const res = await fetch(path);
@@ -54,31 +53,33 @@ lestadius: searchLestadius(query)
 
 function searchLuther(q){
 
-let query = parseQuery(q);
+let words = q.toLowerCase().split(/\s+/);
 
-let results=[];
+let sets = [];
 
-lutherCorpus.forEach(book=>{
+words.forEach(w => {
 
-if(!matchText(book.text,query)) return;
-
-let pos=book.text.toLowerCase().indexOf(query.value[0] || query.value);if(pos!==-1){
-
-let start=Math.max(0,pos-80);
-let end=Math.min(book.text.length,pos+80);
-
-results.push({
-collection:"luther",
-id:book.id,
-title:book.title,
-snippet:book.text.substring(start,end)
-});
-
+if(lutherSearchIndex[w]){
+sets.push(lutherSearchIndex[w]);
 }
 
 });
 
-return results.slice(0,20);
+if(!sets.length) return [];
+
+let ids = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
+
+return ids.slice(0,20).map(id=>{
+
+let book = lutherIndex.find(b => b.id == id);
+
+return {
+collection:"luther",
+id:id,
+title:book.title
+};
+
+});
 
 }
 
@@ -348,19 +349,17 @@ showSearchResults(results);
 
 }
 
-function openLutherResult(id,query){
+async function openLutherResult(id,query){
 
-let book = lutherCorpus.find(b => b.id == id);
-if(!book) return;
+let r = await fetch("data/json/"+String(id).padStart(3,"0")+".json");
+let book = await r.json();
 
-/* avataan Luther-paneeli */
 document.getElementById("toggleLuther").checked = true;
 updatePanels();
 
 let text = book.text.toLowerCase();
 let pos = text.indexOf(query.toLowerCase());
 
-/* jos hakukohta löytyy */
 let snippet = book.text;
 
 if(pos !== -1){
@@ -372,7 +371,6 @@ snippet = book.text.substring(start,end);
 
 }
 
-/* korostus */
 snippet = highlightWords(snippet,[query]);
 
 let html = "<div class='sermonTitle'>"+book.title+"</div>";

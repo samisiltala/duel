@@ -77,11 +77,56 @@ min-width:0;
 overflow-y:auto;
 padding:30px;
 border-right:1px solid #eee;
+background:white;
 }
 
+.settingsPanel{
+display:none;
+position:absolute;
+right:10px;
+top:40px;
+background:white;
+border:1px solid #ccc;
+padding:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.2);
+z-index:1000;
+}
 
 .panel:last-child{
 border-right:none;
+}
+
+.searchBox{
+position:relative;
+display:inline-block;
+}
+
+.clearBtn{
+position:absolute;
+right:8px;
+top:50%;
+transform:translateY(-50%);
+border:none;
+background:none;
+font-size:18px;
+cursor:pointer;
+opacity:0.6;
+}
+
+.clearBtn:hover{
+opacity:1;
+}
+
+.panel .text{
+transition:opacity 0.25s ease;
+}
+
+.fadeOut{
+opacity:0;
+}
+
+.fadeIn{
+opacity:1;
 }
 
 mark{
@@ -105,6 +150,20 @@ letter-spacing:0.01em;
 .sermonText{
 text-align:justify;
 hyphens:auto;
+}
+
+.resetBtn{
+margin-left:8px;
+border:none;
+background:none;
+font-size:16px;
+cursor:pointer;
+opacity:0.5;
+}
+
+.resetBtn:hover{
+opacity:1;
+transform:rotate(-20deg);
 }
 
 #biblePanel .text{
@@ -213,6 +272,13 @@ animation:slideLeft 0.25s ease;
 
 .bibleSlideRight{
 animation:slideRight 0.25s ease;
+}
+
+.readerHome{
+background-image:url("img/joh1.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 }
 
 @keyframes slideLeft{
@@ -412,6 +478,7 @@ border-right:1px solid #333;
 
 body.dark .panel{
 border-right:1px solid #333;
+background:#111;
 }
 
 body.dark #list div:hover{
@@ -531,16 +598,21 @@ overflow-x:hidden;
 
 <div id="topbar">
 <button id="menuBtn">☰</button>
+<div class="searchBox">
 <input id="search" placeholder="Hae teksteistä...">
-<button onclick="clearSearch()">✕</button>
+<button class="clearBtn" onclick="clearSearch()">✕</button>
+</div>
 
 <div id="controls">
 
 <button onclick="toggleReadMode()">📖</button>
 <button onclick="toggleDark()">🌙</button>
+
 <button id="settingsBtn">⚙</button>
-<button onclick="fontMinus()">A−</button>
-<button onclick="fontPlus()">A+</button>
+
+<div id="settingsPanel" class="settingsPanel">
+
+<label>Fontti</label>
 <select id="fontSelect">
 <option value="georgia" selected>Georgia</option>
 <option value="garamond">Garamond</option>
@@ -548,6 +620,7 @@ overflow-x:hidden;
 <option value="sans">Sans-serif</option>
 </select>
 
+<label>Teema</label>
 <select id="bgSelect">
 <option value="white">Valkoinen</option>
 <option value="sepia">Seepia</option>
@@ -555,10 +628,18 @@ overflow-x:hidden;
 <option value="dark">Tumma</option>
 </select>
 
+<label>Raamattu</label>
 <select id="bibleVersionSelect">
 <option value="92">Raamattu 1992</option>
 <option value="38">Raamattu 1938</option>
 </select>
+
+<div style="margin-top:8px;">
+<button onclick="fontMinus()">A−</button>
+<button onclick="fontPlus()">A+</button>
+</div>
+
+</div>
 
 </div>
 
@@ -575,6 +656,11 @@ overflow-x:hidden;
 <input type="checkbox" id="toggleBible">
 Raamattu
 </label>
+<button class="resetBtn" onclick="resetView()" title="Tyhjennä näkymä">↺</button>
+
+
+</h3>
+
 </h3>
 <div id="bibleBooks"></div>
 
@@ -821,7 +907,7 @@ buildBibleBooks();
 
 let lutherIndex=[];
 
-fetch("data/json/luther_index.json")
+fetch("data/luther_index.json")
 .then(r=>r.json())
 .then(data=>{
 lutherIndex=data;
@@ -873,14 +959,48 @@ if(!s) return;
 
 s.classList.add("hide");
 
-setTimeout(function(){
-s.remove();
-},600);
 
 }
 
+/* =============================
+RESET - NAPPI
+============================= */
 
+function resetView(){
 
+/* tyhjennä haku */
+
+document.getElementById("search").value="";
+
+/* sulje paneelit */
+
+document.getElementById("toggleBible").checked=false;
+document.getElementById("toggleLuther").checked=false;
+document.getElementById("toggleLestadius").checked=false;
+
+updatePanels();
+
+/* tyhjennä lukutekstit */
+
+document.querySelector("#biblePanel .text").innerHTML="";
+document.querySelector("#lutherPanel .text").innerHTML="";
+document.querySelector("#lestadiusPanel .text").innerHTML="";
+
+/* palauta kirjasto alkuun */
+
+buildBibleBooks();
+buildLutherMenu();
+buildLestadiusMenu();
+
+/* näytä reset-taustakuva */
+
+document.getElementById("reader").classList.add("readerHome");
+
+/* scroll alkuun */
+
+window.scrollTo(0,0);
+
+}
 /* =============================
 RAAMATUN KAPPALEJAKO MENUUN
 ============================= */
@@ -988,7 +1108,7 @@ item.style.paddingLeft="15px";
 item.style.padding="4px";
 
 item.onclick=function(){
-
+console.log("Klikattu Luther:",book.id);
 showLutherText(book.id);
 
 };
@@ -1005,19 +1125,20 @@ div.appendChild(section);
 }
 
 /* KIRJAT JÄRJESTYKSESSÄ */
-function showLutherText(id){
+async function showLutherText(id){
+document.getElementById("reader").classList.remove("readerHome");
+hideStartScreen();
+console.log("showLutherText käynnistyi:",id);
+let file = String(id).padStart(3,"0");
 
-document.getElementById("toggleLuther").checked=true;
-updatePanels();
+let r = await fetch("data/json/"+file+".json");
+let book = await r.json();
 
-let book = lutherCorpus.find(b => b.id == id);
-
-if(!book) return;
+console.log("Luther avattu:",file);
 
 let html = book.text.replace(/\n/g,"<br>");
 
 document.querySelector("#lutherPanel .text").innerHTML = html;
-
 }
 
 /* =============================
@@ -1201,6 +1322,30 @@ document.getElementById("toggleBible").checked=false;
 updatePanels();
 }
 
+/* =============================
+TEKSTIN FEIDAUS
+============================= */
+
+function fadeText(el,newHTML){
+
+el.classList.add("fadeOut");
+
+setTimeout(function(){
+
+el.innerHTML=newHTML;
+
+/* scroll lukupaneelin alkuun */
+
+el.scrollTop=0;
+
+window.scrollTo(0,0);
+
+el.classList.remove("fadeOut");
+el.classList.add("fadeIn");
+
+},120);
+
+}
 
 
 /* =============================
@@ -1359,6 +1504,7 @@ NÄYTÄ SAARNA
 
 function showSermon(id,openPanel=true){
 
+document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
 
 if(openPanel){
@@ -1422,7 +1568,7 @@ html+="<div class='sermonMeta'>"+subtitle2+"</div>";
 
 html+="<div class='sermonText'>"+text+"</div>";
 
-document.querySelector("#lestadiusPanel .text").innerHTML=html;
+fadeText(document.querySelector("#lestadiusPanel .text"),html);
 
 window.scrollTo(0,0);
 
@@ -1513,6 +1659,7 @@ RAAMATUN KAPPALE
 
 function showBibleChapter(book,chapter){
 
+document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
 currentBook=book;
 currentChapter=chapter;
@@ -1559,7 +1706,7 @@ return v.verse + " " + v.text;
 
 }).join("\n");
 
-document.querySelector("#biblePanel .text").innerText=html;
+fadeText(document.querySelector("#biblePanel .text"),html);
 document.querySelector("#biblePanel h2").innerText =
 (bibleNames[book] || book) + " " + chapter;
 
@@ -2051,6 +2198,30 @@ showBibleChapter(currentBibleBook,currentBibleChapter);
 
 }
 
+document.getElementById("settingsBtn").onclick=function(){
+
+let p=document.getElementById("settingsPanel");
+
+p.style.display = (p.style.display==="block") ? "none" : "block";
+
+};
+document.addEventListener("click",function(e){
+
+let panel=document.getElementById("settingsPanel");
+let btn=document.getElementById("settingsBtn");
+
+/* jos klikataan ratasta → ei suljeta */
+if(btn.contains(e.target)) return;
+
+/* jos klikataan paneelia → ei suljeta */
+if(panel.contains(e.target)) return;
+
+/* muuten suljetaan */
+panel.style.display="none";
+
+});
+
+document.getElementById("bibleVersionSelect").value = bibleVersion;
 
 </script>
 <audio id="startSound" src="audio/virsi.mp3"></audio>
