@@ -1137,6 +1137,20 @@ document.getElementById("matchCount").textContent =
 }
 
 /* =============================
+PUHELIMESSA HAKU PIILOON
+============================= */
+
+function closeLibraryMobile(){
+
+if(window.innerWidth<900){
+
+document.getElementById("library").classList.remove("open");
+document.getElementById("menuOverlay").classList.remove("open");
+
+}
+
+}
+/* =============================
 RESET - NAPPI
 ============================= */
 
@@ -1300,6 +1314,7 @@ div.appendChild(section);
 
 /* KIRJAT JÄRJESTYKSESSÄ */
 async function showLutherText(id){
+closeLibraryMobile();
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
 document.getElementById("toggleLuther").checked = true;
@@ -1689,6 +1704,7 @@ NÄYTÄ SAARNA
 ============================= */
 
 function showSermon(id,openPanel=true){
+closeLibraryMobile();
 
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
@@ -1844,6 +1860,7 @@ RAAMATUN KAPPALE
 ============================= */
 
 function showBibleChapter(book,chapter){
+closeLibraryMobile();
 
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
