@@ -15,6 +15,11 @@ margin:0;
 font-family:Georgia, serif;
 }
 
+mark.activeMatch{
+background:#ff9;
+outline:2px solid #f80;
+}
+
 body.bg-sepia{
 background:#f4ecd8;
 color:#3a2f1b;
@@ -435,6 +440,8 @@ margin-top:18px;
 font-size:16px;
 opacity:0.8;
 }
+
+
 
 @keyframes floatText{
 0%{transform:translateY(0px);}
@@ -1070,6 +1077,20 @@ searchMatches = Array.from(document.querySelectorAll("#lutherPanel mark"));
 
 currentMatch = 0;
 
+/* näytetään navigointi jos osumia on */
+
+let nav=document.getElementById("matchNav");
+
+if(searchMatches.length){
+
+nav.style.display="block";
+
+}else{
+
+nav.style.display="none";
+
+}
+
 updateMatchIndicator();
 
 }
@@ -1113,7 +1134,13 @@ HAUN TULOKSET, SKROLLAA
 
 function scrollToMatch(){
 
+searchMatches.forEach(el=>{
+el.classList.remove("activeMatch");
+});
+
 let el = searchMatches[currentMatch];
+
+el.classList.add("activeMatch");
 
 el.scrollIntoView({
 behavior:"smooth",
@@ -1306,9 +1333,7 @@ item.style.paddingLeft="15px";
 item.style.padding="4px";
 
 item.onclick=function(){
-console.log("Klikattu Luther:",book.id);
-showLutherText(book.id);
-
+openLutherResult(book.id,q);
 };
 
 list.appendChild(item);
@@ -1987,8 +2012,6 @@ let file = String(id).padStart(3,"0");
 let r = await fetch("data/json/"+file+".json");
 let book = await r.json();
 
-/* korostetaan hakusana */
-
 let words = query.toLowerCase().split(/\s+/);
 
 let text = highlightWords(book.text,words);
@@ -1998,12 +2021,11 @@ html += text.replace(/\n/g,"<br>");
 
 fadeText(document.querySelector("#lutherPanel .text"),html);
 
-/* kerätään osumat */
-
 setTimeout(function(){
 
 collectMatches();
 scrollToMatch();
+
 
 },150);
 
@@ -2452,7 +2474,27 @@ panel.style.display="none";
 
 document.getElementById("bibleVersionSelect").value = bibleVersion;
 
+document.addEventListener("keydown",function(e){
 
+if(!searchMatches.length) return;
+
+/* oikea nuoli → seuraava */
+
+if(e.key==="ArrowRight"){
+
+nextMatch();
+
+}
+
+/* vasen nuoli → edellinen */
+
+if(e.key==="ArrowLeft"){
+
+prevMatch();
+
+}
+
+});
 
 </script>
 <audio id="startSound" src="audio/virsi.mp3"></audio>

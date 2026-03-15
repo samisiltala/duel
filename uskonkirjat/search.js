@@ -73,10 +73,21 @@ return ids.slice(0,resultLimit).map(id=>{
 
 let book = lutherIndex.find(b => b.id == id);
 
+/* laske osumien määrä */
+
+let count = 0;
+
+words.forEach(w=>{
+if(lutherSearchIndex[w]){
+count += lutherSearchIndex[w].filter(x=>x==id).length;
+}
+});
+
 return {
 collection:"luther",
 id:id,
-title:book.title
+title:book.title,
+count:count
 };
 
 });
@@ -349,34 +360,5 @@ showSearchResults(results);
 
 }
 
-async function openLutherResult(id,query){
 
-let r = await fetch("data/json/"+String(id).padStart(3,"0")+".json");
-let book = await r.json();
-
-document.getElementById("toggleLuther").checked = true;
-updatePanels();
-
-let text = book.text.toLowerCase();
-let pos = text.indexOf(query.toLowerCase());
-
-let snippet = book.text;
-
-if(pos !== -1){
-
-let start = Math.max(0,pos-400);
-let end = Math.min(book.text.length,pos+800);
-
-snippet = book.text.substring(start,end);
-
-}
-
-snippet = highlightWords(snippet,[query]);
-
-let html = "<div class='sermonTitle'>"+book.title+"</div>";
-html += snippet.replace(/\n/g,"<br>");
-
-document.querySelector("#lutherPanel .text").innerHTML = html;
-
-}
 
