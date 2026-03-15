@@ -588,6 +588,7 @@ left:-100%;
 top:0;
 height:100%;
 width:100%;
+padding-top:70px;
 background:#f5f5f5;
 z-index:1500;
 transition:left 0.3s ease;
@@ -635,12 +636,12 @@ overflow-x:hidden;
 /* lukuteksti */
 
 .text{
-max-width:60ch;
+max-width: 100%;
 width:100%;
-padding:20px;
+padding:18px;
 font-size:20px;
 line-height:1.8;
-margin:auto;
+margin:0;
 box-sizing:border-box;
 overflow-wrap:break-word;
 }
@@ -1333,7 +1334,9 @@ item.style.paddingLeft="15px";
 item.style.padding="4px";
 
 item.onclick=function(){
-openLutherResult(book.id,q);
+
+showLutherText(book.id);
+
 };
 
 list.appendChild(item);
