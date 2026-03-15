@@ -668,7 +668,8 @@ let churchIndex={};
 let fontSize=18;
 let currentBook=null;
 let currentChapter=1;
-
+let currentBibleBook = null;
+let currentBibleChapter = null;
 /* =============================
 DATA LATAUS
 ============================= */
@@ -764,7 +765,8 @@ document.getElementById("toggleBible").checked=true;
 updatePanels();
 
 showBibleChapter(book,ch);
-
+currentBibleBook = book;
+currentBibleChapter = chapter;
 };
 
 list.appendChild(div);
@@ -1609,6 +1611,54 @@ document.getElementById("library").classList.toggle("open");
 document.getElementById("menuOverlay").classList.toggle("open");
 
 };
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+let biblePanel = document.getElementById("biblePanel");
+
+biblePanel.addEventListener("touchstart",function(e){
+touchStartX = e.changedTouches[0].screenX;
+});
+
+biblePanel.addEventListener("touchend",function(e){
+
+touchEndX = e.changedTouches[0].screenX;
+handleSwipe();
+
+});
+
+function handleSwipe(){
+
+let diff = touchEndX - touchStartX;
+
+if(Math.abs(diff) < 50) return;
+
+if(diff > 0){
+previousChapter();
+}else{
+nextChapter();
+}
+
+}
+
+function nextChapter(){
+
+if(!currentBibleBook) return;
+
+showBibleChapter(currentBibleBook, currentBibleChapter + 1);
+
+}
+
+function previousChapter(){
+
+if(!currentBibleBook) return;
+
+if(currentBibleChapter > 1){
+showBibleChapter(currentBibleBook, currentBibleChapter - 1);
+}
+
+}
 
 </script>
 
