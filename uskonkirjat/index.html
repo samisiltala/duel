@@ -4,6 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uskonkirjat</title>
 <link rel="stylesheet" href="style.css">
 <style>
@@ -289,6 +290,29 @@ word-break:normal;
 overflow-wrap:break-word;
 }
 
+#readerSettings{
+position:fixed;
+top:60px;
+right:10px;
+background:white;
+border:1px solid #ccc;
+padding:12px;
+border-radius:8px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+display:none;
+z-index:2000;
+}
+
+#readerSettings.open{
+display:block;
+}
+
+#readerSettings label{
+display:block;
+font-size:12px;
+margin-top:6px;
+}
+
 #biblePopup b{
 color:#000;
 }
@@ -385,13 +409,11 @@ display:none;
 display:block;
 }
 
-/* lukutila */
-
 #reader{
-width:100%;
+flex-direction:column;
 }
 
-/* sivupaneeli overlayksi */
+/* sivupaneeli */
 
 #library{
 position:fixed;
@@ -403,6 +425,12 @@ background:#f5f5f5;
 z-index:1000;
 transition:left 0.3s;
 overflow-y:auto;
+}
+
+/* kun menu auki */
+
+#library.open{
+left:0;
 }
 
 #fontSelect{
@@ -421,30 +449,23 @@ color:#888;
 color:#000;
 }
 
-/* kun menu auki */
-
-#library.open{
-left:0;
-}
-
-/* overlay tausta */
-
-#library::after{
-content:"";
-position:fixed;
-top:0;
-left:85%;
-width:15%;
-height:100%;
-}
-
 /* tekstipalsta */
+
+.panel{
+width:100%;
+}
 
 .text{
 max-width:60ch;
 padding:20px;
-font-size:20;
+font-size:20px;
 line-height:1.8;
+}
+
+/* estää sivuttaisscrollin */
+
+body{
+overflow-x:hidden;
 }
 
 }
@@ -464,6 +485,7 @@ line-height:1.8;
 
 <button onclick="toggleReadMode()">📖</button>
 <button onclick="toggleDark()">🌙</button>
+<button id="settingsBtn">⚙</button>
 <button onclick="fontMinus()">A−</button>
 <button onclick="fontPlus()">A+</button>
 <select id="fontSelect">
@@ -554,7 +576,27 @@ Lestadius
 
 <div id="biblePopup"></div>
 
+<div id="readerSettings">
 
+<label>Fontti</label>
+<select id="fontSelect">
+<option value="Georgia">Georgia</option>
+<option value="Times">Times</option>
+<option value="Arial">Arial</option>
+<option value="Verdana">Verdana</option>
+</select>
+
+<label>Tausta</label>
+<select id="bgSelect">
+<option value="white">Valkoinen</option>
+<option value="sepia">Sepia</option>
+<option value="dark">Tumma</option>
+</select>
+
+<button onclick="fontMinus()">A−</button>
+<button onclick="fontPlus()">A+</button>
+
+</div>
 
 <script>
 let bibleBooksAll = [...bibleBooksOT, ...bibleBooksNT];
@@ -1602,6 +1644,14 @@ APU
 function cleanTitle(t){
 return t.replace(/^\d+\.\s*/,"");
 }
+
+/* asetuspaneeli */
+document.getElementById("settingsBtn").onclick=function(){
+
+document.getElementById("readerSettings")
+.classList.toggle("open");
+
+};
 
 window.addEventListener("load",function(){
 
