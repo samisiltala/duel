@@ -588,6 +588,7 @@ left:-100%;
 top:0;
 height:100%;
 width:100%;
+flex: none;
 padding-top:70px;
 background:#f5f5f5;
 z-index:1500;
@@ -664,6 +665,10 @@ border:none;
 #reader{
 display:block;
 width:100%;
+}
+
+#container{
+    display:block;
 }
 
 /* lukuteksti */
@@ -2468,9 +2473,9 @@ let sound=document.getElementById("startSound");
 
 if(sound){
 
-sound.volume=0.25;
+sound.volume=0.10;
 sound.currentTime=0;
-
+setTimeout(()=>{sound.volume=0.10},1500);
 sound.play().catch(()=>{});
 
 }
@@ -2552,6 +2557,20 @@ if(e.key==="ArrowLeft"){
 prevMatch();
 
 }
+
+document.getElementById("reader").addEventListener("click",function(){
+
+if(!document.body.classList.contains("readMode")) return;
+
+let bar=document.getElementById("topbar");
+
+if(bar.style.display==="none"){
+bar.style.display="flex";
+}else{
+bar.style.display="none";
+}
+
+});
 
 });
 
