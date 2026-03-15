@@ -69,7 +69,7 @@ if(!sets.length) return [];
 
 let ids = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
 
-return ids.slice(0,20).map(id=>{
+return ids.slice(0,resultLimit).map(id=>{
 
 let book = lutherIndex.find(b => b.id == id);
 
@@ -152,7 +152,7 @@ title:s.title
 
 });
 
-return results.slice(0,20);
+return results.slice(0,resultLimit);
 
 }
 

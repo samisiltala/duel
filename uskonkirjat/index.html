@@ -223,6 +223,19 @@ display:none;
 box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
 
+#matchNav{
+font-size:14px;
+color:#666;
+}
+
+#matchNav button{
+border:none;
+background:none;
+cursor:pointer;
+font-size:16px;
+margin:0 6px;
+}
+
 #content{
 flex:1;
 padding:40px;
@@ -634,6 +647,14 @@ overflow-x:hidden;
 <option value="38">Raamattu 1938</option>
 </select>
 
+<label>Hakutulosten määrä</label>
+<select id="resultLimit">
+<option value="20">20</option>
+<option value="50" selected>50</option>
+<option value="100">100</option>
+<option value="200">200</option>
+</select>
+
 <div style="margin-top:8px;">
 <button onclick="fontMinus()">A−</button>
 <button onclick="fontPlus()">A+</button>
@@ -715,6 +736,12 @@ Lestadius
 <div class="panel" id="lutherPanel">
 
 <h2>Luther</h2>
+
+<div id="matchNav" style="display:none;margin-bottom:10px">
+<button onclick="prevMatch()">◀</button>
+<span id="matchCount"></span>
+<button onclick="nextMatch()">▶</button>
+</div>
 
 <div class="text"></div>
 
@@ -892,6 +919,12 @@ let currentBook=null;
 let currentChapter=1;
 let currentBibleBook = null;
 let currentBibleChapter = null;
+let searchMatches=[];
+let currentMatch=0;
+let resultLimit = 50;
+let savedLimit = localStorage.getItem("resultLimit");
+
+
 /* =============================
 DATA LATAUS
 ============================= */
@@ -959,6 +992,92 @@ if(!s) return;
 
 s.classList.add("hide");
 
+
+}
+
+/* =============================
+HAUN TULOKSET, EDELL SEUR
+============================= */
+
+function collectMatches(){
+
+searchMatches = Array.from(document.querySelectorAll("#lutherPanel mark"));
+
+currentMatch = 0;
+
+updateMatchIndicator();
+
+}
+
+/* =============================
+HAUN TULOKSET, SEURAAVA
+============================= */
+function nextMatch(){
+
+if(!searchMatches.length) return;
+
+currentMatch++;
+
+if(currentMatch >= searchMatches.length){
+currentMatch = 0;
+}
+
+scrollToMatch();
+
+}
+/* =============================
+HAUN TULOKSET, EDELLINEN
+============================= */
+function prevMatch(){
+
+if(!searchMatches.length) return;
+
+currentMatch--;
+
+if(currentMatch < 0){
+currentMatch = searchMatches.length - 1;
+}
+
+scrollToMatch();
+
+}
+
+/* =============================
+HAUN TULOKSET, SKROLLAA
+============================= */
+
+function scrollToMatch(){
+
+let el = searchMatches[currentMatch];
+
+el.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+updateMatchIndicator();
+
+}
+
+/* =============================
+PÄIVITÄ LASKURI
+============================= */
+
+function updateMatchIndicator(){
+
+let nav=document.getElementById("matchNav");
+
+if(!searchMatches.length){
+nav.style.display="none";
+return;
+}
+
+/* näytetään navigointi */
+
+nav.style.display="block";
+
+document.getElementById("matchCount").textContent =
+(currentMatch+1)+" / "+searchMatches.length;
 
 }
 
@@ -1128,6 +1247,10 @@ div.appendChild(section);
 async function showLutherText(id){
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
+document.getElementById("toggleLuther").checked = true;
+updatePanels();
+
+console.log("showLutherText käynnistyi:",id);
 console.log("showLutherText käynnistyi:",id);
 let file = String(id).padStart(3,"0");
 
@@ -1139,6 +1262,14 @@ console.log("Luther avattu:",file);
 let html = book.text.replace(/\n/g,"<br>");
 
 document.querySelector("#lutherPanel .text").innerHTML = html;
+
+setTimeout(function(){
+
+collectMatches();
+scrollToMatch();
+
+},150);
+
 }
 
 /* =============================
@@ -1762,29 +1893,37 @@ return text;
 /* =============================
 LUTHER HAKUTULOKSET AUKI
 ============================= */
-function openLutherResult(id,query){
+async function openLutherResult(id,query){
 
-let book = lutherCorpus.find(b => b.id == id);
+document.getElementById("reader").classList.remove("readerHome");
 
-if(!book) return;
-
-document.getElementById("toggleLuther").checked=true;
+document.getElementById("toggleLuther").checked = true;
 updatePanels();
 
-let text = book.text;
+let file = String(id).padStart(3,"0");
 
-let q = query.toLowerCase();
-let pos = text.toLowerCase().indexOf(q);
+let r = await fetch("data/json/"+file+".json");
+let book = await r.json();
 
-let start = Math.max(0,pos-300);
-let end = Math.min(text.length,pos+800);
+/* korostetaan hakusana */
 
-let snippet = text.substring(start,end);
+let words = query.toLowerCase().split(/\s+/);
 
-snippet = highlightWords(snippet,[query]);
+let text = highlightWords(book.text,words);
 
-document.querySelector("#lutherPanel .text").innerHTML =
-snippet.replace(/\n/g,"<br>");
+let html = "<div class='sermonTitle'>"+book.title+"</div>";
+html += text.replace(/\n/g,"<br>");
+
+fadeText(document.querySelector("#lutherPanel .text"),html);
+
+/* kerätään osumat */
+
+setTimeout(function(){
+
+collectMatches();
+scrollToMatch();
+
+},150);
 
 }
 
@@ -2068,6 +2207,14 @@ handleSwipe();
 
 });
 
+document.getElementById("resultLimit").onchange=function(){
+
+resultLimit = parseInt(this.value);
+
+localStorage.setItem("resultLimit", resultLimit);
+
+};
+
 function handleSwipe(){
 
 let diff = touchEndX - touchStartX;
@@ -2222,6 +2369,8 @@ panel.style.display="none";
 });
 
 document.getElementById("bibleVersionSelect").value = bibleVersion;
+
+
 
 </script>
 <audio id="startSound" src="audio/virsi.mp3"></audio>
