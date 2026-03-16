@@ -529,66 +529,85 @@ transform:translate(-50%,-140%);
 }
 }
 
-@media (max-width: 900px) and (orientation: landscape){
+#rotateNotice{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+text-align:center;
+z-index:2000;
+}
+
+@media (max-width:900px) and (orientation:landscape){
 
 html,body{
 height:100%;
+margin:0;
 overflow:hidden;
 }
 
+/* koko pelialue */
+
 .container{
 display:grid;
-grid-template-columns:90px 1fr 120px;
-gap:10px;
-width:100vw;
+grid-template-columns:80px 1fr 120px;
 height:100vh;
-margin:0;
+width:100vw;
+gap:6px;
 padding:6px;
 box-sizing:border-box;
 align-items:center;
-max-width:100vw;
-overflow:hidden;
 }
 
 /* vasen paneeli */
 
 .leftPanel{
-background:rgba(0,0,0,0.75);
-padding:10px;
-border-radius:12px;
 display:flex;
 flex-direction:column;
-justify-content:flex-start;
-gap:10px;
-font-size:14px;
+gap:8px;
+font-size:13px;
+padding:8px;
 }
 
 #timer{
-font-size:28px;
-}
-
-#score{
 font-size:22px;
 }
 
-/* keskiosa */
+#score{
+font-size:18px;
+}
+
+/* keskialue */
 
 .centerGame{
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
+height:100%;
 }
 
-/* kirjainruudukko */
+/* GRID – tärkein osa */
 
 #grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:1.8vw;
-width:min(70vh,70vw);
-max-width:420px;
+gap:1.5vh;
+
+/* grid skaalautuu näytön korkeuden mukaan */
+
+height:min(62vh,420px);
+aspect-ratio:1/1;
 }
+
+/* ruudut */
 
 .tile{
 width:100%;
@@ -596,38 +615,22 @@ aspect-ratio:1/1;
 font-size:clamp(18px,4vh,32px);
 }
 
-/* sana jota rakennetaan */
+/* sana */
 
 #word{
-margin-top:10px;
-font-size:28px;
-letter-spacing:4px;
-padding:6px 14px;
+margin-top:8px;
+font-size:24px;
+letter-spacing:3px;
+padding:6px 12px;
 }
 
 /* oikea paneeli */
 
 .rightPanel{
-background:#222;
-padding:10px;
-border-radius:12px;
-font-size:13px;
-max-height:90vh;
+font-size:12px;
+padding:8px;
 overflow:auto;
-}
-
-#leaderboard{
-font-size:12px;
-line-height:1.4;
-}
-
-/* koti-nappi pienemmäksi */
-
-.homeButton{
-top:6px;
-left:6px;
-padding:5px 8px;
-font-size:12px;
+max-height:90vh;
 }
 
 }
@@ -645,6 +648,10 @@ font-size:12px;
 
 <a href="index.html" class="homeButton">Koti</a>
   
+<div id="rotateNotice" style="display:none">
+Käännä puhelin vaakatasoon 📱↔️
+</div>
+
 <div id="overlay">
 
 <canvas id="matrixCanvas"></canvas>
@@ -799,8 +806,30 @@ setInterval(draw,50)
 
 }
 
-function startGame(){
+function checkOrientation(){
 
+let isMobile = window.innerWidth < 900
+
+let isPortrait = window.innerHeight > window.innerWidth
+
+let notice = document.getElementById("rotateNotice")
+
+if(isMobile && isPortrait){
+notice.style.display="flex"
+}else{
+notice.style.display="none"
+}
+
+}
+
+window.addEventListener("resize",checkOrientation)
+window.addEventListener("load",checkOrientation)
+
+function startGame(){
+if(window.innerHeight > window.innerWidth){
+alert("Käännä puhelin vaakatasoon ennen peliä")
+return
+}
 console.log("dictionary size:",dictionary.size)
 
 if(dictionary.size===0){
