@@ -43,7 +43,7 @@ background:url("papyrus.jpg") center/cover no-repeat;
 display:flex;
 justify-content:center;
 align-items:center;
-z-index:1000;
+z-index:9999;
 overflow:hidden;
 }
 
@@ -423,6 +423,15 @@ letter-spacing:3px;
 margin:3px 0;
 }
 
+#app{
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100dvh; /* 🔥 tärkein */
+overflow:hidden;
+}
+
 #lineCanvas{
 position:absolute;
 top:30px;   /* sama kuin grid margin-top */
@@ -545,6 +554,7 @@ left:0;
 width:100vw;
 height:100vh;
 
+
 background:black;
 color:white;
 
@@ -661,6 +671,8 @@ max-height:90vh;
 <audio id="bip" src="bip.mp3"></audio>
 <audio id="moka" src="moka.mp3"></audio>
 <audio id="longword" src="longword.mp3"></audio>
+
+<div id="app"></div>
 
 <a href="index.html" class="homeButton">Koti</a>
   
