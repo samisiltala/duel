@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sanaluola</title>
 
 <audio id="blip" src="blip.mp3"></audio>
@@ -11,7 +12,7 @@
 <audio id="longword" src="longword.mp3"></audio>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-
+<link rel="manifest" href="manifest.json">
 <style>
 
 body{
@@ -1496,6 +1497,10 @@ if(e.key==="End"){
 endGame()
 }
 })
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js")
+}
 
 </script>
 
