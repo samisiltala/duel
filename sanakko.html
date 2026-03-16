@@ -2,8 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <meta name="theme-color" content="#000000">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Sanaluola</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -16,6 +21,8 @@ background:url("papyrus.jpg") center/cover no-repeat fixed;
 color:white;
 text-align:center;
 margin:0;
+touch-action:none;
+overscroll-behavior:none;
 }
 
 button{
@@ -343,6 +350,8 @@ cursor:pointer;
 user-select:none;
 }
 
+
+
 .tile.active{
 background:linear-gradient(#fff7d6,#e9d58f);
 }
@@ -533,24 +542,31 @@ transform:translate(-50%,-140%);
 position:fixed;
 top:0;
 left:0;
-width:100%;
-height:100%;
+width:100vw;
+height:100vh;
+
 background:black;
 color:white;
-display:flex;
+
+display:none;
 align-items:center;
 justify-content:center;
-font-size:24px;
 text-align:center;
-z-index:2000;
+
+font-size:24px;
+
+z-index:9999; /* 🔥 tämä tärkeä */
+
 }
 
 @media (max-width:900px) and (orientation:landscape){
 
 html,body{
-height:100%;
 margin:0;
+padding:0;
+height:100%;
 overflow:hidden;
+background:black;
 }
 
 /* koko pelialue */
@@ -558,7 +574,7 @@ overflow:hidden;
 .container{
 display:grid;
 grid-template-columns:80px 1fr 120px;
-height:100vh;
+height:calc(var(--vh) * 100);
 width:100vw;
 gap:6px;
 padding:6px;
@@ -808,22 +824,29 @@ setInterval(draw,50)
 
 function checkOrientation(){
 
-let isMobile = window.innerWidth < 900
+const notice = document.getElementById("rotateNotice")
 
-let isPortrait = window.innerHeight > window.innerWidth
+// debug
+console.log("CHECK", notice)
 
-let notice = document.getElementById("rotateNotice")
+if(!notice) return
 
-if(isMobile && isPortrait){
-notice.style.display="flex"
+const isPortrait = window.matchMedia("(orientation: portrait)").matches
+
+if(isPortrait){
+notice.style.display = "flex"
 }else{
-notice.style.display="none"
+notice.style.display = "none"
 }
 
 }
 
-window.addEventListener("resize",checkOrientation)
-window.addEventListener("load",checkOrientation)
+// AJA heti
+setTimeout(checkOrientation, 100)
+
+// tapahtumat
+window.addEventListener("resize", checkOrientation)
+window.addEventListener("orientationchange", checkOrientation)
 
 function startGame(){
 if(window.innerHeight > window.innerWidth){
@@ -1214,6 +1237,14 @@ el.remove()
 },900)
 
 }
+
+function setRealVH(){
+let vh = window.innerHeight * 0.01
+document.documentElement.style.setProperty('--vh', `${vh}px`)
+}
+
+setRealVH()
+window.addEventListener('resize', setRealVH)
 
 function flashLogos(){
 
