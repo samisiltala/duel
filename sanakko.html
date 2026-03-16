@@ -475,27 +475,6 @@ font-weight:bold;
 margin-left:6px;
 }
   
-@media (max-width:900px) and (orientation:portrait){
-
-body{
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-}
-
-.container{
-display:none;
-}
-
-body::before{
-content:"Käännä puhelin vaakatasoon";
-font-size:28px;
-text-align:center;
-padding:40px;
-}
-}
-
 .playerResult{
 font-size:38px;
 color:#6aff9c;
@@ -522,56 +501,6 @@ margin-bottom:8px;
 margin-left:10px;
 }
 
-@media (max-width:900px){
-
-#grid{
-grid-template-columns:repeat(4,1fr);
-gap:3vw;
-width:min(92vw,420px);
-margin-left:auto;
-margin-right:auto;
-}
-
-.tile{
-width:100%;
-aspect-ratio:1/1;
-height:auto;
-font-size:clamp(26px,6vw,40px);
-}
-
-.leftPanel{
-flex-direction:row;
-justify-content:space-between;
-}
-
-.startButton{
-justify-self:end;
-margin-top:8px;
-margin-top:6px;position:absolute;
-top:20px;
-right:40px;
-letter-spacing:2px;
-font-size:18px;
-background:white;
-border:none;
-padding:12px 22px;
-border-radius:8px;
-font-family:'Cinzel', serif;
-
-box-shadow:0 0 8px rgba(106,255,156,0.35);
-}
-
-.startButton:hover{
-box-shadow:0 0 14px rgba(106,255,156,0.6);
-transform:translateY(-1px);
-}
-
-.container{
-grid-template-columns:1fr;
-gap:20px;
-}
-
-}
 
 .floatingScore{
 position:fixed;
@@ -599,6 +528,110 @@ opacity:0;
 transform:translate(-50%,-140%);
 }
 }
+
+@media (max-width: 900px) and (orientation: landscape){
+
+html,body{
+height:100%;
+overflow:hidden;
+}
+
+.container{
+display:grid;
+grid-template-columns:90px 1fr 120px;
+gap:10px;
+width:100vw;
+height:100vh;
+margin:0;
+padding:6px;
+box-sizing:border-box;
+align-items:center;
+max-width:100vw;
+overflow:hidden;
+}
+
+/* vasen paneeli */
+
+.leftPanel{
+background:rgba(0,0,0,0.75);
+padding:10px;
+border-radius:12px;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+gap:10px;
+font-size:14px;
+}
+
+#timer{
+font-size:28px;
+}
+
+#score{
+font-size:22px;
+}
+
+/* keskiosa */
+
+.centerGame{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+/* kirjainruudukko */
+
+#grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:1.8vw;
+width:min(70vh,70vw);
+max-width:420px;
+}
+
+.tile{
+width:100%;
+aspect-ratio:1/1;
+font-size:clamp(18px,4vh,32px);
+}
+
+/* sana jota rakennetaan */
+
+#word{
+margin-top:10px;
+font-size:28px;
+letter-spacing:4px;
+padding:6px 14px;
+}
+
+/* oikea paneeli */
+
+.rightPanel{
+background:#222;
+padding:10px;
+border-radius:12px;
+font-size:13px;
+max-height:90vh;
+overflow:auto;
+}
+
+#leaderboard{
+font-size:12px;
+line-height:1.4;
+}
+
+/* koti-nappi pienemmäksi */
+
+.homeButton{
+top:6px;
+left:6px;
+padding:5px 8px;
+font-size:12px;
+}
+
+}
+
 
 </style>
 </head>
