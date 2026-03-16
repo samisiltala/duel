@@ -1,8 +1,8 @@
-const CACHE="sanaluola-v1"
+const CACHE="sanakko-v1"
 
 const FILES=[
 "./",
-"./sanaluola.html",
+"./sanakko.html",
 "./sanat.txt",
 "./papyrus.jpg"
 ]
