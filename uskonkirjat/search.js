@@ -37,7 +37,21 @@ if(query.type==="phrase"){
 return text.includes(query.value);
 }
 
-return query.value.every(w => text.includes(w));
+
+return query.value.every(w => {
+
+    if(w.includes("*")){
+
+        let pattern = new RegExp(w.replace(/\*/g,".*"), "i");
+        return pattern.test(text);
+
+    } else {
+
+        return text.includes(w);
+
+    }
+
+});
 
 }
 
@@ -59,9 +73,31 @@ let sets = [];
 
 words.forEach(w => {
 
-if(lutherSearchIndex[w]){
-sets.push(lutherSearchIndex[w]);
-}
+    // 🔥 wildcard-tuki
+    if(w.includes("*")){
+
+        let pattern = new RegExp("^" + w.replace(/\*/g, ".*") + "$");
+
+        let matches = Object.keys(lutherSearchIndex)
+            .filter(k => pattern.test(k));
+
+        let ids = [];
+
+        matches.forEach(m => {
+            ids = ids.concat(lutherSearchIndex[m]);
+        });
+
+        if(ids.length){
+            sets.push(ids);
+        }
+
+    } else {
+
+        if(lutherSearchIndex[w]){
+            sets.push(lutherSearchIndex[w]);
+        }
+
+    }
 
 });
 
@@ -119,7 +155,20 @@ text:v.text
 
 }else{
 
-let ok = query.value.every(w => text.includes(w));
+let ok = query.value.every(w => {
+
+    if(w.includes("*")){
+
+        let pattern = new RegExp(w.replace(/\*/g,".*"), "i");
+        return pattern.test(text);
+
+    } else {
+
+        return text.includes(w);
+
+    }
+
+});
 
 if(ok){
 
@@ -249,6 +298,8 @@ return;
 
 if(item.collection === "luther"){
 
+closeLibraryMobile(); 
+
 document.getElementById("toggleBible").checked = false;
 document.getElementById("toggleLuther").checked = true;
 document.getElementById("toggleLestadius").checked = false;
@@ -294,13 +345,15 @@ section("Lestadius",res.lestadius);
 
 document.getElementById("search").addEventListener("input",function(){
 
-let q=this.value.trim();
+let q = this.value.trim();
 
-if(q.length<2){
+// 🔥 poistetaan tähdet tarkistusta varten
+let clean = q.replace(/\*/g, "");
 
-runSearch("");
-return;
-
+// ei hakua jos ei ole oikeita kirjaimia
+if(clean.length < 2){
+    runSearch("");
+    return;
 }
 
 let results=searchAll(q);
@@ -317,33 +370,16 @@ if(q.length < 2){
 
 /* palautetaan normaali kirjasto */
 
-let library = document.getElementById("sermonList");
+if(q.length < 2){
 
-library.innerHTML = `
-<h3>
-<label>
-<input type="checkbox" id="toggleBible">
-Raamattu
-</label>
-</h3>
-<div id="bibleBooks"></div>
-
-<h3>
-<label>
-<input type="checkbox" id="toggleLuther">
-Luther
-</label>
-</h3>
-<div id="lutherBooks"></div>
-
-<h3>
-<label>
-<input type="checkbox" id="toggleLestadius">
-Lestadius
-</label>
-</h3>
-<div id="sermonList"></div>
-`;
+    // palautetaan normaali näkymä ilman DOM-rikkomista
+    buildBibleBooks();
+    buildLutherMenu();
+    buildLestadiusMenu();
+    
+    updatePanels();
+    return;
+}
 
 /* rakennetaan sisältö */
 
