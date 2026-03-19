@@ -986,15 +986,15 @@ Lestadius
 
 
 let bibleBooksOT = [
-"gen","exod","lev","num","deut",
-"jos","tuom","ruut",
+"gen","exo","lev","num","deut",
+"jos","jud","rut",
 "1 sam","2 sam",
 "1 kun","2 kun",
 "1 aik","2 aik",
 "esra","neh","est",
 "job","ps","sananl","saarn","laul",
 "jes","jer","valit","hes","dan",
-"hoos","joel","aamos","obad","joona","miika",
+"hoos","joel","aam","obad","joona","miika",
 "nah","hab","sef","hagg","sak","mal"
 ];
 
@@ -1018,14 +1018,14 @@ let bibleBooksAll = [...bibleBooksOT, ...bibleBooksNT];
 let bibleNames = {
 
 gen:"1 Mooses",
-exod:"2 Mooses",
+exo:"2 Mooses",
 lev:"3 Mooses",
 num:"4 Mooses",
 deut:"5 Mooses",
 
 jos:"Joosua",
-tuom:"Tuomarit",
-ruut:"Ruut",
+jud:"Tuomarit",
+rut:"Ruut",
 
 "1 sam":"1 Samuel",
 "2 sam":"2 Samuel",
@@ -1054,7 +1054,7 @@ dan:"Daniel",
 
 hoos:"Hoosea",
 joel:"Joel",
-aamos:"Aamos",
+aam:"Aamos",
 obad:"Obadja",
 joona:"Joona",
 miika:"Miika",
@@ -1073,7 +1073,7 @@ joh:"Johannes",
 
 apt:"Apostolien teot",
 
-rom:"Roomalaiskirje",
+room:"Roomalaiskirje",
 "1 kor":"1 Korinttilaiskirje",
 "2 kor":"2 Korinttilaiskirje",
 
@@ -1371,7 +1371,7 @@ Object.keys(bibleIndex).forEach(function(k){
 let parts=k.split(" ");
 let last=parts.pop();
 
-if(last.includes(":")) return;   // ohitetaan jaeavaimet
+//if(last.includes(":")) return;   // ohitetaan jaeavaimet
 
 let ch=parseInt(last);
 let bk=parts.join(" ");
@@ -1570,7 +1570,7 @@ return list;
 
 /* SAARNAT NUMERON MUKAAN */
 
-let numList=section("Saarnat numeroittain");
+let numList=section("Saarnat numerojärjestyksessä");
 
 sermons.sort((a,b)=>a.id-b.id);
 
@@ -1915,6 +1915,7 @@ NÄYTÄ SAARNA
 
 function showSermon(id,openPanel=true){
 closeLibraryMobile();
+console.log("SHOW SERMON CALLED:", id);
 
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
@@ -1925,6 +1926,9 @@ updatePanels();
 }
 
 let s = sermons.find(s => s.id == id);
+console.log("TEXT LENGTH:", s.text.length);
+console.log("TEXT START:", s.text.slice(0,200));
+console.log("TEXT END:", s.text.slice(-200));
 if(!s) return;
 
 let q=document.getElementById("search").value.toLowerCase().trim();
@@ -1932,38 +1936,50 @@ let words=q.split(/\s+/);
 
 /* pilkotaan teksti riveihin */
 
-let lines=(s.text || "").split("\n");
+let lines = (s.text || "").split(/\r?\n/);
 
 /* pääotsikko */
 
 let title = s.id + ". " + cleanTitle(s.title || "");
 
-/* otsikon jatko ensimmäiseltä riviltä */
+/* otsikon jatko */
 
-if(lines.length && lines[0].length<80){
-title += " " + lines.shift();
+let subtitle1 = "";
+let subtitle2 = "";
+
+// 🔥 otetaan max 3 riviä otsikkokäyttöön
+let headerLines = [];
+
+while(lines.length && lines[0].length < 80 && headerLines.length < 3){
+    headerLines.push(lines.shift());
 }
 
-/* alaotsikot */
-
-let subtitle1="";
-let subtitle2="";
-
-if(lines.length && lines[0].length<80){
-subtitle1=lines.shift();
+if(headerLines[0]){
+    title += " " + headerLines[0];
 }
 
-if(lines.length && lines[0].length<80){
-subtitle2=lines.shift();
+if(headerLines[1]){
+    subtitle1 = headerLines[1];
 }
 
+if(headerLines[2]){
+    subtitle2 = headerLines[2];
+}
 /* varsinainen teksti */
 
-let text=lines.join("\n");
+let text = lines.join("\n");
 
-text=highlightWords(text,words);
-text=linkBibleRefs(text);
+// 🔥 jos teksti on yksi pötkö → pilkotaan lauseiksi
+if(!text.includes("\n")){
+    text = text.replace(/\. /g,".\n\n");
+}
 
+// 🔥 POISTA TAVUTUS
+text = text.replace(/-\n/g,"");
+
+// sitten vasta muut
+text = highlightWords(text, words);
+text = linkBibleRefs(text);
 /* rakennetaan html */
 
 let html="";
@@ -2024,6 +2040,33 @@ sidebar.appendChild(div);
 
 }
 
+/* =============================
+EDISTYNYT "" AND -HAKU
+============================= */
+
+function parseAdvancedQuery(q){
+
+    let phrases = [];
+    let words = [];
+
+    // poimi "fraasit"
+    let re = /"([^"]+)"/g;
+    let match;
+
+    while((match = re.exec(q)) !== null){
+        phrases.push(match[1].toLowerCase());
+    }
+
+    // poista fraasit tekstistä
+    q = q.replace(/"([^"]+)"/g, "");
+
+    // loput sanat
+    words = q.toLowerCase().split(/[\s+]+/).filter(w => w);
+
+    return {words, phrases};
+}
+
+
 
 /* =============================
 RAAMATUN AVAUS
@@ -2049,6 +2092,7 @@ RAAMATUN KAPPALE
 ============================= */
 
 function showBibleChapter(book,chapter){
+
 closeLibraryMobile();
 
 document.getElementById("reader").classList.remove("readerHome");
@@ -2059,23 +2103,7 @@ currentBibleBook = book;
 currentBibleChapter = chapter;
 
 if(!bibleIndex) return;
-let key=null;
-
-Object.keys(bibleIndex).forEach(function(k){
-
-let parts=k.split(" ");
-let last=parts.pop();
-
-if(last.includes(":")) return;
-
-let ch=parseInt(last);
-let bk=parts.join(" ");
-
-if(ch===chapter && bk.replace(/\s/g,"")===book.replace(/\s/g,"")){
-key=k;
-}
-
-});
+let key = book + " " + chapter;
 
 if(!key){
 console.log("Lukua ei löytynyt:", book, chapter);

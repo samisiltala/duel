@@ -430,6 +430,7 @@ left:0;
 width:100vw;
 height:100dvh; /* 🔥 tärkein */
 overflow:hidden;
+background:black;
 }
 
 #lineCanvas{
@@ -549,24 +550,18 @@ transform:translate(-50%,-140%);
 
 #rotateNotice{
 position:fixed;
-top:0;
-left:0;
-width:100vw;
-height:100vh;
-
-
+inset:0;
 background:black;
 color:white;
 
 display:none;
 align-items:center;
 justify-content:center;
-text-align:center;
 
 font-size:24px;
+text-align:center;
 
-z-index:9999; /* 🔥 tämä tärkeä */
-
+z-index:99999;
 }
 
 @media (max-width:900px) and (orientation:landscape){
@@ -629,7 +624,7 @@ gap:1.5vh;
 
 /* grid skaalautuu näytön korkeuden mukaan */
 
-height:min(62vh,420px);
+height:min(60dvh,420px);
 aspect-ratio:1/1;
 }
 
@@ -838,12 +833,9 @@ function checkOrientation(){
 
 const notice = document.getElementById("rotateNotice")
 
-// debug
-console.log("CHECK", notice)
-
 if(!notice) return
 
-const isPortrait = window.matchMedia("(orientation: portrait)").matches
+const isPortrait = window.innerHeight > window.innerWidth
 
 if(isPortrait){
 notice.style.display = "flex"
@@ -853,12 +845,13 @@ notice.style.display = "none"
 
 }
 
-// AJA heti
-setTimeout(checkOrientation, 100)
+// 🔥 tärkeä: ajetaan heti + viiveellä
+checkOrientation()
+setTimeout(checkOrientation, 200)
 
-// tapahtumat
 window.addEventListener("resize", checkOrientation)
 window.addEventListener("orientationchange", checkOrientation)
+
 
 function startGame(){
 if(window.innerHeight > window.innerWidth){

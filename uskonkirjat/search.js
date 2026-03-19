@@ -105,6 +105,8 @@ if(!sets.length) return [];
 
 let ids = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
 
+
+
 return ids.slice(0,resultLimit).map(id=>{
 
 let book = lutherIndex.find(b => b.id == id);
@@ -298,8 +300,7 @@ return;
 
 if(item.collection === "luther"){
 
-closeLibraryMobile(); 
-
+    
 document.getElementById("toggleBible").checked = false;
 document.getElementById("toggleLuther").checked = true;
 document.getElementById("toggleLestadius").checked = false;
