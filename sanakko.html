@@ -556,7 +556,7 @@ inset:0;
 background:black;
 color:white;
 
-display:none;
+display:none !important;
 align-items:center;
 justify-content:center;
 
@@ -574,7 +574,6 @@ margin:0;
 padding:0;
 height:100%;
 overflow:hidden;
-background:transparent;
 }
 
 /* koko pelialue */
@@ -853,19 +852,9 @@ setInterval(draw,50)
 
 function checkOrientation(){
 
-const notice = document.getElementById("rotateNotice")
-
-if(!notice) return
-
-const isPortrait = window.matchMedia("(orientation: portrait)").matches
-
-if(isPortrait){
-notice.style.display = "flex"
-}else{
-notice.style.display = "none"
-}
-
-}
+ if(document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen().catch(()=>{})
+  }
 
 // 🔥 tärkeä: ajetaan heti + viiveellä
 checkOrientation()
@@ -880,7 +869,7 @@ function startGame(){
  if(document.documentElement.requestFullscreen){
     document.documentElement.requestFullscreen().catch(()=>{})
   }
-  
+
   if(dictionary.size===0){
     alert("Sanakirja latautuu vielä...")
     return
