@@ -557,7 +557,6 @@ inset:0;
 background:black;
 color:white;
 
-display:none !important;
 align-items:center;
 justify-content:center;
 
@@ -585,7 +584,7 @@ display:grid;
 grid-template-columns:60px 1fr 80px;
 
 
-height:auto;
+height:calc(var(--vh) * 100);
 width:100vw;
 gap:6px;
 padding:6px;
@@ -619,6 +618,8 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 height:100%;
+width:100%;
+overflow:hidden;
 }
 
 /* GRID – tärkein osa */
@@ -626,10 +627,12 @@ height:100%;
 #grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
+
 gap:6px;
+
 width:100%;
-/* grid skaalautuu näytön korkeuden mukaan */
-max-width:280px;
+height:auto;
+
 aspect-ratio:1/1;
 }
 
