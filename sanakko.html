@@ -428,7 +428,7 @@ position:fixed;
 top:0;
 left:0;
 width:100vw;
-height:100dvh; /* 🔥 tärkein */
+height: calc(var(--vh) * 100); /* 🔥 tärkein */
 overflow:hidden;
 background:black;
 }
@@ -563,6 +563,7 @@ text-align:center;
 
 z-index:99999;
 }
+
 
 @media (max-width:900px) and (orientation:landscape){
 
@@ -835,7 +836,7 @@ const notice = document.getElementById("rotateNotice")
 
 if(!notice) return
 
-const isPortrait = window.innerHeight > window.innerWidth
+const isPortrait = window.matchMedia("(orientation: portrait)").matches
 
 if(isPortrait){
 notice.style.display = "flex"
@@ -854,37 +855,33 @@ window.addEventListener("orientationchange", checkOrientation)
 
 
 function startGame(){
-if(window.innerHeight > window.innerWidth){
-alert("Käännä puhelin vaakatasoon ennen peliä")
-return
-}
-console.log("dictionary size:",dictionary.size)
 
-if(dictionary.size===0){
-alert("Sanakirja latautuu vielä...")
-return
-}
-document.getElementById("matrixCanvas").style.display="none"
+  if(dictionary.size===0){
+    alert("Sanakirja latautuu vielä...")
+    return
+  }
 
-let name=document.getElementById("nameInput").value.trim().toUpperCase()
+  let name=document.getElementById("nameInput").value.trim().toUpperCase()
 
-if(name===""){
-alert("Kirjoita nimesi ensin")
-return
-}
+  if(name===""){
+    alert("Kirjoita nimesi ensin")
+    return
+  }
 
-playerName=name
+  playerName=name
 
-document.getElementById("playerName").textContent="👤 "+playerName
-document.getElementById("overlay").style.display="none"
+  document.getElementById("playerName").textContent="👤 "+playerName
+  document.getElementById("overlay").style.display="none"
 
-score=0
-time=120
-foundWords.clear()
+  score=0
+  time=120
+  foundWords.clear()
 
-generateGoodBoard()
-startTimer()
-music.play()
+  generateGoodBoard()
+  startTimer()
+  music.play()
+
+  checkOrientation() // 🔥 tämä hoitaa UI:n
 }
 
 function generateGoodBoard(){
