@@ -427,10 +427,12 @@ margin:3px 0;
 
 #app{
 position:relative;
-top:0;
-left:0;
 width:100vw;
-height: calc(var(--vh) * 100); /* 🔥 tärkein */
+min-height: calc(var(--vh) * 100);
+height:auto;
+
+overflow:visible;
+
 background:transparent;
 }
 
