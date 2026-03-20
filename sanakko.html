@@ -575,13 +575,14 @@ margin:0;
 padding:0;
 height:100%;
 overflow:hidden;
+touch-action:none;
 }
 
 /* koko pelialue */
 
 .container{
 display:grid;
-grid-template-columns:70px 1fr 100px;
+grid-template-columns:60px 1fr 80px;
 
 
 height:auto;
@@ -628,7 +629,7 @@ grid-template-columns:repeat(4,1fr);
 gap:6px;
 width:100%;
 /* grid skaalautuu näytön korkeuden mukaan */
-max-width:320px;
+max-width:280px;
 aspect-ratio:1/1;
 }
 
@@ -654,8 +655,8 @@ padding:6px 12px;
 .rightPanel{
 font-size:12px;
 padding:8px;
-overflow:hidden;
-max-height:100%;
+overflow:auto;
+max-height:calc(var(--vh) * 100 - 20px);
 }
 
 .overlayBox{
@@ -852,17 +853,18 @@ setInterval(draw,50)
 
 function checkOrientation(){
 
- if(document.documentElement.requestFullscreen){
-    document.documentElement.requestFullscreen().catch(()=>{})
+  const notice = document.getElementById("rotateNotice")
+  if(!notice) return
+
+  const isPortrait = window.matchMedia("(orientation: portrait)").matches
+
+  if(window.innerWidth < 900 && isPortrait){
+    notice.style.display = "flex"
+  }else{
+    notice.style.display = "none"
   }
 
-// 🔥 tärkeä: ajetaan heti + viiveellä
-checkOrientation()
-setTimeout(checkOrientation, 200)
-
-window.addEventListener("resize", checkOrientation)
-window.addEventListener("orientationchange", checkOrientation)
-
+}
 
 function startGame(){
 
@@ -897,7 +899,7 @@ function startGame(){
 
   checkOrientation() // 🔥 tämä hoitaa UI:n
 }
-}
+
 function generateGoodBoard(){
 
 let minWords=100
@@ -1612,6 +1614,12 @@ if("serviceWorker" in navigator){
 navigator.serviceWorker.register("sw.js")
 }
 
+
+checkOrientation()
+setTimeout(checkOrientation, 200)
+
+window.addEventListener("resize", checkOrientation)
+window.addEventListener("orientationchange", checkOrientation)
 </script>
 
 <div id="greekGlow">
