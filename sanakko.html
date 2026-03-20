@@ -431,7 +431,6 @@ top:0;
 left:0;
 width:100vw;
 height: calc(var(--vh) * 100); /* 🔥 tärkein */
-overflow:hidden;
 background:black;
 }
 
@@ -583,7 +582,7 @@ display:grid;
 grid-template-columns:80px 1fr 120px;
 
 min-height:calc(var(--vh) * 100);
-height:calc(var(--vh) * 100);
+height:auto;
 width:100vw;
 gap:6px;
 padding:6px;
@@ -754,7 +753,7 @@ let tiles=[]
 
 let music=new Audio("sanatausta.mp3")
 music.loop=true
-music.volume=0.25
+music.volume=0.15
 
 let currentWord=""
 let score=0
@@ -893,7 +892,7 @@ function startGame(){
 
   generateGoodBoard()
   startTimer()
-  music.play()
+  music.play().catch(()=>{})
 
   checkOrientation() // 🔥 tämä hoitaa UI:n
 }
