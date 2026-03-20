@@ -574,7 +574,7 @@ margin:0;
 padding:0;
 height:100%;
 overflow:hidden;
-background:black;
+background:transparent;
 }
 
 /* koko pelialue */
@@ -656,6 +656,24 @@ font-size:12px;
 padding:8px;
 overflow:auto;
 max-height:90vh;
+}
+
+.overlayBox{
+padding:20px;
+gap:12px;
+}
+
+.overlayBox h2{
+font-size:28px;
+}
+
+#nameInput{
+font-size:16px;
+}
+
+.overlayBox button{
+padding:8px 14px;
+font-size:14px;
 }
 
 }
@@ -859,6 +877,10 @@ window.addEventListener("orientationchange", checkOrientation)
 
 function startGame(){
 
+ if(document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen().catch(()=>{})
+  }
+  
   if(dictionary.size===0){
     alert("Sanakirja latautuu vielä...")
     return
