@@ -15,6 +15,7 @@
 <link rel="manifest" href="manifest.json">
 <style>
 
+
 body{
 font-family:'Cinzel',serif;
 background:url("papyrus.jpg") center/cover no-repeat fixed;
@@ -566,8 +567,9 @@ text-align:center;
 z-index:99999;
 }
 
+}
 
-@media (max-width:900px) and (orientation:landscape){
+@media (orientation:landscape), (max-height:500px) {
 
 html,body{
 margin:0;
@@ -575,6 +577,7 @@ padding:0;
 height:100%;
 overflow:hidden;
 touch-action:none;
+background:transparent;
 }
 
 /* koko pelialue */
@@ -627,10 +630,10 @@ overflow:hidden;
 #grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-
+position:relative;
 gap:6px;
 
-width:min(100%, calc(var(--vh) * 0.7));
+width:min(100%, calc(var(--vh) * 0.70));
 height:auto;
 
 aspect-ratio:1/1;
@@ -647,10 +650,10 @@ font-size:clamp(18px,4vh,32px);
 /* sana */
 
 #word{
-margin-top:8px;
-font-size:24px;
-letter-spacing:3px;
-padding:6px 12px;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 }
 
 /* oikea paneeli */
@@ -1037,8 +1040,7 @@ dfs(x,y,new Set(),"")
 }
 }
 
-document.getElementById("debugWords").textContent =
-"Sanat: " + foundWords.size + " / " + validWords.size
+document.getElementById("debugWords").textContent = "Sanat: " + foundWords.size + " / " + validWords.size
 
 }
   
