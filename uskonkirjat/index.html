@@ -2258,9 +2258,41 @@ let file = String(id).padStart(3,"0");
 let r = await fetch("data/json/"+file+".json");
 let book = await r.json();
 
-let words = query.toLowerCase().split(/\s+/);
+let q = query.toLowerCase().trim();
 
-let text = highlightWords(book.text,words);
+let phrases = [];
+let words = [];
+
+// poimi fraasit
+let re = /"([^"]+)"/g;
+let match;
+
+while((match = re.exec(q)) !== null){
+    phrases.push(match[1]);
+}
+
+// poista fraasit
+q = q.replace(/"([^"]+)"/g, "");
+
+// loput sanat
+words = q.split(/\s+/).filter(w => w);
+
+let text = book.text;
+
+// fraasit ensin
+phrases.forEach(p => {
+
+    if(p.length < 2) return;
+
+    let safe = p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let re = new RegExp(safe, "gi");
+
+    text = text.replace(re, "<mark>$&</mark>");
+
+});
+
+// sitten sanat
+text = highlightWords(text, words);
 
 let html = "<div class='sermonTitle'>"+book.title+"</div>";
 html += text.replace(/\n/g,"<br>");

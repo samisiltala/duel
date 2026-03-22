@@ -1,12 +1,31 @@
 let lutherSearchIndex = {};
+let lutherTextCache = {};
 
 fetch("data/luther_search_index.json")
 .then(r => r.json())
 .then(data => {
 
+
     lutherSearchIndex = data;
 
     console.log("Luther search index ladattu:",Object.keys(data).length,"sanaa");
+    // 🔥 LISÄÄ TÄSTÄ ALKAEN
+
+    console.log("Aloitetaan Luther-tekstien esilataus...");
+
+    lutherIndex.forEach(async (book) => {
+
+        let file = String(book.id).padStart(3,"0");
+
+        let r = await fetch("data/json/"+file+".json");
+        let json = await r.json();
+
+        lutherTextCache[book.id] = json.text.toLowerCase();
+
+    });
+
+    console.log("Luther cache lataus käynnistetty");
+
 
 });
 
@@ -55,6 +74,40 @@ return query.value.every(w => {
 
 }
 
+function makeSnippet(text, query){
+
+text = text.toLowerCase();
+
+let idx = -1;
+
+// 🔹 fraasi
+if(query.type === "phrase"){
+    idx = text.indexOf(query.value);
+}
+
+// 🔹 sanat
+if(idx === -1 && query.type === "words"){
+    for(let w of query.value){
+        idx = text.indexOf(w);
+        if(idx !== -1) break;
+    }
+}
+
+if(idx === -1) return "";
+
+// 🔹 ota ympäriltä tekstiä
+let start = Math.max(0, idx - 60);
+let end = Math.min(text.length, idx + 60);
+
+let snippet = text.slice(start, end);
+
+// siisti alku/loppu
+if(start > 0) snippet = "..." + snippet;
+if(end < text.length) snippet = snippet + "...";
+
+return snippet;
+}
+
 function searchAll(query){
 
 return {
@@ -67,71 +120,98 @@ lestadius: searchLestadius(query)
 
 function searchLuther(q){
 
-let words = q.toLowerCase().split(/\s+/);
+let query = parseQuery(q);
 
-let sets = [];
+let ids = [];
 
-words.forEach(w => {
+if(
+    (query.type === "phrase" && !query.value.trim()) ||
+    (query.type === "words" && query.value.length === 0)
+){
+    return [];
+}
 
-    // 🔥 wildcard-tuki
-    if(w.includes("*")){
+if(query.type === "phrase"){
 
-        let pattern = new RegExp("^" + w.replace(/\*/g, ".*") + "$");
+    let results = [];
 
-        let matches = Object.keys(lutherSearchIndex)
-            .filter(k => pattern.test(k));
+    Object.keys(lutherTextCache).forEach(id => {
 
-        let ids = [];
+        let text = lutherTextCache[id];
 
-        matches.forEach(m => {
-            ids = ids.concat(lutherSearchIndex[m]);
+        if(text && text.includes(query.value)){
+
+            let book = lutherIndex.find(b => b.id == id);
+
+            let snippet = makeSnippet(text, query);
+
+        results.push({
+        collection:"luther",
+        id:id,
+        title:book.title,
+        snippet:snippet
         });
 
-        if(ids.length){
-            sets.push(ids);
         }
 
-    } else {
+    });
 
-        if(lutherSearchIndex[w]){
-            sets.push(lutherSearchIndex[w]);
+    return results.slice(0,resultLimit);
+
+} else {
+
+    let sets = [];
+
+    query.value.forEach(w => {
+
+        if(w.includes("*")){
+
+            let pattern = new RegExp("^" + w.replace(/\*/g, ".*") + "$");
+
+            let matches = Object.keys(lutherSearchIndex)
+                .filter(k => pattern.test(k));
+
+            let ids = [];
+
+            matches.forEach(m => {
+                ids = ids.concat(lutherSearchIndex[m]);
+            });
+
+            if(ids.length){
+                sets.push(ids);
+            }
+
+        } else {
+
+            if(lutherSearchIndex[w]){
+                sets.push(lutherSearchIndex[w]);
+            }
+
         }
 
-    }
+    });
 
-});
+    if(!sets.length) return [];
 
-if(!sets.length) return [];
+    let result = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
 
-let ids = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
+    return result.slice(0,resultLimit).map(id=>{
 
+        let book = lutherIndex.find(b => b.id == id);
 
+        return {
+            collection:"luther",
+            id:id,
+            title:book.title
+        };
 
-return ids.slice(0,resultLimit).map(id=>{
-
-let book = lutherIndex.find(b => b.id == id);
-
-/* laske osumien määrä */
-
-let count = 0;
-
-words.forEach(w=>{
-if(lutherSearchIndex[w]){
-count += lutherSearchIndex[w].filter(x=>x==id).length;
-}
-});
-
-return {
-collection:"luther",
-id:id,
-title:book.title,
-count:count
-};
-
-});
+    });
 
 }
-
+}
+/******************************************
+ * RAAMATTUHAKU
+ * ****************************************/
 function searchBible(q){
 
 let query = parseQuery(q);
@@ -142,47 +222,15 @@ bible.forEach(v => {
 
 let text = v.text.toLowerCase();
 
-if(query.type === "phrase"){
+if(matchText(text, query)){
 
-if(text.includes(query.value)){
-
-results.push({
-book:v.book,
-chapter:v.chapter,
-verse:v.verse,
-text:v.text
-});
-
-}
-
-}else{
-
-let ok = query.value.every(w => {
-
-    if(w.includes("*")){
-
-        let pattern = new RegExp(w.replace(/\*/g,".*"), "i");
-        return pattern.test(text);
-
-    } else {
-
-        return text.includes(w);
-
-    }
-
-});
-
-if(ok){
-
-results.push({
-collection:"bible",
-book:v.book,
-chapter:v.chapter,
-verse:v.verse,
-text:v.text
-});
-
-}
+    results.push({
+        collection:"bible",
+        book:v.book,
+        chapter:v.chapter,
+        verse:v.verse,
+        text:v.text
+    });
 
 }
 
@@ -191,6 +239,11 @@ text:v.text
 return results.slice(0,20);
 
 }
+
+
+/*******************************************
+ * LESTADIUSHAKU
+ * *****************************************/
 function searchLestadius(q){
 
 q=q.toLowerCase();
@@ -262,8 +315,12 @@ snippet = item.title;
 let q = document.getElementById("search").value.trim().toLowerCase();
 
 if(q){
-let re = new RegExp("("+q.replace(/\*/g,"\\w*")+")","gi");
-snippet = snippet.replace(re,"<mark>$1</mark>");
+
+    let safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    let re = new RegExp("("+safe.replace(/\*/g,"\\w*")+")","gi");
+
+    snippet = snippet.replace(re,"<mark>$1</mark>");
 }
 
 let source = "";

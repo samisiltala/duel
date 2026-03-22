@@ -440,10 +440,9 @@ background:transparent;
 
 #lineCanvas{
 position:absolute;
-top:30px;   /* sama kuin grid margin-top */
+top:0;   /* sama kuin grid margin-top */
 left:0;
-width:100%;
-height:100%;
+
 pointer-events:none;
 z-index:15;
 }
@@ -929,37 +928,33 @@ tiles.push(div)
 }
 lineCanvas.width=grid.offsetWidth
 lineCanvas.height=grid.offsetHeight
+setTimeout(updateCanvasSize, 50);
 }
 
-function drawLines(){
+function drawLines() {
+    ctx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+    if (usedTiles.length < 2) return;
 
-ctx.clearRect(0,0,lineCanvas.width,lineCanvas.height)
+    ctx.strokeStyle = "rgba(255, 230, 120, 0.85)";
+    ctx.lineWidth = 6;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
 
-if(usedTiles.length<2) return
+    for (let i = 0; i < usedTiles.length; i++) {
+        const tile = usedTiles[i];
+        
+        // Käytetään alkuperäistä, työstämääsi laskutapaa keskipisteelle
+        const x = tile.offsetLeft + tile.clientWidth / 2;
+        const y = tile.offsetTop + tile.clientHeight / 2;
 
-ctx.strokeStyle="rgba(255,230,120,0.85)"
-ctx.lineWidth=6
-ctx.lineCap="round"
-
-ctx.beginPath()
-
-for(let i=0;i<usedTiles.length;i++){
-
-let tile = usedTiles[i]
-
-let x = tile.offsetLeft + tile.clientWidth/2
-let y = tile.offsetTop + tile.clientHeight/2
-
-if(i===0){
-ctx.moveTo(x,y)
-}else{
-ctx.lineTo(x,y)
-}
-
-}
-
-ctx.stroke()
-
+        if (i === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.stroke();
 }
 
 function findAllWords(){
@@ -1287,6 +1282,26 @@ time--
 },1000)
 
 }
+
+function updateCanvasSize() {
+    if (!grid || !lineCanvas) return;
+    
+    // Asetetaan canvaksen sisäinen koko vastaamaan gridin fyysistä kokoa
+    lineCanvas.width = grid.offsetWidth;
+    lineCanvas.height = grid.offsetHeight;
+    
+    // Pidetään canvas visuaalisesti saman kokoisena kuin grid
+    lineCanvas.style.width = grid.offsetWidth + "px";
+    lineCanvas.style.height = grid.offsetHeight + "px";
+
+    // Vaakatilassa (landscape) gridillä ei ole koodissasi 30px marginaalia, 
+    // joten nollataan canvaksen yläreuna
+    const isLandscape = window.matchMedia("(orientation: landscape)").matches && window.innerHeight < 500;
+    lineCanvas.style.top = isLandscape ? "0px" : "30px";
+    
+    if (selecting) drawLines();
+}
+
 
 function endGame(){
 
