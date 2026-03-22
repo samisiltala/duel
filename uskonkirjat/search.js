@@ -118,48 +118,106 @@ lestadius: searchLestadius(query)
 
 }
 
-function searchLuther(q){
+function splitLutherToPages(text){
 
-let query = parseQuery(q);
+    if(!text || typeof text !== "string"){
+        return [];
+    }
 
-let ids = [];
+    let parts = text.split(/\[page:(\d+)\]/g);
 
-if(
-    (query.type === "phrase" && !query.value.trim()) ||
-    (query.type === "words" && query.value.length === 0)
-){
-    return [];
-}
+    let pages = [];
 
-if(query.type === "phrase"){
+    for(let i = 1; i < parts.length; i += 2){
 
-    let results = [];
+        let pageNum = parseInt(parts[i]);
+        let content = parts[i+1] || "";
 
-    Object.keys(lutherTextCache).forEach(id => {
+        if(!isNaN(pageNum) && content){
 
-        let text = lutherTextCache[id];
-
-        if(text && text.includes(query.value)){
-
-            let book = lutherIndex.find(b => b.id == id);
-
-            let snippet = makeSnippet(text, query);
-
-        results.push({
-        collection:"luther",
-        id:id,
-        title:book.title,
-        snippet:snippet
-        });
+            pages.push({
+                page: pageNum,
+                text: content
+            });
 
         }
 
-    });
+    }
 
-    return results.slice(0,resultLimit);
+    return pages;
+}
 
-} else {
+function searchLuther(q){
 
+    let query = parseQuery(q);
+
+    // 🔴 estä tyhjät haut
+    if(
+        (query.type === "phrase" && !query.value.trim()) ||
+        (query.type === "words" && query.value.length === 0)
+    ){
+        return [];
+    }
+
+    let results = [];
+
+    // =========================
+    // 🔥 FRAASIHAKU (cache + sivujako)
+    // =========================
+    if(query.type === "phrase"){
+
+        Object.keys(lutherTextCache).forEach(id => {
+
+            let text = lutherTextCache[id];
+            if(!text) return;
+
+            let pages = splitLutherToPages(text);
+
+            // 🔁 fallback jos ei sivuja
+            if(!pages.length){
+
+                if(text.includes(query.value)){
+
+                    let book = lutherIndex.find(b => b.id == id);
+
+                    results.push({
+                        collection:"luther",
+                        id:id,
+                        title:book.title,
+                        snippet: makeSnippet(text, query)
+                    });
+
+                }
+
+                return;
+            }
+
+            // 🔥 sivukohtainen haku
+            pages.forEach(p => {
+
+                if(p.text && p.text.includes(query.value)){
+
+                    let book = lutherIndex.find(b => b.id == id);
+
+                    results.push({
+                        collection:"luther",
+                        id:id,
+                        title:book.title + " (s. " + p.page + ")",
+                        snippet: makeSnippet(p.text, query)
+                    });
+
+                }
+
+            });
+
+        });
+
+        return results.slice(0, resultLimit);
+    }
+
+    // =========================
+    // 🔥 SANAHAAKU (indeksi + AND)
+    // =========================
     let sets = [];
 
     query.value.forEach(w => {
@@ -193,21 +251,28 @@ if(query.type === "phrase"){
 
     if(!sets.length) return [];
 
-    let result = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
+    let ids = sets.reduce((a,b)=>a.filter(x=>b.includes(x)));
 
-    return result.slice(0,resultLimit).map(id=>{
+    // 🔥 rakennetaan tulokset + snippet
+    ids.slice(0, resultLimit).forEach(id => {
+
+        let text = lutherTextCache[id];
+        if(!text) return;
+
+        let snippet = makeSnippet(text, query);
 
         let book = lutherIndex.find(b => b.id == id);
 
-        return {
+        results.push({
             collection:"luther",
             id:id,
-            title:book.title
-        };
+            title:book.title,
+            snippet:snippet
+        });
 
     });
 
-}
+    return results;
 }
 /******************************************
  * RAAMATTUHAKU
