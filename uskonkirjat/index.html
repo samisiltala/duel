@@ -328,6 +328,41 @@ background-repeat:no-repeat;
     border-top:1px dashed #ccc;
 }
 
+.lutherTitle{
+    font-size:1.4em;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.lutherHeading{
+    font-size:1.2em;
+    font-weight:700;
+    margin-top:20px;
+    margin-bottom:10px;
+}
+
+.lutherTOC{
+    border:1px solid #ddd;
+    padding:12px;
+    margin-bottom:20px;
+    background:#fafafa;
+}
+
+.lutherQuote{
+    font-style:italic;
+    margin:12px 0;
+}
+
+.tocItem{
+    cursor:pointer;
+    margin:4px 0;
+    color:#1a4;
+}
+
+.tocItem:hover{
+    text-decoration:underline;
+}
+
 /* SEPIA */
 body.bg-sepia .panel{
     background:#f4ecd8;
@@ -1496,11 +1531,125 @@ let book = await r.json();
 
 console.log("Luther avattu:",file);
 
-let html = book.text
-    .replace(/\n/g,"<br>")
+let raw = book.text;
+
+// 🔥 poistetaan page-tagit analyysista (mutta EI lopullisesta html:stä)
+let rawForParsing = raw.replace(/\[page:\d+\]/g, "");
+
+// 🔥 käytetään tätä riveihin
+let lines = rawForParsing.split("\n").map(l => l.trim()).filter(l => l);
+
+
+
+// 🔥 poistetaan toistuva otsikko alusta
+let cleaned = [];
+
+for(let i = 0; i < lines.length; i++){
+
+    // jos sama kuin joku aiempi alku → skipataan
+    if(i < 5 && cleaned.includes(lines[i])){
+        continue;
+    }
+
+    cleaned.push(lines[i]);
+}
+
+// 🔥 erotetaan otsikko ja runkoteksti
+let titleLine = cleaned[0] || "";
+let bodyLines = cleaned.slice(1);
+
+let html = "";
+let toc = [];
+let counter = 0;
+let contentStarted = false;
+// otsikko
+if(titleLine){
+    html += "<div class='lutherTitle'>" + titleLine + "</div>";
+}
+
+
+// 🔥 varsinainen teksti + otsikot
+bodyLines.forEach((line, i) => {
+    // 🔥 skipataan sivunumerot (s. 123)
+if(/^s\.\s*\d+/i.test(line.trim())){
+    return;
+}
+
+    let prev = bodyLines[i-1] || "";
+    let next = bodyLines[i+1] || "";
+
+    // 🔥 tunnista lista
+    let isList = /^\d+\.\s/.test(line.trim());
+    let prevIsList = /^\d+\.\s/.test(prev.trim());
+
+    // 🔥 jos alkaa numeroitu teksti → sisältö alkaa
+    if(isList){
+        contentStarted = true;
+    }
+
+    // 🔥 otsikkotunnistus
+    let isHeading = isLikelyHeading(line, prev, next);
+
+   
+
+    // 🔥 estä listojen tulkinta otsikoiksi
+    if(isList && prevIsList){
+        isHeading = false;
+    }
+
+    // 🔥 estä väärä "Sisällysluettelo"
+    if(isHeading && line.toLowerCase().includes("sisällysluettelo")){
+        if(!(next && /^\d+/.test(next))){
+            isHeading = false;
+        }
+    }
+
+    if(isHeading){
+
+        let id = "luther-h-" + counter++;
+
+        if(isGoodTocHeading(line)){
+            toc.push({
+                id: id,
+                text: line
+            });
+        }
+
+        html += "<div id='"+id+"' class='lutherHeading'>" + line + "</div>";
+
+    } else {
+
+        html += line + "<br><br>";
+
+    }
+
+});
+
+
+// 🔥 rakennetaan TOC html
+let tocHtml = "";
+
+if(toc.length){
+
+    tocHtml += "<div class='lutherTOC'><b>Sisällysluettelo</b>";
+
+    toc.forEach(item => {
+        tocHtml += "<div class='tocItem' data-id='"+item.id+"'>" + item.text + "</div>";
+    });
+
+    tocHtml += "</div><br>";
+
+}
+
+// 🔥 lisätään alkuun
+html = tocHtml + html;
+
+// pidetään nämä ennallaan
+html = html
     .replace(/\[page:(\d+)\]/g,
         "<div class='pageMarker' id='page-$1'>s. $1</div>"
-    );
+    )
+    .replace(/\n/g,"<br>");
 
 document.querySelector("#lutherPanel .text").innerHTML = html;
 setTimeout(updateCurrentPage, 100);
@@ -1527,6 +1676,143 @@ scrollToMatch();
 },150);
 
 }
+
+/* =============================
+LUTHER OTSIKKOJAKO
+============================= */
+
+function isLikelyHeading(line, prevLine = "", nextLine = ""){
+
+    if(!line) return false;
+
+    let t = line.trim();
+    
+    if(t.endsWith(".")){
+    return false;
+    }
+
+    if(!t) return false;
+
+    // 🔴 liian pitkä → ei otsikko
+    if(t.length > 80){
+        return false;
+    }
+
+    // 🔥 otsikko ennen numeroitua tekstiä
+    if(nextLine && /^\d+\.\s/.test(nextLine)){
+        return true;
+    }
+
+
+    // =========================
+    // 1. PERUS (ISO + LYHYT)
+    // =========================
+    let upper = t.replace(/[^A-ZÅÄÖ]/g,"").length;
+    let total = t.replace(/[^A-Za-zÅÄÖåäö]/g,"").length;
+
+    if(total > 0){
+        let ratio = upper / total;
+        if(ratio > 0.6 && t.length < 60 && !t.endsWith(".")){
+            return true;
+        }
+    }
+
+    // =========================
+    // 2. NUMEROITU (1. 2. 3.)
+    // =========================
+    if(/^\d+\.\s/.test(t)){
+        return false; // nämä ovat kappaleita, EI otsikoita
+    }
+
+    // =========================
+    // 3. KIRKKOPOSTILLA-HEURISTIIKKA
+    // =========================
+    // otsikko ennen numeroituja kappaleita
+    if(nextLine && /^\d+\.\s/.test(nextLine)){
+        return true;
+    }
+
+    // =========================
+    // 4. YKSINÄINEN RIVI (otsikkosivu)
+    // =========================
+    if(prevLine === "" && nextLine === ""){
+        if(t.length < 80){
+            return true;
+        }
+    }
+
+    // =========================
+    // 5. EI PISTETTÄ + EI PITKÄ
+    // =========================
+    if(!t.endsWith(".") && t.length < 50){
+        // vältetään liian tavalliset lauseet
+        if(!/[,:;]/.test(t)){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/* =============================
+LUTHER KPL, ONKO RAAMATUNJAE
+============================= */
+function isBibleQuote(line){
+
+    if(!line) return false;
+
+    let t = line.trim();
+
+    // pitkä teksti → ei otsikko
+    if(t.length > 120) return true;
+
+    // sisältää paljon pilkkuja → todennäköisesti leipätekstiä
+    let commas = (t.match(/,/g) || []).length;
+    if(commas >= 2) return true;
+
+    // sisältää raamatun viitteen
+    if(/\b[A-ZÅÄÖ][a-zåäö]+\.\s?\d+:\d+/.test(t)){
+        return true;
+    }
+
+    return false;
+}
+
+
+/* =============================
+LUTHER OTSIKONTUNNISTUSTA
+============================= */
+function isGoodTocHeading(line){
+
+    let t = line.trim();
+
+    // ❌ sivunumerot pois
+    if(/^s\.\s*\d+/.test(t)){
+        return false;
+    }
+
+    if(/^s\.\s*\d+/i.test(t)){
+    return false;
+    }
+
+    // ❌ pelkät lyhyet sanat (esim "Jeesus")
+    if(t.length < 8){
+        return false;
+    }
+
+    // ❌ liian pitkä = ei otsikko
+    if(t.length > 80){
+        return false;
+    }
+
+    // ❌ sisältää paljon pilkkuja → todennäköisesti leipätekstiä
+    if((t.match(/,/g) || []).length >= 2){
+        return false;
+    }
+
+    return true;
+}
+
 
 /* =============================
 LESTADIUS HAKUMENU
@@ -2242,6 +2528,12 @@ return text;
 
 }
 
+/* =============================
+LUTHER LISTAHEURISTIIKKAA
+============================= */
+function isNumberedList(line){
+    return /^\d+\.\s/.test(line.trim());
+}
 
 /* =============================
 LUTHER HAKUTULOKSET AUKI
@@ -2884,6 +3176,24 @@ if(slider){
         goToPage(this.value);
     });
 }
+
+document.addEventListener("click", function(e){
+
+    if(e.target.classList.contains("tocItem")){
+
+        let id = e.target.dataset.id;
+        let el = document.getElementById(id);
+
+        if(el){
+            el.scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+        }
+
+    }
+
+});
 
 </script>
 <audio id="startSound" src="audio/virsi.mp3"></audio>
