@@ -299,6 +299,23 @@ cursor:pointer;
     font-size: 14px;
 }
 
+#lutherPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+   padding-top: 60px;
+}
+
+#lutherPanel .text {
+  touch-action: auto !important;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 
 .sermonFilter{
 font-weight:600;
@@ -322,6 +339,8 @@ background-repeat:no-repeat;
 }
 
 .pageMarker{
+      height:1px;
+  opacity:0;
     font-size:12px;
     color:#888;
     margin:20px 0 5px;
@@ -913,7 +932,7 @@ Raamattu
 
 </h3>
 
-</h3>
+
 <div id="bibleBooks"></div>
 
 <h3>
@@ -1160,8 +1179,9 @@ let searchMatches=[];
 let currentMatch=0;
 let resultLimit = 50;
 let savedLimit = localStorage.getItem("resultLimit");
-
-
+let isManualScroll = false;
+let lastSearchResults = null;
+let lastSearchQuery = "";
 
 /* =============================
 DATA LATAUS
@@ -1183,6 +1203,7 @@ fetch("data/luther_index.json")
 .then(data=>{
 lutherIndex=data;
 buildLutherMenu();
+preloadLuther();
 });
 
 fetch("data/lll_sermons.json")
@@ -1202,7 +1223,7 @@ fetch("data/bible"+bibleVersion+"_index.json")
 .then(data=>{
 bibleIndex=data;
 console.log("bibleIndex ladattu",Object.keys(bibleIndex).length);
-if(!bibleIndex){
+if(!Object.keys(bibleIndex).length){
 alert("Raamatun indeksi ei ole vielä latautunut");
 return;
 }
@@ -1218,6 +1239,7 @@ churchIndex=data;
 if(sermons.length) buildLestadiusMenu();
 
 });
+
 
 /* =============================
 PIILOTA ALOITUSKUVA
@@ -1317,6 +1339,21 @@ updateMatchIndicator();
 
 }
 
+/* =============================
+TAKAISIN TULOKSIIN -TOIMINTO
+============================= */
+function backToResults(){
+
+    if(!lastSearchResults) return;
+
+    // 🔥 avaa kirjasto
+    document.getElementById("library").classList.add("open");
+    document.getElementById("menuOverlay").classList.add("open");
+
+    // 🔥 näytä tulokset uudelleen
+    showSearchResults(lastSearchResults);
+
+}
 /* =============================
 PÄIVITÄ LASKURI
 ============================= */
@@ -1517,9 +1554,16 @@ div.appendChild(section);
 
 /* KIRJAT JÄRJESTYKSESSÄ */
 async function showLutherText(id){
+
 closeLibraryMobile();
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
+
+// 🔥 mobiilissa sulje muut paneelit
+if(window.innerWidth < 900){
+    document.getElementById("toggleBible").checked = false;
+    document.getElementById("toggleLestadius").checked = false;
+}
 document.getElementById("toggleLuther").checked = true;
 updatePanels();
 
@@ -1534,7 +1578,7 @@ console.log("Luther avattu:",file);
 let raw = book.text;
 
 // 🔥 poistetaan page-tagit analyysista (mutta EI lopullisesta html:stä)
-let rawForParsing = raw.replace(/\[page:\d+\]/g, "");
+let rawForParsing = raw;
 
 // 🔥 käytetään tätä riveihin
 let lines = rawForParsing.split("\n").map(l => l.trim()).filter(l => l);
@@ -1570,6 +1614,17 @@ if(titleLine){
 
 // 🔥 varsinainen teksti + otsikot
 bodyLines.forEach((line, i) => {
+
+    // 🔥 PAGE MARKER TÄHÄN
+    let pageMatch = line.match(/\[page:(\d+)\]/);
+
+    if(pageMatch){
+        let p = pageMatch[1];
+        html += "<div class='pageMarker' id='page-"+p+"'>s. "+p+"</div>";
+        return; // ❗ estää [page:X] näkymisen tekstinä
+    }
+
+
     // 🔥 skipataan sivunumerot (s. 123)
 if(/^s\.\s*\d+/i.test(line.trim())){
     return;
@@ -1643,7 +1698,13 @@ if(toc.length){
 }
 
 // 🔥 lisätään alkuun
-html = tocHtml + html;
+let backBtn = "";
+
+if(lastSearchResults){
+    backBtn = "<div class='backLink' onclick='backToResults()'>← takaisin tuloksiin</div>";
+}
+
+html = backBtn + tocHtml + html;
 
 // pidetään nämä ennallaan
 // 🔥 parempi raamattulinkitys
@@ -1663,7 +1724,32 @@ function(match, book, chapter, verse){
 }
 );
     
+let topBar = document.getElementById("lutherTopBar");
 
+// 🔥 jos tullaan hausta → lisää nappi
+if(lastSearchResults){
+
+    // estä duplikaatit
+    if(!document.getElementById("backToResultsBtn")){
+
+        let btn = document.createElement("span");
+        btn.id = "backToResultsBtn";
+        btn.innerHTML = "← tuloksiin";
+        btn.style.marginLeft = "10px";
+        btn.onclick = backToResults;
+
+        topBar.appendChild(btn);
+    }
+
+} else {
+
+    // 🔥 jos ei hausta → poista nappi
+    let existing = document.getElementById("backToResultsBtn");
+    if(existing){
+        existing.remove();
+    }
+
+}
 
 document.querySelector("#lutherPanel .text").innerHTML = html;
 
@@ -2221,6 +2307,11 @@ console.log("SHOW SERMON CALLED:", id);
 document.getElementById("reader").classList.remove("readerHome");
 hideStartScreen();
 
+if(window.innerWidth < 900){
+    document.getElementById("toggleBible").checked = false;
+    document.getElementById("toggleLuther").checked = false;
+}
+
 if(openPanel){
 document.getElementById("toggleLestadius").checked=true;
 updatePanels();
@@ -2403,7 +2494,12 @@ currentChapter=chapter;
 currentBibleBook = book;
 currentBibleChapter = chapter;
 
-if(!bibleIndex) return;
+if(window.innerWidth < 900){
+    document.getElementById("toggleLuther").checked = false;
+    document.getElementById("toggleLestadius").checked = false;
+}
+
+if(!bibleIndex || Object.keys(bibleIndex).length === 0) return;
 let key = book + " " + chapter;
 
 if(!key){
@@ -2481,7 +2577,7 @@ function updateCurrentPage(){
 
         let rect = m.getBoundingClientRect();
 
-        if(rect.top < 120){ // hieman yläreunan alapuolella
+        if(rect.top < window.innerHeight * 0.3){ // hieman yläreunan alapuolella
             current = parseInt(m.id.replace("page-",""));
         }
 
@@ -2495,11 +2591,13 @@ function updateCurrentPage(){
 
     // päivitä slider
     let slider = document.getElementById("pageSlider");
-    if(slider){
-        slider.value = current;
-    }
+   if(!isManualScroll){
+    slider.value = current;
+}
 
 }
+
+
 
 /* =============================
 NHYPPÄÄ SIVULLE
@@ -2554,6 +2652,7 @@ function isNumberedList(line){
 LUTHER HAKUTULOKSET AUKI
 ============================= */
 async function openLutherResult(id,query){
+closeLibraryMobile();
 
 document.getElementById("reader").classList.remove("readerHome");
 
@@ -2601,7 +2700,8 @@ phrases.forEach(p => {
 // sitten sanat
 text = highlightWords(text, words);
 
-let html = "<div class='sermonTitle'>"+book.title+"</div>";
+let html = "<div class='backLink' onclick='backToResults()'>← takaisin tuloksiin</div>";
+html += "<div class='sermonTitle'>"+book.title+"</div>";
 html += text.replace(/\n/g,"<br>");
 
 fadeText(document.querySelector("#lutherPanel .text"),html);
@@ -2742,12 +2842,18 @@ document.getElementById("biblePopup").style.display="none";
 
 });
 
+let scrollTimeout;
+
 document.addEventListener("scroll", function(){
 
-    // vain jos Luther näkyvissä
-    if(document.getElementById("toggleLuther").checked){
+    if(!document.getElementById("toggleLuther").checked) return;
+
+    if(scrollTimeout) return;
+
+    scrollTimeout = setTimeout(() => {
         updateCurrentPage();
-    }
+        scrollTimeout = null;
+    }, 50); // säädä 30–80ms
 
 });
 
@@ -2939,7 +3045,7 @@ handleSwipe();
 
 });
 
-let lutherPanel = document.getElementById("lutherPanel");
+let lutherPanel = document.getElementById("lutherTopBar");
 
 lutherPanel.addEventListener("touchstart",function(e){
 touchStartX = e.changedTouches[0].screenX;
@@ -3188,9 +3294,51 @@ let slider = document.getElementById("pageSlider");
 
 if(slider){
     slider.addEventListener("input", function(){
-        goToPage(this.value);
-    });
+
+    let p = this.value;
+
+    // 🔥 päivitä numero heti
+    let label = document.getElementById("currentPage");
+    if(label){
+        label.textContent = "s. " + p;
+    }
+
+    goToPage(p);
+
+});
 }
+
+document.getElementById("search").addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+
+        let q = this.value.trim();
+
+        if(!q) return;
+
+        // 🔥 suorita haku
+        let results = searchAll(q);
+        lastSearchResults = results;
+        lastSearchQuery = q;
+        showSearchResults(results);
+
+        // 🔥 mobiilissa avaa hakupaneeli
+        if(window.innerWidth < 900){
+
+            document.getElementById("library").classList.add("open");
+            document.getElementById("menuOverlay").classList.add("open");
+
+            // 🔥 sulje muut paneelit
+            document.getElementById("toggleBible").checked = false;
+            document.getElementById("toggleLuther").checked = false;
+            document.getElementById("toggleLestadius").checked = false;
+
+            updatePanels();
+        }
+
+    }
+
+});
 
 document.addEventListener("click", function(e){
 
