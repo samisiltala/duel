@@ -360,7 +360,11 @@ button {
 }
 
 #grid.longWordFlash {
-  box-shadow: 0 0 30px rgba(106,255,156,0.8);
+   box-shadow:
+    0 0 30px rgba(106,255,156,0.8),
+    0 0 80px rgba(106,255,156,0.6),
+    0 0 120px rgba(106,255,156,0.4);
+  transform: scale(1.04);
   transition: box-shadow 0.2s;
 }
 
@@ -384,7 +388,9 @@ button {
 .tile.active  { background: linear-gradient(#fff7d6, #e9d58f); }
 .tile.success { background: linear-gradient(#d4ffd4, #7fff9c); box-shadow: 0 0 12px rgba(106,255,156,0.9); transition: all 0.3s; }
 .tile.error   { background: linear-gradient(#ffb3b3, #ff6b6b); animation: shake 0.25s; transition: background 0.25s; }
-
+.tile:hover {
+  box-shadow: 0 0 12px rgba(255,255,255,0.5);
+}
 .rightPanel {
   background: #222;
   padding: 15px;
@@ -766,6 +772,16 @@ button {
 
 }
 
+@keyframes tilePop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+.tile.pop {
+  animation: tilePop 0.18s ease;
+}
+
 </style>
 </head>
 
@@ -1052,8 +1068,11 @@ function drawLines() {
 
   for (let i = 0; i < usedTiles.length; i++) {
     const tile = usedTiles[i]
-    const x = tile.offsetLeft + tile.clientWidth / 2
-    const y = tile.offsetTop + tile.clientHeight / 2
+    const rect = tile.getBoundingClientRect()
+const gridRect = grid.getBoundingClientRect()
+
+const x = rect.left - gridRect.left + rect.width / 2
+const y = rect.top  - gridRect.top  + rect.height / 2
     if (i === 0) ctx.moveTo(x, y)
     else ctx.lineTo(x, y)
   }
@@ -1132,6 +1151,8 @@ function isNeighbor(tile) {
 function addTile(tile) {
   if (usedTiles.includes(tile)) return
   tile.classList.add("active")
+  tile.classList.add("pop")
+  setTimeout(() => tile.classList.remove("pop"), 180)
   usedTiles.push(tile)
   currentWord += tile.textContent
   document.getElementById("word").textContent = currentWord
